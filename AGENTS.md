@@ -1,9 +1,36 @@
-<!-- BEGIN:nextjs-agent-rules -->
+# BakeFix agent instructions
 
-# This is NOT the Next.js you know
+Before changing code:
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+1. Read context/product.md.
+2. Read context/architecture.md.
+3. Read context/progress.md.
+4. Read the relevant section in context/build-plan.md.
+5. Read context/ui-tokens.md for UI changes.
+6. Read context/ai-contract.md for AI changes.
 
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+## Workflow
 
-<!-- END:nextjs-agent-rules -->
+- Work on one build-plan step at a time.
+- Before implementation, explain the approach and affected files.
+- Stay within the current step.
+- Run the relevant checks after implementation.
+- Update context/progress.md after completing a step.
+- Update context/ui-registry.md after establishing a reusable UI pattern.
+- Do not commit unless explicitly requested.
+
+## Definition of done
+
+A step is complete only when:
+
+- Its acceptance criteria pass.
+- Lint and type checking pass.
+- Relevant tests pass.
+- UI changes were inspected at mobile and desktop sizes.
+- progress.md reflects the current state.
+
+## Git safety
+
+- Never commit .env.local or secrets.
+- Inspect staged changes before proposing a commit.
+- Do not modify unrelated files.
