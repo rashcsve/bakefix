@@ -26,6 +26,7 @@ Fonts must be loaded using next/font.
 - Mobile: one stacked column
 - Card radius: 16px
 - Control radius: 10px
+- Chip radius: full (pill) — see the Chip pattern in `context/ui-registry.md`
 - Card padding: 24px
 - Touch target: at least 44px
 - Borders: 1px
