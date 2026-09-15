@@ -3,12 +3,13 @@
 ## Current status
 
 Phase: 01 Foundation
-Last completed: Repository created
-Next: Complete project foundation
+Last completed: Project foundation (fonts, design tokens, environment
+contract, testing skeleton)
+Next: 02 Static UI
 
 ## Features
 
-- [ ] 01 Foundation
+- [x] 01 Foundation
 - [ ] 02 Static UI
 - [ ] 03 Form interactions
 - [ ] 04 AI contract
