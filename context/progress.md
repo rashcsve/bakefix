@@ -2,15 +2,18 @@
 
 ## Current status
 
-Phase: 01 Foundation
-Last completed: Project foundation (fonts, design tokens, environment
-contract, testing skeleton)
-Next: 02 Static UI
+Phase: 02 Static UI
+Last completed: Static responsive interface (header, hero, form card,
+diagnosis card with example fixture, loading/error visual states, footer
+note) built with fixture data and no client-side logic, then restyled to
+match an approved visual design reference (pill chips, numbered causes,
+tinted confidence badge, rescue-plan callout, checkmark next-time list)
+Next: 03 Form interactions
 
 ## Features
 
 - [x] 01 Foundation
-- [ ] 02 Static UI
+- [x] 02 Static UI
 - [ ] 03 Form interactions
 - [ ] 04 AI contract
 - [ ] 05 OpenAI integration
