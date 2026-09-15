@@ -35,12 +35,18 @@ For AI work, also read:
 4. Present a concise implementation plan before editing.
 5. Implement only the requested step.
 6. Do not introduce out-of-scope functionality.
-7. Run the verification commands required by the step.
-8. Inspect mobile and desktop layouts when UI changes.
-9. Fix failures caused by the current step.
-10. Update context/progress.md after successful verification.
-11. Update context/ui-registry.md if a reusable UI pattern was created.
-12. Report:
+7. While implementing, pause for a self-check after roughly every 40 new or changed lines of code (a guideline for when to stop and look, not a requirement to split code unnaturally). At each checkpoint:
+   - Compare the change so far against the current step in context/build-plan.md.
+   - Check type correctness.
+   - Check that the change fits the existing architecture.
+   - Look for obvious errors.
+   - Fix anything found before continuing implementation.
+8. Run the verification commands required by the step.
+9. Inspect mobile and desktop layouts when UI changes.
+10. Fix failures caused by the current step.
+11. Update context/progress.md after successful verification.
+12. Update context/ui-registry.md if a reusable UI pattern was created.
+13. Report:
     - work completed
     - files changed
     - checks performed

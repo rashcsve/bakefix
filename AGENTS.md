@@ -23,6 +23,7 @@ For AI work, also read:
 
 - Work on one build-plan step at a time.
 - Use the build-step skill for implementation.
+- While implementing, pause for a self-check after roughly every 40 new or changed lines of code. Treat 40 lines as a guideline for when to stop and look, not a requirement to split code unnaturally. At each checkpoint, compare the change so far against the current step in context/build-plan.md, check type correctness, check that the change fits the existing architecture, and look for obvious errors. Fix anything found before continuing.
 - Use the review skill before committing.
 - Use the recover skill if a problem remains after one normal fix attempt.
 - Do not expand the MVP scope.
