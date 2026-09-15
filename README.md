@@ -1,5 +1,18 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Project configuration
+
+- TypeScript with strict mode and the `@/*` import alias mapped to the project root.
+- App Router in `app/`, without a `src/` directory.
+- React Compiler enabled in `next.config.ts`.
+- Tailwind CSS v4 with the PostCSS configuration in `postcss.config.mjs`.
+- Biome for linting and formatting, with recommended Next.js and React rules.
+- Agent instructions in `AGENTS.md`.
+
+Install dependencies with `pnpm install`. Run `pnpm lint` to check lint and formatting,
+`pnpm lint:fix` to apply safe fixes, `pnpm format` to format files, and `pnpm build`
+to verify the production build.
+
 ## Getting Started
 
 First, run the development server:
