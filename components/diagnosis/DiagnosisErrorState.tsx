@@ -1,6 +1,10 @@
 import { AlertTriangle } from "lucide-react";
 
-export function DiagnosisErrorState() {
+type DiagnosisErrorStateProps = {
+  onRetry: () => void;
+};
+
+export function DiagnosisErrorState({ onRetry }: DiagnosisErrorStateProps) {
   return (
     <div
       role="alert"
@@ -18,6 +22,7 @@ export function DiagnosisErrorState() {
       </p>
       <button
         type="button"
+        onClick={onRetry}
         className="min-h-11 w-fit rounded-control border border-error/40 px-5 py-2 text-sm font-semibold text-error transition-colors hover:bg-error/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action"
       >
         Try again

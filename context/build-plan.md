@@ -495,7 +495,7 @@ Deployment requires an additional commit only if deployment-specific files chang
 
 Be prepared to explain these files without agent assistance:
 
-- `components/bakefix/BakeForm.tsx`
+- `components/form/BakeForm.tsx`
 - `lib/ai/schema.ts`
 - `lib/ai/prompt.ts`
 - `lib/ai/diagnose.ts`

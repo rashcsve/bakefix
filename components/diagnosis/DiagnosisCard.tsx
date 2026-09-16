@@ -19,13 +19,17 @@ const CONFIDENCE_BADGE_CLASS: Record<Confidence, string> = {
   low: "bg-error/10 text-error",
 };
 
-export function DiagnosisCard({ diagnosis }: { diagnosis: Diagnosis }) {
+type DiagnosisCardProps = {
+  diagnosis: Diagnosis;
+};
+
+export function DiagnosisCard({ diagnosis }: DiagnosisCardProps) {
   return (
     <article className="flex flex-col gap-5 overflow-hidden rounded-card border border-border bg-surface p-6 shadow-sm">
       <div className="flex items-center justify-between gap-3">
         <h2
-          id="diagnosis-heading"
-          className="font-display text-base font-semibold text-text-primary"
+          tabIndex={-1}
+          className="rounded-sm font-display text-base font-semibold text-text-primary focus:outline-2 focus:outline-offset-2 focus:outline-action"
         >
           Chef&apos;s diagnosis
         </h2>

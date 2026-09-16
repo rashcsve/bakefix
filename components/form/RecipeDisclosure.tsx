@@ -1,6 +1,17 @@
+"use client";
+
 import { ChevronDown } from "lucide-react";
+import { useFormContext } from "react-hook-form";
+import { FieldError } from "@/components/form/FieldError";
+import type { BakeFormValues } from "@/lib/schemas/bake-form";
 
 export function RecipeDisclosure() {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<BakeFormValues>();
+  const recipeErrorId = errors.recipe ? "recipe-error" : undefined;
+
   return (
     <details className="group rounded-control border border-border">
       <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between rounded-control px-4 py-2.5 text-sm font-semibold text-text-primary marker:content-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action [&::-webkit-details-marker]:hidden">
@@ -23,11 +34,14 @@ export function RecipeDisclosure() {
           </label>
           <textarea
             id="recipe"
-            name="recipe"
             rows={4}
+            aria-invalid={!!errors.recipe}
+            aria-describedby={recipeErrorId}
             placeholder="Paste the ingredients and method you used"
             className="rounded-control border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action"
+            {...register("recipe")}
           />
+          <FieldError id="recipe-error" message={errors.recipe?.message} />
         </div>
         <div className="flex flex-col gap-1.5">
           <label
@@ -38,10 +52,10 @@ export function RecipeDisclosure() {
           </label>
           <textarea
             id="technicalDetails"
-            name="technicalDetails"
             rows={3}
             placeholder="Oven temperature, altitude, humidity, equipment, or anything else that might matter"
             className="rounded-control border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action"
+            {...register("technicalDetails")}
           />
         </div>
       </div>
