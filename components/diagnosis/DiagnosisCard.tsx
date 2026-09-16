@@ -15,7 +15,7 @@ type DiagnosisCardProps = {
 
 export function DiagnosisCard({ diagnosis, headingRef }: DiagnosisCardProps) {
   return (
-    <article className="flex flex-col gap-5 overflow-hidden rounded-card border border-border bg-surface p-6 shadow-sm">
+    <article className="flex flex-col gap-5 overflow-hidden rounded-card border border-border bg-surface p-6 shadow-sm wrap-break-word">
       <div className="flex items-center justify-between gap-3">
         <h2
           id="diagnosis-heading"
@@ -38,7 +38,7 @@ export function DiagnosisCard({ diagnosis, headingRef }: DiagnosisCardProps) {
             className="mt-1 size-4 shrink-0 text-action"
             aria-hidden="true"
           />
-          {diagnosis.headline}
+          <span className="min-w-0">{diagnosis.headline}</span>
         </h3>
         <p className="text-sm text-text-muted">{diagnosis.explanation}</p>
       </div>

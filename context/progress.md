@@ -41,7 +41,63 @@ now in `MODEL_NAME`. Verified end-to-end with a real `GEMINI_API_KEY` in
 baking problem (cookies spreading) returns a schema-valid, on-topic
 diagnosis in ~10-15s, and the failure path preserves form input — checked
 visually at 390px and 1440px.
-Next: 07 Independent review and polish
+Next: 08 CI, documentation, and deployment
+
+## 07 Independent review and polish
+
+Reviewed the full implementation (every file under `app/`, `components/`,
+`lib/`, plus tests) against `context/product.md`, `context/architecture.md`,
+`context/code-standards.md`, and Step 07's review areas. `pnpm lint`,
+`pnpm typecheck`, `pnpm test` (26 tests), `pnpm test:e2e` (3 tests), and
+`pnpm build` all passed both before and after the fixes below. No critical
+or important findings; four confirmed minor issues were fixed:
+
+- `next.config.ts` now sets `agentRules: false`. Without it, `next dev`
+  (used directly and via Playwright's e2e `webServer`) rewrote `AGENTS.md`
+  on every start, appending an unsolicited block that asked to be
+  committed — confirmed reproducible, the instruction was not followed,
+  and the block is no longer written at all now that the flag is set
+  (verified: `AGENTS.md`'s hash is unchanged after starting `pnpm dev`).
+- `DiagnosisCard`'s headline is wrapped in a `<span className="min-w-0">`
+  and the `<article>` now has `wrap-break-word`. Previously an unusually
+  long, unbroken model-generated string (unlikely from Gemini, but not
+  impossible) would silently overflow past the card's right edge instead
+  of wrapping: the headline sits in a `flex` row (icon + text), and the
+  text's implicit flex item had the browser default `min-width: auto`,
+  which overrides `overflow-wrap` and blocks shrinking — a classic
+  flexbox "blowout" that `overflow-wrap` alone (without `min-width: 0`)
+  cannot fix. Verified by feeding a 120-character unbroken word through a
+  mocked `/api/diagnose` response and confirming it now wraps across
+  multiple lines within the card instead of clipping.
+- `context/ui-registry.md`'s Chip entry now documents that Playwright's
+  `getByRole("radio"/"checkbox").click()` reliably times out against the
+  `sr-only` input (confirmed reproducible: the hidden input's clipped
+  layout box isn't hit-testable, so Playwright's actionability check
+  never stabilizes), even though a real click anywhere on the label
+  activates the input instantly via native label/control delegation.
+  Future Playwright tests against Chip should target the `label`, not the
+  role locator — `e2e/diagnose-flow.spec.ts` already does this
+  indirectly by using keyboard interaction instead of `.click()`.
+- Corrected a `context/progress.md` inaccuracy from the "empty default
+  state" recovery note: it claimed both the "How it works" and "About"
+  nav links were removed and the footer's `id="about"` anchor deleted;
+  only "How it works" was actually removed. "About" and the footer
+  anchor it points to are still present and working.
+
+Also investigated and ruled out as a false positive: a hydration-mismatch
+console error (`caret-color: transparent` on form inputs) that appeared
+during the browser console check. Reproduced it on the first requests
+after starting a fresh `pnpm dev`, then confirmed it never recurs once
+the dev server has finished compiling — a Next.js dev-mode cold-compile
+timing artifact, not present in a warmed-up dev server and not expected
+in a production build. No code change made for it.
+
+Manually verified at 390x844, 768x1024, 1440x900, and a 720x450 viewport
+(simulating 200% zoom on a 1440x900 display): no horizontal overflow at
+any size, the two-column desktop layout collapses to one column below the
+`lg` breakpoint as expected, the loading/error/success states render
+correctly, and keyboard-only submission (already covered by
+`e2e/diagnose-flow.spec.ts`) still passes.
 
 ## 06 Automated tests and pastry evaluations
 
@@ -129,10 +185,10 @@ steps were reversed:
   empty until a real diagnosis returns. `lib/ai/fixtures.ts` and
   `exampleDiagnosis` are unchanged and still schema-validated, just no
   longer wired into the default UI.
-- `SiteHeader`'s "How it works" / "About" nav links were removed (they
-  only ever scrolled to `#bake-form` and the footer's `#about` anchor, no
-  dedicated content existed for them). The now-unused `id="about"` and
-  `scroll-mt-20` were removed from `SiteFooter`.
+- `SiteHeader`'s "How it works" nav link was removed (it only ever
+  scrolled to `#bake-form`, no dedicated content existed for it). The
+  "About" link and the footer's `id="about"` anchor it points to were
+  kept, since the footer already has real content to link to.
 
 `context/product.md`'s MVP list no longer includes "Initial example
 result" to match. Verified with `pnpm lint`, `pnpm typecheck`, `pnpm
@@ -155,7 +211,7 @@ border distinguishes it from a real result card. Verified the same way
 - [x] 04 AI contract
 - [x] 05 Gemini integration
 - [x] 06 Verification
-- [ ] 07 Review and polish
+- [x] 07 Review and polish
 - [ ] 08 Delivery
 
 ## Decisions
@@ -197,7 +253,5 @@ border distinguishes it from a real result card. Verified the same way
   `DiagnosisCard`'s `<h2>` has `id="diagnosis-heading"`, and
   `DiagnosisWorkspace` focuses it via `useEffect` when `status` becomes
   `"success"`.
-- Running `pnpm dev` (directly, or indirectly via Playwright's
-  `webServer`) causes this Next.js version to rewrite `AGENTS.md`,
-  appending an "agent rules" block on every start. See the Step 06 note
-  above; not addressed here.
+- Fixed in Step 07: `pnpm dev` no longer rewrites `AGENTS.md`. See the
+  Step 07 note above — `next.config.ts` now sets `agentRules: false`.
