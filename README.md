@@ -6,7 +6,7 @@ changes for next time.
 
 ![BakeFix diagnosis screen](public/screenshot.png)
 
-**Live demo:** _pending deployment — see [Deployment](#deployment)._
+**Live demo:** [bakefix.vercel.app](https://bakefix.vercel.app/)
 
 ## Problem and solution
 
@@ -205,12 +205,9 @@ pnpm eval:ai     # manual pastry-domain evaluations (needs a running dev server 
 
 ## Deployment
 
-1. Import this GitHub repository into [Vercel](https://vercel.com/new).
-2. Add `GEMINI_API_KEY` in the project's Vercel environment variables.
-3. Deploy, then verify the live URL: submit a real problem, confirm a
-   diagnosis renders, and check the mobile layout on a real device.
-4. Add the production URL to this README's live-demo link above and to the
-   GitHub repository's metadata.
+Deployed on [Vercel](https://vercel.com/): the GitHub repository is
+imported directly, with `GEMINI_API_KEY` set in the project's environment
+variables. Live at [bakefix.vercel.app](https://bakefix.vercel.app/).
 
 ## Tradeoffs and future improvements
 
