@@ -29,7 +29,6 @@ Home bakers and pastry enthusiasts who know what happened but do not know why.
 - Optional technical details
 - Dietary constraints
 - Structured AI diagnosis
-- Initial example result
 - Loading, success and error states
 - Accessible keyboard interaction
 - Mobile and desktop layouts

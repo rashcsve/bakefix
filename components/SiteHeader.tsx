@@ -15,14 +15,8 @@ export function SiteHeader() {
         </div>
         <nav
           aria-label="Primary"
-          className="hidden items-center gap-6 text-sm font-medium text-text-primary sm:flex"
+          className="text-sm font-medium text-text-primary"
         >
-          <a
-            href="#bake-form"
-            className="rounded-control transition-colors hover:text-action focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action"
-          >
-            How it works
-          </a>
           <a
             href="#about"
             className="rounded-control transition-colors hover:text-action focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action"
