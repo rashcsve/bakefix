@@ -3,16 +3,17 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRef, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import {
-  type Diagnosis,
-  DiagnosisCard,
-} from "@/components/diagnosis/DiagnosisCard";
+import { DiagnosisCard } from "@/components/diagnosis/DiagnosisCard";
 import { DiagnosisErrorState } from "@/components/diagnosis/DiagnosisErrorState";
 import { DiagnosisLoadingState } from "@/components/diagnosis/DiagnosisLoadingState";
 import { BakeForm } from "@/components/form/BakeForm";
-import { exampleDiagnosis } from "@/lib/example-diagnosis";
+import { exampleDiagnosis } from "@/lib/ai/fixtures";
+import {
+  type Diagnosis,
+  type DiagnosisInput,
+  diagnosisInputSchema,
+} from "@/lib/ai/schema";
 import { mockDiagnose } from "@/lib/mock-diagnose";
-import { type BakeFormValues, bakeFormSchema } from "@/lib/schemas/bake-form";
 
 type DiagnosisStatus = "example" | "loading" | "success" | "error";
 
@@ -20,10 +21,10 @@ export function DiagnosisWorkspace() {
   // react-hook-form mutates a stable object in place, which the React Compiler misreads as unchanged.
   "use no memo";
 
-  const methods = useForm<BakeFormValues>({
-    resolver: zodResolver(bakeFormSchema),
+  const methods = useForm<DiagnosisInput>({
+    resolver: zodResolver(diagnosisInputSchema),
     defaultValues: {
-      category: "",
+      category: "" as DiagnosisInput["category"],
       problem: "",
       recipe: "",
       technicalDetails: "",
@@ -33,7 +34,7 @@ export function DiagnosisWorkspace() {
   const [status, setStatus] = useState<DiagnosisStatus>("example");
   const [diagnosis, setDiagnosis] = useState<Diagnosis>(exampleDiagnosis);
 
-  async function submitDiagnosis(values: BakeFormValues) {
+  async function submitDiagnosis(values: DiagnosisInput) {
     setStatus("loading");
     try {
       const result = await mockDiagnose(values);

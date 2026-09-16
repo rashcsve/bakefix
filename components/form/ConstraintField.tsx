@@ -3,14 +3,14 @@
 import { useFormContext } from "react-hook-form";
 import { Chip } from "@/components/form/Chip";
 import { FieldError } from "@/components/form/FieldError";
+import type { DiagnosisInput } from "@/lib/ai/schema";
 import { DIETARY_CONSTRAINTS } from "@/lib/constants";
-import type { BakeFormValues } from "@/lib/schemas/bake-form";
 
 export function ConstraintField() {
   const {
     register,
     formState: { errors },
-  } = useFormContext<BakeFormValues>();
+  } = useFormContext<DiagnosisInput>();
   const errorId = errors.constraints ? "constraints-error" : undefined;
 
   return (

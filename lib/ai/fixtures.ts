@@ -1,6 +1,6 @@
-import type { Diagnosis } from "@/components/diagnosis/DiagnosisCard";
+import { diagnosisSchema } from "@/lib/ai/schema";
 
-export const exampleDiagnosis: Diagnosis = {
+export const exampleDiagnosis = diagnosisSchema.parse({
   headline: "Your pastry cream likely undercooked the egg yolks",
   explanation:
     "The custard base didn't reach a high enough temperature to activate the egg proteins and starch, leaving it thin and tasting raw.",
@@ -25,4 +25,4 @@ export const exampleDiagnosis: Diagnosis = {
   ],
   safetyNote:
     "Undercooked egg-based custards should not be served past a light chill if they never reached a safe thickening temperature. Reheat fully before serving, or discard if left at room temperature too long.",
-};
+});
