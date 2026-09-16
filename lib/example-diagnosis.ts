@@ -1,4 +1,4 @@
-import type { Diagnosis } from "@/components/bakefix/DiagnosisCard";
+import type { Diagnosis } from "@/components/diagnosis/DiagnosisCard";
 
 export const exampleDiagnosis: Diagnosis = {
   headline: "Your pastry cream likely undercooked the egg yolks",
