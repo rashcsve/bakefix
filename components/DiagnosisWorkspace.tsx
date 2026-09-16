@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { DiagnosisCard } from "@/components/diagnosis/DiagnosisCard";
 import { DiagnosisEmptyState } from "@/components/diagnosis/DiagnosisEmptyState";
@@ -34,6 +34,13 @@ export function DiagnosisWorkspace() {
   const [status, setStatus] = useState<DiagnosisStatus>("idle");
   const [diagnosis, setDiagnosis] = useState<Diagnosis | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
+  const headingRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    if (status === "success") {
+      headingRef.current?.focus();
+    }
+  }, [status]);
 
   async function submitDiagnosis(values: DiagnosisInput) {
     setStatus("loading");
@@ -70,7 +77,7 @@ export function DiagnosisWorkspace() {
           ) : null}
           {status === "success" && diagnosis ? (
             <section aria-labelledby="diagnosis-heading">
-              <DiagnosisCard diagnosis={diagnosis} />
+              <DiagnosisCard diagnosis={diagnosis} headingRef={headingRef} />
             </section>
           ) : null}
         </div>

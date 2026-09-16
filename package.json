@@ -12,7 +12,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "eval:ai": "vitest run --config vitest.eval.config.mts"
   },
   "dependencies": {
     "@ai-sdk/google": "^4.0.72",

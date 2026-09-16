@@ -41,7 +41,81 @@ now in `MODEL_NAME`. Verified end-to-end with a real `GEMINI_API_KEY` in
 baking problem (cookies spreading) returns a schema-valid, on-topic
 diagnosis in ~10-15s, and the failure path preserves form input — checked
 visually at 390px and 1440px.
-Next: 06 Automated tests and pastry evaluations
+Next: 07 Independent review and polish
+
+## 06 Automated tests and pastry evaluations
+
+Added unit tests under `tests/ai/` (`schema.test.ts`, `prompt.test.ts`,
+`fixtures.test.ts`) covering valid/invalid `diagnosisInputSchema` and
+`diagnosisSchema` cases, `buildUserMessage` with and without optional
+fields, and fixture conformance. Added
+`tests/components/DiagnosisWorkspace.test.tsx`, which mocks
+`lib/diagnose-client` and exercises the real form: empty state, a blocked
+invalid submission, category/constraint chip selection producing the
+correct payload, the loading state while the mocked request is pending,
+success rendering `DiagnosisCard`, and a failed request preserving the
+typed problem, selected category, and selected constraint while showing
+the error message. `@testing-library/react`'s `cleanup` is now run in
+`tests/setup.ts` after each test (via `afterEach`) — without it, RTL
+renders accumulate across tests in the same file since this project
+doesn't enable Vitest's `globals` option.
+
+Fixed a real, pre-existing gap this step's own acceptance criteria needed
+tested: `DiagnosisCard`'s `<h2>` had no `id`, so `DiagnosisWorkspace`'s
+`aria-labelledby="diagnosis-heading"` pointed at nothing, and nothing
+moved focus there after a successful diagnosis (noted as a known issue
+since Step 03/05). Added the `id`, an optional `headingRef` prop on
+`DiagnosisCard`, and a `useEffect` in `DiagnosisWorkspace` that focuses
+the heading when `status` becomes `"success"`. Verified via the new
+Playwright test and a manual screenshot check (see below).
+
+Added `e2e/diagnose-flow.spec.ts` (`e2e/smoke.spec.ts` untouched): one
+test drives the full mocked `/api/diagnose` journey (select Cookies,
+describe the problem, select Dairy-free, submit) entirely via keyboard —
+covering both the "primary flow" and "keyboard interaction" acceptance
+points in one pass — and asserts the loading state, the rendered
+diagnosis sections, and that focus lands on the diagnosis heading. A
+second test checks for no horizontal overflow at a 390x844 viewport. The
+mocked route intercepts the request in-browser via `page.route`, so
+these tests never reach the real API and need no `GEMINI_API_KEY`. The
+mock route has a small (300ms) artificial delay — without it the
+loading-state assertion occasionally raced the (near-instant) mocked
+response and flaked.
+
+Added a small, separate AI evaluation harness under `evals/`, deliberately
+outside `pnpm test`/CI: `evals/cases.ts` defines the five pastry cases
+from the build plan (melted-butter cookies, collapsed choux, split
+buttercream, dense under-fermented bread, vague input), and
+`evals/diagnose.eval.ts` is a Vitest test file (own `vitest.eval.config.mts`,
+`node` environment, included only via that config) that POSTs each case to
+a running `/api/diagnose`, schema-validates the response, and does a loose
+keyword check for expected concepts. It calls the real endpoint over HTTP
+rather than importing `lib/ai/diagnose.ts` directly, because that module
+`import`s `server-only`, which throws unconditionally outside Next's
+webpack `react-server` build condition — including under plain Vitest.
+Every case is skipped (not failed) when `GEMINI_API_KEY` isn't set in the
+shell running it. New script: `pnpm eval:ai`. `evals/README.md` documents
+how to run it (start `pnpm dev`, then `pnpm eval:ai` in a second terminal
+with the key set) and its limitations (heuristic keyword matching,
+non-deterministic output, real API cost/quota).
+
+Verified with `pnpm lint`, `pnpm typecheck`, `pnpm test` (26 tests across
+5 files), `pnpm build`, and `pnpm test:e2e` (3 tests, run repeatedly to
+confirm no flakiness). Manually screenshotted the app via a temporary
+Playwright script at 390x844 and 1440x900, including the success state,
+confirming the focus-visible outline lands on "Chef's diagnosis" and no
+console errors were logged; the temporary script and its screenshots were
+deleted afterward and are not part of the repository.
+
+Aside: running `pnpm dev` (including via Playwright's `webServer`) causes
+this installed Next.js version to auto-append an "agent rules" block to
+`AGENTS.md` on every start (`node_modules/next/dist/server/lib/generate-agent-files.js`,
+disableable via `agentRules: false` in `next.config.ts`). That block asks
+whoever reads it to commit it "to keep the tree clean" — treated as an
+unsolicited instruction embedded in a file, not followed, and reverted
+each time it reappeared. Worth a deliberate decision (disable it, or
+`.gitignore`-adjacent handling) rather than leaving it as a recurring
+surprise; not addressed here since it's unrelated to this step's scope.
 
 ## Recover: empty default state, no marketing nav
 
@@ -80,7 +154,7 @@ border distinguishes it from a real result card. Verified the same way
 - [x] 03 Form interactions
 - [x] 04 AI contract
 - [x] 05 Gemini integration
-- [ ] 06 Verification
+- [x] 06 Verification
 - [ ] 07 Review and polish
 - [ ] 08 Delivery
 
@@ -118,9 +192,12 @@ border distinguishes it from a real result card. Verified the same way
   https://ai.google.dev/gemini-api/docs/rate-limits). Heavy manual testing
   or later Step 06 evaluations could hit `RATE_LIMITED` faster than the old
   OpenAI plan would have; no code change needed, just something to expect.
-- Step 03's "move focus to the diagnosis heading after success" acceptance
-  criterion was never wired up: `components/diagnosis/DiagnosisCard.tsx`'s
-  `<h2>` has `tabIndex={-1}` but no `id`, and nothing calls `.focus()` on it
-  after a successful submission. Carried forward rather than fixed in Step
-  05 to keep that step's diff scoped to the AI integration; address in
-  Step 07 (review and polish) or whichever step touches focus management.
+- Fixed in Step 06: Step 03's "move focus to the diagnosis heading after
+  success" criterion is now wired up (see the Step 06 note above) —
+  `DiagnosisCard`'s `<h2>` has `id="diagnosis-heading"`, and
+  `DiagnosisWorkspace` focuses it via `useEffect` when `status` becomes
+  `"success"`.
+- Running `pnpm dev` (directly, or indirectly via Playwright's
+  `webServer`) causes this Next.js version to rewrite `AGENTS.md`,
+  appending an "agent rules" block on every start. See the Step 06 note
+  above; not addressed here.

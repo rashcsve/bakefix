@@ -1,4 +1,5 @@
 import { CircleCheckBig, Lightbulb, Sparkle } from "lucide-react";
+import type { Ref } from "react";
 import type { Confidence, Diagnosis } from "@/lib/ai/schema";
 
 const CONFIDENCE_BADGE_CLASS: Record<Confidence, string> = {
@@ -9,13 +10,16 @@ const CONFIDENCE_BADGE_CLASS: Record<Confidence, string> = {
 
 type DiagnosisCardProps = {
   diagnosis: Diagnosis;
+  headingRef?: Ref<HTMLHeadingElement>;
 };
 
-export function DiagnosisCard({ diagnosis }: DiagnosisCardProps) {
+export function DiagnosisCard({ diagnosis, headingRef }: DiagnosisCardProps) {
   return (
     <article className="flex flex-col gap-5 overflow-hidden rounded-card border border-border bg-surface p-6 shadow-sm">
       <div className="flex items-center justify-between gap-3">
         <h2
+          id="diagnosis-heading"
+          ref={headingRef}
           tabIndex={-1}
           className="rounded-sm font-display text-base font-semibold text-text-primary focus:outline-2 focus:outline-offset-2 focus:outline-action"
         >
