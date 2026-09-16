@@ -2,46 +2,49 @@
 
 ## Current status
 
-Phase: 05 Gemini integration
-Last completed: Replaced the mocked diagnosis with a real, server-side
-Gemini call. `lib/ai/diagnose.ts` (server-only) calls `generateText` with
-an `Output.object({ schema: diagnosisSchema })` setting from the Vercel AI
-SDK (the installed `ai@7`'s current structured-output API — `generateObject`
-is deprecated in this version in favor of `generateText` + `output`), keeps
-the model name (`gemini-3.6-flash`) in one constant, applies a 20s `timeout`,
-and classifies failures into a `DiagnoseError` with codes `AI_UNAVAILABLE`,
-`INVALID_OUTPUT`, or `RATE_LIMITED` (via `NoOutputGeneratedError` /
-`APICallError.statusCode === 429`), logging only the error type/message
-server-side, never the recipe text or key. `app/api/diagnose/route.ts` is a
-thin handler: safe JSON parsing, `diagnosisInputSchema` validation
-(`INVALID_INPUT`, 400, before any Gemini call), and predictable
-`{ ok: true, diagnosis }` / `{ ok: false, code, message }` responses (429
-for `RATE_LIMITED`, 502 otherwise) that never forward raw provider errors.
-Added `lib/diagnose-client.ts` (replacing the temporary
-`lib/mock-diagnose.ts`) with `requestDiagnosis`, which `fetch`es
-`/api/diagnose` with its own abort timeout, narrows the JSON response, and
-re-validates the diagnosis against `diagnosisSchema` before it reaches the
-UI. `DiagnosisWorkspace` now calls `requestDiagnosis` and surfaces the
-specific failure message through a new optional `message` prop on
-`DiagnosisErrorState`.
+Phase: 08 CI, documentation, and deployment
+Last completed: CI workflow and README added; see "08 CI, documentation,
+and deployment" below. Deployment to Vercel is a manual step left for the
+user (requires their Vercel account) and is not yet done.
+Next: deploy to Vercel and add the live URL to the README.
 
-The provider was switched from OpenAI to Google Gemini mid-step: the
-connected OpenAI account had no credits (confirmed via a direct probe, not
-a code defect), and Gemini's free tier avoids that blocker for this MVP.
-`lib/env.ts` now validates `GEMINI_API_KEY` (not `OPENAI_API_KEY`),
-`diagnose.ts` builds its model with `createGoogleGenerativeAI({ apiKey })`
-from `@ai-sdk/google` rather than the implicit `GOOGLE_GENERATIVE_AI_API_KEY`
-env var the package defaults to, `@ai-sdk/openai` was removed, and
-`.env.example` / `context/architecture.md` / `context/build-plan.md` /
-`tests/env.test.ts` were updated to match. `gemini-2.5-flash` was tried
-first but rejected by the API ("no longer available to new users"); the
-error message's own suggested replacement, `gemini-3.6-flash`, is what's
-now in `MODEL_NAME`. Verified end-to-end with a real `GEMINI_API_KEY` in
-`.env.local`: invalid input short-circuits before any network call, a real
-baking problem (cookies spreading) returns a schema-valid, on-topic
-diagnosis in ~10-15s, and the failure path preserves form input — checked
-visually at 390px and 1440px.
-Next: 08 CI, documentation, and deployment
+## 08 CI, documentation, and deployment
+
+Added `.github/workflows/ci.yml`, running on pushes and PRs to `main`:
+install (frozen lockfile via corepack-enabled pnpm 10.7.1), lint,
+typecheck, unit/component tests, and build — matching the build plan's
+exact step list (Playwright E2E was deliberately left out of CI since the
+plan only specifies those four commands; it continues to run manually via
+`pnpm test:e2e`). Confirmed `lib/env.ts`'s `GEMINI_API_KEY` validation only
+runs inside `diagnoseBake()` at request time, not at module load, so
+`pnpm build` needs no key — verified by running a full build with the
+variable unset.
+
+Replaced the boilerplate `create-next-app` README with real project
+documentation: problem/solution, features, an architecture/data-flow
+diagram, the structured-output and validation decisions (shared Zod
+schemas, `z.infer` types, classified error codes), the agentic-development
+workflow (context files, the `build-step`/`review`/`recover` skills, human
+approval points), the testing and AI-evaluation strategy, local setup and
+the `GEMINI_API_KEY` env var, and tradeoffs/future improvements. Framed as
+AI-assisted engineering with human-owned product and architecture
+decisions, per the build plan's instruction not to claim the project was
+"built entirely by AI."
+
+Added `public/screenshot.png` for the README: captured via a temporary
+Playwright script (deleted after, not part of the repository) against a
+locally running `pnpm dev`, driving a real Cookies-category submission
+through to a real Gemini diagnosis rather than screenshotting the empty
+state, since a working result is more representative of the product.
+
+Not done in this step, and left for the user: importing the repository
+into Vercel, setting `GEMINI_API_KEY` in its environment, deploying, and
+adding the resulting production URL to the README's live-demo line and to
+the GitHub repository metadata. This requires the user's Vercel account
+and was out of scope for autonomous action.
+
+Verified with `pnpm lint`, `pnpm typecheck`, `pnpm test` (26 tests),
+and `pnpm build` (all passing, matching the new CI workflow).
 
 ## 07 Independent review and polish
 
@@ -173,6 +176,47 @@ each time it reappeared. Worth a deliberate decision (disable it, or
 `.gitignore`-adjacent handling) rather than leaving it as a recurring
 surprise; not addressed here since it's unrelated to this step's scope.
 
+## 05 Gemini integration
+
+Replaced the mocked diagnosis with a real, server-side Gemini call.
+`lib/ai/diagnose.ts` (server-only) calls `generateText` with an
+`Output.object({ schema: diagnosisSchema })` setting from the Vercel AI SDK
+(the installed `ai@7`'s current structured-output API — `generateObject`
+is deprecated in this version in favor of `generateText` + `output`), keeps
+the model name (`gemini-3.6-flash`) in one constant, applies a 20s `timeout`,
+and classifies failures into a `DiagnoseError` with codes `AI_UNAVAILABLE`,
+`INVALID_OUTPUT`, or `RATE_LIMITED` (via `NoOutputGeneratedError` /
+`APICallError.statusCode === 429`), logging only the error type/message
+server-side, never the recipe text or key. `app/api/diagnose/route.ts` is a
+thin handler: safe JSON parsing, `diagnosisInputSchema` validation
+(`INVALID_INPUT`, 400, before any Gemini call), and predictable
+`{ ok: true, diagnosis }` / `{ ok: false, code, message }` responses (429
+for `RATE_LIMITED`, 502 otherwise) that never forward raw provider errors.
+Added `lib/diagnose-client.ts` (replacing the temporary
+`lib/mock-diagnose.ts`) with `requestDiagnosis`, which `fetch`es
+`/api/diagnose` with its own abort timeout, narrows the JSON response, and
+re-validates the diagnosis against `diagnosisSchema` before it reaches the
+UI. `DiagnosisWorkspace` now calls `requestDiagnosis` and surfaces the
+specific failure message through a new optional `message` prop on
+`DiagnosisErrorState`.
+
+The provider was switched from OpenAI to Google Gemini mid-step: the
+connected OpenAI account had no credits (confirmed via a direct probe, not
+a code defect), and Gemini's free tier avoids that blocker for this MVP.
+`lib/env.ts` now validates `GEMINI_API_KEY` (not `OPENAI_API_KEY`),
+`diagnose.ts` builds its model with `createGoogleGenerativeAI({ apiKey })`
+from `@ai-sdk/google` rather than the implicit `GOOGLE_GENERATIVE_AI_API_KEY`
+env var the package defaults to, `@ai-sdk/openai` was removed, and
+`.env.example` / `context/architecture.md` / `context/build-plan.md` /
+`tests/env.test.ts` were updated to match. `gemini-2.5-flash` was tried
+first but rejected by the API ("no longer available to new users"); the
+error message's own suggested replacement, `gemini-3.6-flash`, is what's
+now in `MODEL_NAME`. Verified end-to-end with a real `GEMINI_API_KEY` in
+`.env.local`: invalid input short-circuits before any network call, a real
+baking problem (cookies spreading) returns a schema-valid, on-topic
+diagnosis in ~10-15s, and the failure path preserves form input — checked
+visually at 390px and 1440px.
+
 ## Recover: empty default state, no marketing nav
 
 Per explicit user request (not a code defect), two behaviors from earlier
@@ -255,3 +299,6 @@ border distinguishes it from a real result card. Verified the same way
   `"success"`.
 - Fixed in Step 07: `pnpm dev` no longer rewrites `AGENTS.md`. See the
   Step 07 note above — `next.config.ts` now sets `agentRules: false`.
+- Step 08 is incomplete: the app is not yet deployed to Vercel. The
+  README's live-demo link is a placeholder until the user imports the
+  repository into Vercel, sets `GEMINI_API_KEY` there, and deploys.
