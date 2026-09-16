@@ -1,17 +1,5 @@
 import { CircleCheckBig, Lightbulb, Sparkle } from "lucide-react";
-
-export type Confidence = "high" | "medium" | "low";
-
-export type Diagnosis = {
-  headline: string;
-  explanation: string;
-  confidence: Confidence;
-  causes: string[];
-  rescueSteps: string[];
-  nextTime: string[];
-  missingInformation: string[];
-  safetyNote: string | null;
-};
+import type { Confidence, Diagnosis } from "@/lib/ai/schema";
 
 const CONFIDENCE_BADGE_CLASS: Record<Confidence, string> = {
   high: "bg-support-green/20 text-text-primary",

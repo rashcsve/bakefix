@@ -2,21 +2,25 @@
 
 ## Current status
 
-Phase: 03 Form interactions
-Last completed: Wired the static interface to React Hook Form + Zod
-validation (category, problem, recipe, constraints), added a live
-DiagnosisWorkspace client boundary that drives example/loading/success/error
-states through a temporary mocked async diagnosis function, preserves form
-values on failure, supports repeat submission, and moves focus to the
-diagnosis heading on success.
-Next: 04 Typed AI contract
+Phase: 04 AI contract
+Last completed: Introduced the canonical AI contract in `lib/ai/`:
+`schema.ts` (`diagnosisInputSchema`/`DiagnosisInput` and
+`diagnosisSchema`/`Diagnosis`), `fixtures.ts` (the example diagnosis,
+validated against the output schema at module load), and `prompt.ts`
+(pastry-specific system instructions and `buildUserMessage`, independent of
+React and HTTP handling). Retired the temporary
+`lib/schemas/bake-form.ts` and `lib/example-diagnosis.ts` and moved every
+consumer (`DiagnosisWorkspace`, `BakeForm`, `CategoryField`,
+`ConstraintField`, `RecipeDisclosure`, `mock-diagnose`, `DiagnosisCard`) onto
+the shared types.
+Next: 05 OpenAI integration
 
 ## Features
 
 - [x] 01 Foundation
 - [x] 02 Static UI
 - [x] 03 Form interactions
-- [ ] 04 AI contract
+- [x] 04 AI contract
 - [ ] 05 OpenAI integration
 - [ ] 06 Verification
 - [ ] 07 Review and polish
@@ -28,9 +32,8 @@ Next: 04 Typed AI contract
 - UI will be implemented against fixture data before OpenAI integration.
 - The AI response will use schema-validated structured output.
 - The application will not stream its initial response.
-- Form validation lives in a temporary `lib/schemas/bake-form.ts`
-  local to Step 03; Step 04 will introduce the canonical
-  `lib/ai/schema.ts` contract and this file should be retired in favor of it.
+- Form validation now uses the canonical `diagnosisInputSchema` from
+  `lib/ai/schema.ts`, shared by the form and (from Step 05) the server.
 - The mocked diagnosis (`lib/mock-diagnose.ts`) resolves with
   fixture data after a delay and deterministically rejects when the problem
   text contains "trigger error", so the error state can be exercised

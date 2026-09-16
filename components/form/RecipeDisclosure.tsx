@@ -3,14 +3,17 @@
 import { ChevronDown } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 import { FieldError } from "@/components/form/FieldError";
-import type { BakeFormValues } from "@/lib/schemas/bake-form";
+import type { DiagnosisInput } from "@/lib/ai/schema";
 
 export function RecipeDisclosure() {
   const {
     register,
     formState: { errors },
-  } = useFormContext<BakeFormValues>();
+  } = useFormContext<DiagnosisInput>();
   const recipeErrorId = errors.recipe ? "recipe-error" : undefined;
+  const technicalDetailsErrorId = errors.technicalDetails
+    ? "technicalDetails-error"
+    : undefined;
 
   return (
     <details className="group rounded-control border border-border">
@@ -53,9 +56,15 @@ export function RecipeDisclosure() {
           <textarea
             id="technicalDetails"
             rows={3}
+            aria-invalid={!!errors.technicalDetails}
+            aria-describedby={technicalDetailsErrorId}
             placeholder="Oven temperature, altitude, humidity, equipment, or anything else that might matter"
             className="rounded-control border border-border bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action"
             {...register("technicalDetails")}
+          />
+          <FieldError
+            id="technicalDetails-error"
+            message={errors.technicalDetails?.message}
           />
         </div>
       </div>

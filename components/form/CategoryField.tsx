@@ -3,14 +3,14 @@
 import { useFormContext } from "react-hook-form";
 import { Chip } from "@/components/form/Chip";
 import { FieldError } from "@/components/form/FieldError";
+import type { DiagnosisInput } from "@/lib/ai/schema";
 import { PASTRY_CATEGORIES } from "@/lib/constants";
-import type { BakeFormValues } from "@/lib/schemas/bake-form";
 
 export function CategoryField() {
   const {
     register,
     formState: { errors },
-  } = useFormContext<BakeFormValues>();
+  } = useFormContext<DiagnosisInput>();
   const errorId = errors.category ? "category-error" : undefined;
 
   return (

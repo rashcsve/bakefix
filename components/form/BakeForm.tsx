@@ -7,7 +7,7 @@ import { CategoryField } from "@/components/form/CategoryField";
 import { ConstraintField } from "@/components/form/ConstraintField";
 import { FieldError } from "@/components/form/FieldError";
 import { RecipeDisclosure } from "@/components/form/RecipeDisclosure";
-import type { BakeFormValues } from "@/lib/schemas/bake-form";
+import type { DiagnosisInput } from "@/lib/ai/schema";
 
 const PROBLEM_MAX_LENGTH = 1000;
 
@@ -21,7 +21,7 @@ export function BakeForm({ onSubmit, isSubmitting }: BakeFormProps) {
     register,
     control,
     formState: { errors },
-  } = useFormContext<BakeFormValues>();
+  } = useFormContext<DiagnosisInput>();
   const problemValue = useWatch({ control, name: "problem" });
   const problemLength = problemValue?.length ?? 0;
   const problemErrorId = errors.problem ? "problem-error" : undefined;
