@@ -4,10 +4,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { DiagnosisCard } from "@/components/diagnosis/DiagnosisCard";
+import { DiagnosisEmptyState } from "@/components/diagnosis/DiagnosisEmptyState";
 import { DiagnosisErrorState } from "@/components/diagnosis/DiagnosisErrorState";
 import { DiagnosisLoadingState } from "@/components/diagnosis/DiagnosisLoadingState";
 import { BakeForm } from "@/components/form/BakeForm";
-import { exampleDiagnosis } from "@/lib/ai/fixtures";
 import {
   type Diagnosis,
   type DiagnosisInput,
@@ -15,7 +15,7 @@ import {
 } from "@/lib/ai/schema";
 import { DiagnoseRequestError, requestDiagnosis } from "@/lib/diagnose-client";
 
-type DiagnosisStatus = "example" | "loading" | "success" | "error";
+type DiagnosisStatus = "idle" | "loading" | "success" | "error";
 
 export function DiagnosisWorkspace() {
   // react-hook-form mutates a stable object in place, which the React Compiler misreads as unchanged.
@@ -31,8 +31,8 @@ export function DiagnosisWorkspace() {
       constraints: [],
     },
   });
-  const [status, setStatus] = useState<DiagnosisStatus>("example");
-  const [diagnosis, setDiagnosis] = useState<Diagnosis>(exampleDiagnosis);
+  const [status, setStatus] = useState<DiagnosisStatus>("idle");
+  const [diagnosis, setDiagnosis] = useState<Diagnosis | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
 
   async function submitDiagnosis(values: DiagnosisInput) {
@@ -60,6 +60,7 @@ export function DiagnosisWorkspace() {
         />
 
         <div className="flex flex-col gap-8">
+          {status === "idle" ? <DiagnosisEmptyState /> : null}
           {status === "loading" ? <DiagnosisLoadingState /> : null}
           {status === "error" ? (
             <DiagnosisErrorState
@@ -67,7 +68,7 @@ export function DiagnosisWorkspace() {
               message={errorMessage}
             />
           ) : null}
-          {status === "example" || status === "success" ? (
+          {status === "success" && diagnosis ? (
             <section aria-labelledby="diagnosis-heading">
               <DiagnosisCard diagnosis={diagnosis} />
             </section>

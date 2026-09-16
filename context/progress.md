@@ -43,6 +43,36 @@ diagnosis in ~10-15s, and the failure path preserves form input — checked
 visually at 390px and 1440px.
 Next: 06 Automated tests and pastry evaluations
 
+## Recover: empty default state, no marketing nav
+
+Per explicit user request (not a code defect), two behaviors from earlier
+steps were reversed:
+
+- `DiagnosisWorkspace` no longer seeds the right-hand panel with
+  `exampleDiagnosis` on load. `status` starts at `"idle"` (renamed from
+  `"example"`) and `diagnosis` starts `null`; the `DiagnosisCard` section
+  only renders once `status === "success"`. The panel is now genuinely
+  empty until a real diagnosis returns. `lib/ai/fixtures.ts` and
+  `exampleDiagnosis` are unchanged and still schema-validated, just no
+  longer wired into the default UI.
+- `SiteHeader`'s "How it works" / "About" nav links were removed (they
+  only ever scrolled to `#bake-form` and the footer's `#about` anchor, no
+  dedicated content existed for them). The now-unused `id="about"` and
+  `scroll-mt-20` were removed from `SiteFooter`.
+
+`context/product.md`'s MVP list no longer includes "Initial example
+result" to match. Verified with `pnpm lint`, `pnpm typecheck`, `pnpm
+test`, `pnpm build`, and Playwright screenshots at 390x844 and 1440x900
+(no console errors, no pre-filled diagnosis card, no nav links).
+
+A genuinely empty right column left a large dead area on desktop (no
+visual anchor next to the form), so a dedicated
+`components/diagnosis/DiagnosisEmptyState.tsx` placeholder card
+("Your diagnosis will appear here…") now renders for `status ===
+"idle"`, alongside the existing loading/error/success states. Dashed
+border distinguishes it from a real result card. Verified the same way
+(lint/typecheck/test/build plus 390x844 and 1440x900 screenshots).
+
 ## Features
 
 - [x] 01 Foundation
