@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { DiagnosisCard } from "@/components/diagnosis/DiagnosisCard";
 import { DiagnosisErrorState } from "@/components/diagnosis/DiagnosisErrorState";
@@ -13,7 +13,7 @@ import {
   type DiagnosisInput,
   diagnosisInputSchema,
 } from "@/lib/ai/schema";
-import { mockDiagnose } from "@/lib/mock-diagnose";
+import { DiagnoseRequestError, requestDiagnosis } from "@/lib/diagnose-client";
 
 type DiagnosisStatus = "example" | "loading" | "success" | "error";
 
@@ -33,14 +33,18 @@ export function DiagnosisWorkspace() {
   });
   const [status, setStatus] = useState<DiagnosisStatus>("example");
   const [diagnosis, setDiagnosis] = useState<Diagnosis>(exampleDiagnosis);
+  const [errorMessage, setErrorMessage] = useState<string | undefined>();
 
   async function submitDiagnosis(values: DiagnosisInput) {
     setStatus("loading");
     try {
-      const result = await mockDiagnose(values);
+      const result = await requestDiagnosis(values);
       setDiagnosis(result);
       setStatus("success");
-    } catch {
+    } catch (error) {
+      setErrorMessage(
+        error instanceof DiagnoseRequestError ? error.message : undefined,
+      );
       setStatus("error");
     }
   }
@@ -58,7 +62,10 @@ export function DiagnosisWorkspace() {
         <div className="flex flex-col gap-8">
           {status === "loading" ? <DiagnosisLoadingState /> : null}
           {status === "error" ? (
-            <DiagnosisErrorState onRetry={handleFormSubmit} />
+            <DiagnosisErrorState
+              onRetry={handleFormSubmit}
+              message={errorMessage}
+            />
           ) : null}
           {status === "example" || status === "success" ? (
             <section aria-labelledby="diagnosis-heading">

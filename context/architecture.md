@@ -10,7 +10,7 @@
 - React Hook Form
 - Zod
 - Vercel AI SDK
-- OpenAI
+- Google Gemini
 - Vitest and Testing Library
 - Playwright
 - Vercel deployment
@@ -24,7 +24,7 @@ numbers that can become outdated.
 2. The user submits validated input to POST /api/diagnose.
 3. The route validates the request.
 4. The route calls the server-only diagnoseBake function.
-5. OpenAI produces a structured diagnosis.
+5. Gemini produces a structured diagnosis.
 6. The result is validated against the output schema.
 7. The UI renders the typed result.
 
@@ -41,7 +41,7 @@ functions and convert their result into an HTTP response.
 
 Owns presentation and user interaction.
 
-Components must not call OpenAI directly or access server secrets.
+Components must not call Gemini directly or access server secrets.
 
 ### lib/ai/
 
@@ -64,8 +64,8 @@ Owns browser-level user-flow tests.
 
 ## Invariants
 
-- OpenAI is called only from server-side code.
-- OPENAI*API_KEY never uses the NEXT_PUBLIC* prefix.
+- Gemini is called only from server-side code.
+- GEMINI_API_KEY never uses the NEXT_PUBLIC_ prefix.
 - Every external input is validated with Zod.
 - Every AI response is schema validated.
 - The UI never renders arbitrary AI-generated HTML.

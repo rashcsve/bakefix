@@ -2,18 +2,46 @@
 
 ## Current status
 
-Phase: 04 AI contract
-Last completed: Introduced the canonical AI contract in `lib/ai/`:
-`schema.ts` (`diagnosisInputSchema`/`DiagnosisInput` and
-`diagnosisSchema`/`Diagnosis`), `fixtures.ts` (the example diagnosis,
-validated against the output schema at module load), and `prompt.ts`
-(pastry-specific system instructions and `buildUserMessage`, independent of
-React and HTTP handling). Retired the temporary
-`lib/schemas/bake-form.ts` and `lib/example-diagnosis.ts` and moved every
-consumer (`DiagnosisWorkspace`, `BakeForm`, `CategoryField`,
-`ConstraintField`, `RecipeDisclosure`, `mock-diagnose`, `DiagnosisCard`) onto
-the shared types.
-Next: 05 OpenAI integration
+Phase: 05 Gemini integration
+Last completed: Replaced the mocked diagnosis with a real, server-side
+Gemini call. `lib/ai/diagnose.ts` (server-only) calls `generateText` with
+an `Output.object({ schema: diagnosisSchema })` setting from the Vercel AI
+SDK (the installed `ai@7`'s current structured-output API — `generateObject`
+is deprecated in this version in favor of `generateText` + `output`), keeps
+the model name (`gemini-3.6-flash`) in one constant, applies a 20s `timeout`,
+and classifies failures into a `DiagnoseError` with codes `AI_UNAVAILABLE`,
+`INVALID_OUTPUT`, or `RATE_LIMITED` (via `NoOutputGeneratedError` /
+`APICallError.statusCode === 429`), logging only the error type/message
+server-side, never the recipe text or key. `app/api/diagnose/route.ts` is a
+thin handler: safe JSON parsing, `diagnosisInputSchema` validation
+(`INVALID_INPUT`, 400, before any Gemini call), and predictable
+`{ ok: true, diagnosis }` / `{ ok: false, code, message }` responses (429
+for `RATE_LIMITED`, 502 otherwise) that never forward raw provider errors.
+Added `lib/diagnose-client.ts` (replacing the temporary
+`lib/mock-diagnose.ts`) with `requestDiagnosis`, which `fetch`es
+`/api/diagnose` with its own abort timeout, narrows the JSON response, and
+re-validates the diagnosis against `diagnosisSchema` before it reaches the
+UI. `DiagnosisWorkspace` now calls `requestDiagnosis` and surfaces the
+specific failure message through a new optional `message` prop on
+`DiagnosisErrorState`.
+
+The provider was switched from OpenAI to Google Gemini mid-step: the
+connected OpenAI account had no credits (confirmed via a direct probe, not
+a code defect), and Gemini's free tier avoids that blocker for this MVP.
+`lib/env.ts` now validates `GEMINI_API_KEY` (not `OPENAI_API_KEY`),
+`diagnose.ts` builds its model with `createGoogleGenerativeAI({ apiKey })`
+from `@ai-sdk/google` rather than the implicit `GOOGLE_GENERATIVE_AI_API_KEY`
+env var the package defaults to, `@ai-sdk/openai` was removed, and
+`.env.example` / `context/architecture.md` / `context/build-plan.md` /
+`tests/env.test.ts` were updated to match. `gemini-2.5-flash` was tried
+first but rejected by the API ("no longer available to new users"); the
+error message's own suggested replacement, `gemini-3.6-flash`, is what's
+now in `MODEL_NAME`. Verified end-to-end with a real `GEMINI_API_KEY` in
+`.env.local`: invalid input short-circuits before any network call, a real
+baking problem (cookies spreading) returns a schema-valid, on-topic
+diagnosis in ~10-15s, and the failure path preserves form input — checked
+visually at 390px and 1440px.
+Next: 06 Automated tests and pastry evaluations
 
 ## Features
 
@@ -21,7 +49,7 @@ Next: 05 OpenAI integration
 - [x] 02 Static UI
 - [x] 03 Form interactions
 - [x] 04 AI contract
-- [ ] 05 OpenAI integration
+- [x] 05 Gemini integration
 - [ ] 06 Verification
 - [ ] 07 Review and polish
 - [ ] 08 Delivery
@@ -29,18 +57,20 @@ Next: 05 OpenAI integration
 ## Decisions
 
 - No authentication or persistence in the MVP.
-- UI will be implemented against fixture data before OpenAI integration.
+- UI will be implemented against fixture data before AI integration.
 - The AI response will use schema-validated structured output.
 - The application will not stream its initial response.
 - Form validation now uses the canonical `diagnosisInputSchema` from
   `lib/ai/schema.ts`, shared by the form and (from Step 05) the server.
-- The mocked diagnosis (`lib/mock-diagnose.ts`) resolves with
-  fixture data after a delay and deterministically rejects when the problem
-  text contains "trigger error", so the error state can be exercised
-  manually; it will be replaced by the real `/api/diagnose` call in Step 05.
 - Non-component logic (`.ts` schemas/data/mock services) lives under `lib/`,
   not `components/`; `components/` holds only `.tsx` presentation files, per
   `context/architecture.md`'s components/lib boundary.
+- The model provider is Google Gemini (`gemini-3.6-flash`) via
+  `@ai-sdk/google`, not OpenAI as originally planned in
+  `context/build-plan.md`'s Step 05. Reason: the OpenAI account tied to this
+  project has no credits and Gemini has a free tier, which matters for a
+  demo/portfolio project with no revenue. The Vercel AI SDK abstraction made
+  the swap a small, isolated change (see Step 05 note above).
 
 ## Known issues
 
@@ -51,3 +81,16 @@ Next: 05 OpenAI integration
   `FormProvider` subtree silently stops re-rendering on validation state
   changes. Keep this directive if `useForm()` is ever moved to another
   component.
+- `.env.local` may still hold the old, now-unused `OPENAI_API_KEY` entry
+  alongside the working `GEMINI_API_KEY`; the agent does not open or edit
+  that file, so removing the stale line is a manual cleanup step.
+- Google's free tier for `gemini-3.6-flash` is rate- and quota-limited (see
+  https://ai.google.dev/gemini-api/docs/rate-limits). Heavy manual testing
+  or later Step 06 evaluations could hit `RATE_LIMITED` faster than the old
+  OpenAI plan would have; no code change needed, just something to expect.
+- Step 03's "move focus to the diagnosis heading after success" acceptance
+  criterion was never wired up: `components/diagnosis/DiagnosisCard.tsx`'s
+  `<h2>` has `tabIndex={-1}` but no `id`, and nothing calls `.focus()` on it
+  after a successful submission. Carried forward rather than fixed in Step
+  05 to keep that step's diff scoped to the AI integration; address in
+  Step 07 (review and polish) or whichever step touches focus management.

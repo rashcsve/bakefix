@@ -46,7 +46,7 @@ Use the review skill to review the current changes.
 - Tailwind CSS
 - shadcn/ui only where it provides useful accessible primitives
 - React Hook Form and Zod
-- Vercel AI SDK with OpenAI
+- Vercel AI SDK with Google Gemini
 - Schema-validated structured AI output
 - Vitest and Testing Library
 - Playwright
@@ -72,7 +72,7 @@ Create a dependable development foundation without implementing the BakeFix form
 - Define the colors and layout variables from `context/ui-tokens.md`.
 - Add scripts for linting, type checking, unit tests, E2E tests, and production builds.
 - Create the minimum Vitest and Playwright configuration.
-- Add `.env.example` with an empty `OPENAI_API_KEY` entry.
+- Add `.env.example` with an empty `GEMINI_API_KEY` entry.
 - Verify `.env.local` is ignored by Git.
 - Add one trivial test proving the test runner works.
 - Update `context/progress.md` after all checks pass.
@@ -109,7 +109,7 @@ chore: set up project foundation
 
 ### Objective
 
-Build the complete visible product experience with fixture data before introducing form logic or OpenAI.
+Build the complete visible product experience with fixture data before introducing form logic or Gemini.
 
 ### Work
 
@@ -241,11 +241,11 @@ feat: define typed diagnosis contract
 
 ---
 
-## Step 05 - OpenAI Integration
+## Step 05 - Gemini Integration
 
 ### Objective
 
-Replace the mocked diagnosis with a secure server-side OpenAI call that returns structured output.
+Replace the mocked diagnosis with a secure server-side Gemini call that returns structured output.
 
 ### Data flow
 
@@ -254,7 +254,7 @@ BakeForm
   -> POST /api/diagnose
   -> validate request
   -> lib/ai/diagnose.ts
-  -> OpenAI through the Vercel AI SDK
+  -> Gemini through the Vercel AI SDK
   -> validate structured diagnosis
   -> DiagnosisCard
 ```
@@ -265,7 +265,7 @@ BakeForm
 - Use the installed AI SDK's current structured-output API.
 - Keep model selection in one server-side constant.
 - Create a thin `app/api/diagnose/route.ts`.
-- Parse request JSON safely and validate it before contacting OpenAI.
+- Parse request JSON safely and validate it before contacting Gemini.
 - Return predictable success and error shapes.
 - Connect the form to `/api/diagnose` with `fetch`.
 - Validate or safely narrow the response before rendering it.
@@ -293,7 +293,7 @@ Raw provider errors must never be returned to the browser.
 ### Acceptance criteria
 
 - A real baking problem produces a valid diagnosis.
-- Invalid input never contacts OpenAI.
+- Invalid input never contacts Gemini.
 - Provider failure preserves the form data and shows a useful message.
 - The API key is present only in server-side configuration.
 - Model-generated HTML is never rendered.
@@ -357,7 +357,7 @@ Each real-model evaluation must validate the schema and check expected concepts.
 
 - Unit and component tests pass.
 - The primary Playwright flow passes with a mocked API.
-- CI does not require or spend an OpenAI API key.
+- CI does not require or spend a Gemini API key.
 - Evaluation limitations are documented.
 
 ### Commit
@@ -441,7 +441,7 @@ pnpm test
 pnpm build
 ```
 
-The production build and test suite must not require a real OpenAI API key.
+The production build and test suite must not require a real Gemini API key.
 
 ### README
 
@@ -462,7 +462,7 @@ Describe the project as AI-assisted engineering with human-owned product, domain
 ### Deployment
 
 - Import the GitHub repository into Vercel.
-- Configure `OPENAI_API_KEY` in the deployment environment.
+- Configure `GEMINI_API_KEY` in the deployment environment.
 - Deploy and test the live application.
 - Test the live mobile experience on a real device.
 - Add the production URL to GitHub repository metadata and the README.
