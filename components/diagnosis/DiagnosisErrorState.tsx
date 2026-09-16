@@ -2,9 +2,13 @@ import { AlertTriangle } from "lucide-react";
 
 type DiagnosisErrorStateProps = {
   onRetry: () => void;
+  message?: string;
 };
 
-export function DiagnosisErrorState({ onRetry }: DiagnosisErrorStateProps) {
+export function DiagnosisErrorState({
+  onRetry,
+  message,
+}: DiagnosisErrorStateProps) {
   return (
     <div
       role="alert"
@@ -17,8 +21,8 @@ export function DiagnosisErrorState({ onRetry }: DiagnosisErrorStateProps) {
         </h3>
       </div>
       <p className="text-sm text-text-muted">
-        Something went wrong while reaching the diagnosis service. Your answers
-        are still here, so you can try again.
+        {message ??
+          "Something went wrong while reaching the diagnosis service. Your answers are still here, so you can try again."}
       </p>
       <button
         type="button"
