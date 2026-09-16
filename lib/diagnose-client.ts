@@ -3,6 +3,7 @@ import {
   type DiagnosisInput,
   diagnosisSchema,
 } from "@/lib/ai/schema";
+import { isRecord } from "@/lib/type-guards";
 
 // Keep above lib/ai/diagnose.ts's timeout so its error wins the race.
 const REQUEST_TIMEOUT_MS = 25_000;
@@ -56,8 +57,4 @@ export async function requestDiagnosis(
   }
 
   return result.data;
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null;
 }

@@ -62,6 +62,15 @@ Owns unit and component tests.
 
 Owns browser-level user-flow tests.
 
+### evals/
+
+Owns the manual, pastry-domain AI evaluation set. Runs against a live
+`/api/diagnose` over HTTP rather than importing `lib/ai/diagnose.ts`
+directly, because that module's `import "server-only"` throws
+unconditionally outside Next's webpack `react-server` build condition
+(including under plain Vitest). Excluded from `pnpm test`/CI via its own
+`vitest.eval.config.mts` and run manually with `pnpm eval:ai`.
+
 ## Invariants
 
 - Gemini is called only from server-side code.
