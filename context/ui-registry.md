@@ -24,6 +24,15 @@ Used by `CategoryField.tsx` (radio, single-select pastry category) and
 `ConstraintField.tsx` (checkbox, multi-select dietary constraints). Reuse
 this instead of building a new chip-style control.
 
+When testing a Chip with Playwright, click the visible `label` (e.g.
+`page.locator("label", { hasText: "Cookies" })`), not
+`page.getByRole("radio"/"checkbox").click()`. A real click anywhere on the
+label always activates the associated input via native label/control
+delegation, but Playwright's actionability check targets the located
+element's own box, and the visually-hidden (`sr-only`) input isn't
+reliably hit-testable, so `.click()` on the role locator times out even
+though the control works correctly for real users.
+
 ### FieldError
 
 `components/form/FieldError.tsx`
