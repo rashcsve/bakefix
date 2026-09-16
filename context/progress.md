@@ -3,10 +3,10 @@
 ## Current status
 
 Phase: 08 CI, documentation, and deployment
-Last completed: CI workflow and README added; see "08 CI, documentation,
-and deployment" below. Deployment to Vercel is a manual step left for the
-user (requires their Vercel account) and is not yet done.
-Next: deploy to Vercel and add the live URL to the README.
+Last completed: CI workflow, README, and deployment; see "08 CI,
+documentation, and deployment" below. The app is live at
+https://bakefix.vercel.app/ (deployed manually by the user).
+Next: none — Step 08 is complete.
 
 ## 08 CI, documentation, and deployment
 
@@ -37,11 +37,13 @@ locally running `pnpm dev`, driving a real Cookies-category submission
 through to a real Gemini diagnosis rather than screenshotting the empty
 state, since a working result is more representative of the product.
 
-Not done in this step, and left for the user: importing the repository
-into Vercel, setting `GEMINI_API_KEY` in its environment, deploying, and
-adding the resulting production URL to the README's live-demo line and to
-the GitHub repository metadata. This requires the user's Vercel account
-and was out of scope for autonomous action.
+Deployment (importing the repository into Vercel, setting `GEMINI_API_KEY`
+in its environment, and deploying) was done manually by the user, since it
+requires their Vercel account and was out of scope for autonomous action.
+The resulting production URL, https://bakefix.vercel.app/, was added to
+the README's live-demo line and to this file. Adding the URL to the GitHub
+repository's own metadata (the repo "website" field) is a separate small
+manual step, not yet confirmed done.
 
 Verified with `pnpm lint`, `pnpm typecheck`, `pnpm test` (26 tests),
 and `pnpm build` (all passing, matching the new CI workflow).
@@ -256,7 +258,7 @@ border distinguishes it from a real result card. Verified the same way
 - [x] 05 Gemini integration
 - [x] 06 Verification
 - [x] 07 Review and polish
-- [ ] 08 Delivery
+- [x] 08 Delivery
 
 ## Decisions
 
@@ -299,6 +301,6 @@ border distinguishes it from a real result card. Verified the same way
   `"success"`.
 - Fixed in Step 07: `pnpm dev` no longer rewrites `AGENTS.md`. See the
   Step 07 note above — `next.config.ts` now sets `agentRules: false`.
-- Step 08 is incomplete: the app is not yet deployed to Vercel. The
-  README's live-demo link is a placeholder until the user imports the
-  repository into Vercel, sets `GEMINI_API_KEY` there, and deploys.
+- Fixed in Step 08: the app is deployed to Vercel at
+  https://bakefix.vercel.app/, and the README's live-demo link now points
+  there instead of the earlier placeholder.
