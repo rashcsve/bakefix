@@ -1,0 +1,129 @@
+name: AI evals
+
+# Live Gemini evaluations (evals/python). Kept out of ci.yml so normal pushes
+# and PRs never spend Gemini quota.
+on:
+  # Prompt, model, SDK or API changes: evaluate this branch before merging.
+  pull_request:
+    branches: [main]
+    paths:
+      - "lib/ai/**"
+      - "lib/constants.ts"
+      - "lib/env.ts"
+      - "app/api/diagnose/**"
+      # SDK upgrades (`ai`, `@ai-sdk/google`) change only these files.
+      - "package.json"
+      - "pnpm-lock.yaml"
+  # Weekly drift check against production: Gemini can change behind the same
+  # model name even when this repository does not.
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: "Deployed URL to evaluate (leave empty to build and start this branch)"
+        required: false
+        default: ""
+      limit:
+        description: "Cases to run (0 = all 68, about 15 minutes, longer if rate limited)"
+        required: false
+        default: "18"
+
+# One run at a time, so parallel runs cannot share the free-tier rate limit.
+concurrency:
+  group: ai-evals
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      BASE_URL: ${{ github.event_name == 'schedule' && 'https://bakefix.vercel.app' || github.event.inputs.base_url || 'http://localhost:3000' }}
+      LIMIT: ${{ github.event.inputs.limit || '18' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      # A local server needs the key; a deployed one already has its own.
+      # GitHub withholds secrets from fork and Dependabot PRs, so those skip;
+      # anywhere else a missing secret is a misconfiguration and fails the run.
+      - name: Decide target
+        id: target
+        env:
+          HAS_KEY: ${{ secrets.GEMINI_API_KEY != '' }}
+          SECRETS_WITHHELD: ${{ github.event.pull_request.head.repo.fork || github.actor == 'dependabot[bot]' }}
+        run: |
+          if [ "$BASE_URL" != "http://localhost:3000" ]; then
+            echo "local=false" >> "$GITHUB_OUTPUT"
+          elif [ "$HAS_KEY" = "true" ]; then
+            echo "local=true" >> "$GITHUB_OUTPUT"
+          elif [ "$SECRETS_WITHHELD" = "true" ]; then
+            echo "::warning::This PR cannot read the GEMINI_API_KEY secret (fork or Dependabot); skipping AI evals."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::The GEMINI_API_KEY repository secret is not set."
+            exit 1
+          fi
+
+      - name: Enable corepack
+        if: steps.target.outputs.local == 'true'
+        run: corepack enable
+
+      - name: Setup Node.js
+        if: steps.target.outputs.local == 'true'
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          cache: pnpm
+
+      # No key here: install scripts and the build never see it.
+      - name: Install and build
+        if: steps.target.outputs.local == 'true'
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm build
+
+      # The key is scoped to this step, so only the server process receives it.
+      - name: Start the app
+        if: steps.target.outputs.local == 'true'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          pnpm start > server.log 2>&1 &
+          curl --silent --fail --retry 30 --retry-delay 2 --retry-connrefused \
+            "$BASE_URL" > /dev/null || { tail -50 server.log; exit 1; }
+
+      - name: Setup uv
+        if: steps.target.outputs.skip != 'true'
+        uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6.8.0
+
+      # Starting thresholds; tune them once a few runs show the normal range.
+      # Constraint compliance is reported but not gated: an 18-case run has
+      # only 6 constrained cases, so one misjudged answer would flip the result.
+      - name: Run evals
+        if: steps.target.outputs.skip != 'true'
+        working-directory: evals/python
+        run: |
+          uv sync --frozen
+          uv run python -m bakefix_evals.run_evals \
+            --base-url "$BASE_URL" --limit "$LIMIT" \
+            --min-success 0.85 --min-calibration 0.7
+
+      - name: Publish report
+        if: always() && hashFiles('evals/python/reports/latest.md') != ''
+        run: cat evals/python/reports/latest.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload report
+        if: always() && hashFiles('evals/python/reports/latest.json') != ''
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: ai-eval-report
+          path: evals/python/reports/
+
+      - name: Server log
+        if: failure() && steps.target.outputs.local == 'true'
+        run: tail -100 server.log
