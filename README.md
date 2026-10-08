@@ -170,6 +170,16 @@ Two different kinds of correctness are tested differently:
   correctly-phrased one. It also spends real API quota. See
   [`evals/README.md`](evals/README.md) for details and limitations, and
   run it manually — it is deliberately excluded from `pnpm test` and CI.
+- `evals/python/` adds a larger set of 68 cases: 57 parsed from real
+  Seasoned Advice questions plus 11 hand-written dietary-constraint cases.
+  It scores responses with deterministic checks: schema validity,
+  confidence calibration, and dietary-constraint compliance. The live run
+  spends real quota, so it runs in its own workflow
+  (`.github/workflows/ai-evals.yml`): on PRs that change the AI code,
+  weekly against production, and on demand. A run fails if the valid-diagnosis or
+  calibration rate drops below a set threshold. Its unit tests, lint, and a check that the parsed
+  cases are up to date run in the main CI. See
+  [`evals/python/README.md`](evals/python/README.md).
 
 ## Local setup
 
@@ -251,3 +261,10 @@ context/        product, architecture, design, and workflow documentation
 
 See [`context/architecture.md`](context/architecture.md) for the full set
 of architectural invariants and boundaries.
+
+## License
+
+The code is released under the [MIT License](LICENSE). The Seasoned Advice
+posts in `evals/python/data/` are excluded and remain CC BY-SA, licensed by
+their authors; see [`LICENSE`](LICENSE) and
+[`evals/python/README.md`](evals/python/README.md#data-license).

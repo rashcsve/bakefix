@@ -71,6 +71,24 @@ unconditionally outside Next's webpack `react-server` build condition
 (including under plain Vitest). Excluded from `pnpm test`/CI via its own
 `vitest.eval.config.mts` and run manually with `pnpm eval:ai`.
 
+`evals/python/` is a separate, uv-managed Python package. It turns
+Seasoned Advice questions into BakeFix inputs and scores live
+`/api/diagnose` responses with deterministic checks. It uses the same HTTP
+boundary as the TypeScript evals. Its Pydantic models mirror
+`lib/ai/schema.ts` and `lib/constants.ts`, and its tests fail if the enums
+or field limits drift. It is excluded from Biome (`evals/python/data`) and
+from `pnpm test`. CI runs its lint, offline tests and a data-freshness check
+in a separate `python-evals` job that never calls Gemini. Live runs happen
+only in `.github/workflows/ai-evals.yml`:
+- on PRs that touch `lib/ai/**`, `lib/constants.ts`, `lib/env.ts`,
+  `app/api/diagnose/**`, `package.json` or `pnpm-lock.yaml`, against the
+  branch built in the job, using the `GEMINI_API_KEY` repository secret
+  (passed only to the step that starts the server)
+- weekly, against production
+- on demand
+
+Each run is gated on the valid-diagnosis and calibration rates.
+
 ## Invariants
 
 - Gemini is called only from server-side code.

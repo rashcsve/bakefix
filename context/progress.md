@@ -6,7 +6,148 @@ Phase: 08 CI, documentation, and deployment
 Last completed: CI workflow, README, and deployment; see "08 CI,
 documentation, and deployment" below. The app is live at
 https://bakefix.vercel.app/ (deployed manually by the user).
-Next: none — Step 08 is complete.
+Next: none — Step 08 is complete. Post-MVP: Python dataset evals and
+their automated workflow added (see below).
+
+## Post-MVP: Automated AI evals
+
+Added `.github/workflows/ai-evals.yml`, which runs the Python live evals
+(`evals/python/`) automatically:
+
+- On PRs to `main` that touch `lib/ai/**`, `lib/constants.ts`, `lib/env.ts`,
+  `app/api/diagnose/**`, `package.json` or `pnpm-lock.yaml`, the job builds
+  and starts the branch with the `GEMINI_API_KEY` repository secret.
+- Every Monday at 06:00 UTC, it runs against production
+  (https://bakefix.vercel.app), which uses its own key.
+- It can also be started on demand via `workflow_dispatch`, optionally
+  against any `base_url`.
+
+Each run:
+
+- uses 18 cases, chosen by the existing round-robin sampler
+- publishes `latest.md` to the job summary and uploads the full report as
+  an artifact
+- skips with a warning on fork and Dependabot PRs, which GitHub withholds
+  secrets from, and fails when the secret is missing anywhere else
+- shares a concurrency group with other runs, so they never compete for the
+  free-tier rate limit
+
+`run_evals` gained `--min-success`, `--min-calibration` and
+`--min-constraint`. Below a minimum, or with no cases to measure a gated
+rate, it exits 1 and lists the failures in the report. The workflow gates
+on success (0.85) and calibration (0.7), to be tuned after the first few
+runs; constraint compliance is reported but not gated (see below).
+
+Verified with `uv run pytest` (including `main()` exit-code tests against a
+mocked server), `ruff`, `actionlint` on both workflows, and `pnpm lint`. The workflow has not run on GitHub yet: it needs the
+`GEMINI_API_KEY` repository secret (a manual step for the user) before PR
+and on-demand runs can evaluate a branch.
+
+Changes after the second CTO review:
+
+- The key is now set only on the step that starts the server. Before, it
+  was job-wide, so `pnpm install` scripts and third-party actions could
+  read it. A missing secret now fails the run unless GitHub withholds it
+  (fork or Dependabot PR), so a misconfigured repository no longer passes
+  silently.
+- The constraint gate (`--min-constraint 0.75`) was removed from the
+  workflow. An 18-case run has 6 constrained cases, so one misjudged
+  answer flipped pass/fail. The rate is still reported.
+- The PR trigger now also covers `lib/constants.ts`, `lib/env.ts`,
+  `package.json` and `pnpm-lock.yaml`, so SDK upgrades are evaluated.
+- The constraint checker flags "yolk(s)" for Egg-free cases, and a
+  negation followed by "more/less/fewer than" ("no more than 2 eggs") no
+  longer counts as safe. The gluten-free "flour" gap is documented instead
+  of matched, because gluten-free flour is also "flour". Regression tests
+  cover each case and fail without the fix.
+- `run_evals` is now a plain synchronous loop (the async version with a
+  semaphore and lock always ran one request at a time) and the unused
+  `--concurrency` flag is gone. Network errors are retried like 429s.
+  `--limit` rejects negative values.
+- `tests/ai/diagnose.test.ts` restores the env and the `console.error` spy
+  after each test.
+- Workflow actions are pinned to commit SHAs, `python-evals` has a
+  10-minute timeout, and the live-eval job's timeout is 45 minutes so a
+  full 68-case run with rate-limit backoff fits.
+- Fixed a README typo and the conflicting test counts in this file.
+
+Verified with `uv run pytest` (66 tests), `ruff check`, `ruff format
+--check`, `pnpm lint`, `pnpm typecheck` and `pnpm test` (30 tests).
+`actionlint` 1.7.12 (with shellcheck) reports no errors on either workflow.
+
+## Post-MVP: Python dataset evals
+
+Added `evals/python/`, a uv-managed Python package outside the build plan
+that extends the Step 06 evaluations with real-world data. It has three
+stages:
+
+- `fetch_raw` downloads Seasoned Advice questions (CC BY-SA, attribution
+  kept).
+- `parse_dataset` filters them to first-person failed-bake questions and
+  validates them against a Pydantic mirror of `lib/ai/schema.ts`. Output
+  is 57 cases, plus 11 hand-written dietary-constraint cases from
+  `data/curated_cases.json`, in `data/cases.json`, with every rejection and
+  its reason in `data/rejects.json`. Output is reproducible.
+- `run_evals` posts the cases to a live `/api/diagnose` one at a time, at
+  least 13 seconds apart (`--min-interval`, sized for Gemini's free tier of
+  about 5 requests a minute), retries 429s, and writes
+  `reports/latest.{json,md}`.
+
+Scoring is deterministic: schema validity, calibration (not `high`
+confidence alongside missing information), and constraint compliance. The
+safety-note rate is informational only, because the prompt asks for a note
+only on food-safety risks.
+
+Fixes made during review:
+
+- `evals/python/data` is excluded from Biome. The generated JSON had
+  failed `pnpm lint`, which would have broken CI.
+- `reports/` is git-ignored.
+- The default run is capped at 12 cases to protect free-tier quota.
+- Latency now excludes retry backoff.
+- The constraint checker now requires safe wording to be attached to the
+  ingredient. Before, "melted butter and a little oil" and "do not
+  overbake; add 2 eggs" passed. Regression tests cover both.
+- The "?. " title/body join is fixed.
+- `category_cap` rejects now keep their titles.
+- The drift test now covers field limits as well as enums.
+
+Follow-up changes:
+
+- `lib/ai/diagnose.ts` now treats a 429 wrapped in the AI SDK's `RetryError`
+  as `RATE_LIMITED`. Before, only a bare 429 `APICallError` matched, so a
+  provider rate limit that exhausted the SDK's retries surfaced as
+  `AI_UNAVAILABLE` (found by the first live eval run).
+  `tests/ai/diagnose.test.ts` covers it and fails without the fix.
+- A `python-evals` CI job runs `ruff check`, `ruff format --check`,
+  `pytest`, and re-runs the parser to fail if `data/` is stale. The live
+  run is not in CI.
+- Constraint coverage went from 3 to 14 cases.
+- The constraint checker no longer flags "-free" mentions ("egg-free",
+  "wheat-free"). A swap verb ("replace", "swap", "substitute") now protects
+  the ingredient only when that ingredient is being replaced. Before,
+  "replace the oil with melted butter" and "swap the flax for 1 egg" passed.
+  Regression tests cover both, and they fail without the fix.
+
+Changes after the CTO review:
+
+- The default 12-case run now picks cases round-robin across categories
+  and dietary constraints (`sample_cases` in `run_evals.py`). Before, it
+  took the first 12 rows of `cases.json`, which is ordered by votes: 7 were
+  Bread and none had a constraint, so constraint compliance reported `n/a`.
+  A test asserts that the default sample covers every category and
+  constraint, and it fails against the old selection.
+- The eval README now notes that top-voted Seasoned Advice posts are likely
+  in Gemini's training data, so parsed-case scores are an upper bound.
+- Added an MIT `LICENSE` that excludes the CC BY-SA Seasoned Advice data,
+  `"license": "MIT"` in `package.json` and `pyproject.toml`, and a License
+  section in the README.
+
+Limitations are documented in `evals/python/README.md`.
+
+Verified with `uv run pytest`, `ruff check`, `ruff format
+--check`, `pnpm lint`, `pnpm typecheck`, and `pnpm test` (30 tests). No
+complete live eval run has been made yet.
 
 ## 08 CI, documentation, and deployment
 
@@ -277,6 +418,12 @@ border distinguishes it from a real result card. Verified the same way
   project has no credits and Gemini has a free tier, which matters for a
   demo/portfolio project with no revenue. The Vercel AI SDK abstraction made
   the swap a small, isolated change (see Step 05 note above).
+- Live Gemini evaluations now run in CI, in a separate `ai-evals` workflow,
+  departing from Steps 06 and 08 ("paid model evaluations run manually",
+  "CI does not require or spend a Gemini API key"). This was the user's
+  decision, for automation as in a production team. The main `ci.yml` still
+  needs no key. Live runs are limited to AI-related PRs, a weekly
+  production check and manual triggers, to protect the free-tier quota.
 
 ## Known issues
 
