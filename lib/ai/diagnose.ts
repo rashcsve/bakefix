@@ -1,6 +1,12 @@
 import "server-only";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
-import { APICallError, generateText, NoOutputGeneratedError, Output } from "ai";
+import {
+  APICallError,
+  generateText,
+  NoOutputGeneratedError,
+  Output,
+  RetryError,
+} from "ai";
 import { z } from "zod";
 import { buildUserMessage, SYSTEM_PROMPT } from "@/lib/ai/prompt";
 import {
@@ -26,6 +32,11 @@ export class DiagnoseError extends Error {
     super(message);
     this.code = code;
   }
+}
+
+function isRateLimited(error: unknown): boolean {
+  const cause = RetryError.isInstance(error) ? error.lastError : error;
+  return APICallError.isInstance(cause) && cause.statusCode === 429;
 }
 
 export async function diagnoseBake(input: DiagnosisInput): Promise<Diagnosis> {
@@ -67,7 +78,7 @@ export async function diagnoseBake(input: DiagnosisInput): Promise<Diagnosis> {
       );
     }
 
-    if (APICallError.isInstance(error) && error.statusCode === 429) {
+    if (isRateLimited(error)) {
       console.error("diagnoseBake: rate limited by the model provider");
       throw new DiagnoseError(
         "RATE_LIMITED",
