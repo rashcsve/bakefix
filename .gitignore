@@ -43,3 +43,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# python evals
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+evals/python/reports/

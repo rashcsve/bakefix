@@ -1,0 +1,199 @@
+[
+  {
+    "id": "hand-01",
+    "input": {
+      "category": "Cake",
+      "problem": "I made an eggless vanilla sponge using a yogurt-and-baking-soda swap for the eggs. It rose well but sank in the middle as it cooled, and the bottom layer is dense and gummy.",
+      "constraints": [
+        "Egg-free"
+      ],
+      "recipe": "200g flour, 150g sugar, 120ml oil, 120g yogurt, 1 tsp baking soda, 1 tsp baking powder",
+      "technicalDetails": "170C fan oven, 22cm tin, 35 minutes"
+    },
+    "source": {
+      "url": null,
+      "author": "BakeFix",
+      "license": "original",
+      "score": 0,
+      "truncated": false
+    }
+  },
+  {
+    "id": "hand-02",
+    "input": {
+      "category": "Cookies",
+      "problem": "My egg-free chocolate chip cookies use a flax egg and they came out crumbly and fell apart when I picked them up. They also taste a bit dry.",
+      "constraints": [
+        "Egg-free"
+      ]
+    },
+    "source": {
+      "url": null,
+      "author": "BakeFix",
+      "license": "original",
+      "score": 0,
+      "truncated": false
+    }
+  },
+  {
+    "id": "hand-03",
+    "input": {
+      "category": "Bread",
+      "problem": "I tried an egg-free brioche. The dough was very sticky, never really got smooth, and the loaf came out dense with a pale, thick crust instead of a soft golden one.",
+      "constraints": [
+        "Egg-free"
+      ],
+      "technicalDetails": "Stand mixer, 10 minutes kneading, proofed 2 hours at about 21C"
+    },
+    "source": {
+      "url": null,
+      "author": "BakeFix",
+      "license": "original",
+      "score": 0,
+      "truncated": false
+    }
+  },
+  {
+    "id": "hand-04",
+    "input": {
+      "category": "Cake",
+      "problem": "My dairy-free chocolate cake made with coconut oil came out greasy on the bottom and sank in the middle. It looked fine when it went in the oven.",
+      "constraints": [
+        "Dairy-free"
+      ],
+      "technicalDetails": "180C conventional oven, 40 minutes"
+    },
+    "source": {
+      "url": null,
+      "author": "BakeFix",
+      "license": "original",
+      "score": 0,
+      "truncated": false
+    }
+  },
+  {
+    "id": "hand-05",
+    "input": {
+      "category": "Cookies",
+      "problem": "I swapped butter for a vegan butter block in my usual sugar cookie recipe. The cookies spread into thin, crispy sheets and merged on the tray, which never happens with real butter.",
+      "constraints": [
+        "Dairy-free"
+      ]
+    },
+    "source": {
+      "url": null,
+      "author": "BakeFix",
+      "license": "original",
+      "score": 0,
+      "truncated": false
+    }
+  },
+  {
+    "id": "hand-06",
+    "input": {
+      "category": "Cream",
+      "problem": "I tried whipping chilled canned coconut cream for a dairy-free topping but it stays soft and runny and will not hold peaks, even after several minutes of whipping.",
+      "constraints": [
+        "Dairy-free"
+      ]
+    },
+    "source": {
+      "url": null,
+      "author": "BakeFix",
+      "license": "original",
+      "score": 0,
+      "truncated": false
+    }
+  },
+  {
+    "id": "hand-07",
+    "input": {
+      "category": "Bread",
+      "problem": "My gluten-free sandwich loaf rose nicely in the tin but collapsed in the oven, and the inside is gummy and wet even after cooling for hours.",
+      "constraints": [
+        "Gluten-free"
+      ],
+      "technicalDetails": "Pre-mixed gluten-free flour blend, 220C for 15 minutes then 190C for 30"
+    },
+    "source": {
+      "url": null,
+      "author": "BakeFix",
+      "license": "original",
+      "score": 0,
+      "truncated": false
+    }
+  },
+  {
+    "id": "hand-08",
+    "input": {
+      "category": "Cookies",
+      "problem": "These gluten-free oatmeal cookies are gritty and crumble apart as soon as I touch them, and they spread much more than the wheat version.",
+      "constraints": [
+        "Gluten-free"
+      ]
+    },
+    "source": {
+      "url": null,
+      "author": "BakeFix",
+      "license": "original",
+      "score": 0,
+      "truncated": false
+    }
+  },
+  {
+    "id": "hand-09",
+    "input": {
+      "category": "Cake",
+      "problem": "My gluten-free vanilla cake sank in the centre and is dry and sandy at the edges, even though a skewer came out clean.",
+      "constraints": [
+        "Gluten-free"
+      ],
+      "technicalDetails": "Rice flour and potato starch blend, 175C, 45 minutes"
+    },
+    "source": {
+      "url": null,
+      "author": "BakeFix",
+      "license": "original",
+      "score": 0,
+      "truncated": false
+    }
+  },
+  {
+    "id": "hand-10",
+    "input": {
+      "category": "Cake",
+      "problem": "I baked a vegan chocolate cake with no eggs or dairy. The top cracked badly and the crumb is dry and crumbly, nothing like the moist photo in the recipe.",
+      "constraints": [
+        "Egg-free",
+        "Dairy-free"
+      ],
+      "technicalDetails": "Oat milk, applesauce and vegetable oil, 180C for 50 minutes"
+    },
+    "source": {
+      "url": null,
+      "author": "BakeFix",
+      "license": "original",
+      "score": 0,
+      "truncated": false
+    }
+  },
+  {
+    "id": "hand-11",
+    "input": {
+      "category": "Other",
+      "problem": "My dairy-free, gluten-free pie crust shrank away from the sides of the tin during blind baking and cracked when I tried to lift it out.",
+      "constraints": [
+        "Dairy-free",
+        "Gluten-free"
+      ],
+      "technicalDetails": "Gluten-free flour blend with vegan butter, chilled 30 minutes"
+    },
+    "source": {
+      "url": null,
+      "author": "BakeFix",
+      "license": "original",
+      "score": 0,
+      "truncated": false
+    }
+  }
+]

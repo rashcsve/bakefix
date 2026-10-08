@@ -12,7 +12,8 @@
       "!!**/out",
       "!!**/build",
       "!**/next-env.d.ts",
-      "!**/*.svg"
+      "!**/*.svg",
+      "!**/evals/python/data"
     ]
   },
   "formatter": {

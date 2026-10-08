@@ -1,0 +1,4272 @@
+[
+  {
+    "question_id": 90638,
+    "title": "Why did flatbread dominate the Middle East but Europe adopted raised breads?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 1,
+    "title": "How can I get chewy chocolate chip cookies?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 13167,
+    "title": "How do you make a cake lift equally and minimize doming?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 9014,
+    "title": "Why let dough rise twice?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 11793,
+    "title": "Could coconut cream be used to create a non-dairy ganache for whipping?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 3141,
+    "title": "What is the purpose of creaming butter with sugar in cookie recipes?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 21573,
+    "title": "What should I cover bread dough with while it's rising?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 15041,
+    "title": "Theoretical: why there's no gradient of doneness in bread?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 10310,
+    "title": "How warm must dough be in order to rise?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 7804,
+    "title": "Is there anything I can add to homemade bread to preserve it?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 21675,
+    "title": "Why stretch and fold vs traditional kneading of bread dough?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 5071,
+    "title": "What's the purpose of a bread box?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 1731,
+    "title": "How can I get my bread to be more fluffy and less dense?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 61,
+    "title": "What are the pros and cons of storing bread in various locations?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 114910,
+    "title": "Can meat spoil outside the fridge if it's baked into bread as a filling?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 2181,
+    "title": "How do I make soft chapattis?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 38,
+    "title": "Does resting the dough for a long time reduce the need to knead the bread?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 27855,
+    "title": "What makes a bread either close or open crumbed/textured?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 6820,
+    "title": "Powdered milk in bread recipe",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 98754,
+    "title": "What to use instead of cling film to wrap pastry",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 102762,
+    "title": "Milk instead of water in bread",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 21569,
+    "title": "Why should I let bread cool before slicing and eating?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 15913,
+    "title": "What is the ideal hydration for bread dough?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 1535,
+    "title": "Techniques to get a nice golden-brown crust on bread",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 22464,
+    "title": "Can you re-use parchment paper when baking batches of cookies?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 12458,
+    "title": "What is the criss-cross pattern on top of peanut butter cookies used for?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 27528,
+    "title": "What is the purpose of sugar in baking plain bread?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 21627,
+    "title": "How can I create steam in a normal oven to promote bread oven spring?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 22317,
+    "title": "How does one invent a cookie recipe?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 21529,
+    "title": "How much salt can I safely add to bread dough?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 2276,
+    "title": "How do you raise your dough in cold seasons?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 8727,
+    "title": "What is this Italian Cookie called?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 105522,
+    "title": "Kneading bread with arthritic hands-any tips?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 29888,
+    "title": "What ensures big holes in my bread?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 14158,
+    "title": "How to get threads in a yeast dough?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 14218,
+    "title": "Does the \"German\" in \"German chocolate cake\" refer to the chocolate or the cake?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 110131,
+    "title": "Why not make sourdough bread from young starter?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 45587,
+    "title": "How did people make bread before sugar was 'discovered'",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 6352,
+    "title": "What role do eggs play in baking?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 12317,
+    "title": "Why don't my cookies flatten?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 64035,
+    "title": "How was the usage of yeast for bread discovered?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 121431,
+    "title": "How to adequately secure a liquid filling in a piece of pastry?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 4835,
+    "title": "What kind of frosting doesn't need to be refrigerated?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 30670,
+    "title": "Are N2O and CO2 chargers interchangeable for culinary purposes?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 100141,
+    "title": "Why did my rum cake turn black?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 21695,
+    "title": "What is the difference between quick bread and cake?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 10653,
+    "title": "When baking a cake that calls for butter, should you use salted or unsalted?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 105468,
+    "title": "Why doesn't my cookie recipe work in the US?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 105973,
+    "title": "How to make bread with plain flour?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 15975,
+    "title": "Why don't dry bread crumbs spoil, when bread does?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 5279,
+    "title": "Uses for stale bread?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 27531,
+    "title": "How do I keep fruit from sinking to the bottom of my cake?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 8352,
+    "title": "Is cheesecake a cake or a pie?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 14466,
+    "title": "Why is lye used in some recipes for cookies?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 124290,
+    "title": "Old biscuit recipe question - \"until the dough blisters\"",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 108949,
+    "title": "How to clean up after kneading dough?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 79026,
+    "title": "Why does my home-made bread go mouldy?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 23019,
+    "title": "Are there any negative effects to kneading bread dough longer?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 19694,
+    "title": "What is the purpose of oil or butter in bread?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 10665,
+    "title": "baking bread with all-purpose flour",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 9316,
+    "title": "Baking bread ... without crust?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 21171,
+    "title": "Why do chocolate chips stay softer after being baked?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 10992,
+    "title": "How long will a sourdough starter last between feedings?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 9907,
+    "title": "Why is there vinegar in the bread recipe?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 5584,
+    "title": "How can I grow my own yeast (sourdough starter)?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 4250,
+    "title": "Naan without tandoor?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 4032,
+    "title": "What job is the fat doing when I prepare bread dough, and what to expect if I use the wrong amount?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 2483,
+    "title": "How can I avoid my knife from \"dragging\" across my unbaked bread when making slashes to let steam escape while baking?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 373,
+    "title": "How can I make macarons with \"feet\" in my oven at home?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 11203,
+    "title": "How does a whipped cream charger work?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 3960,
+    "title": "Why is a copper bowl recommended for whipping cream and egg whites?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 42378,
+    "title": "What is the science behind Magic Cake?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 22889,
+    "title": "Is it possible to bake a cake without an oven?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 653,
+    "title": "What can I substitute for eggs in cookie recipes?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 106014,
+    "title": "Does liquid temperature matter when making bread in a bread maker?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 65654,
+    "title": "How many kilos of bread can I produce with one kilo of flour?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 33065,
+    "title": "How do I make my bread/buns super soft?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 21555,
+    "title": "What effect do different slash patterns have on bread oven spring?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 14919,
+    "title": "My sourdough starter is bubbling but not rising, suggestions?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 14184,
+    "title": "Good breads for evening cooking?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 14155,
+    "title": "Calories in toast vs bread",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 9191,
+    "title": "Why do microwave ovens make bread rubbery?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 8402,
+    "title": "Is it important to warm the flour before making bread?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 2319,
+    "title": "Is it safe to eat mouldy bread?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 103922,
+    "title": "Can I re-whip whipped cream?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 132990,
+    "title": "Why wrap fruitcake in grease-proof paper?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 112944,
+    "title": "What is the physical effect of sifting dry ingredients for a cake?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 22277,
+    "title": "Making cake icing look professionally smooth",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 4130,
+    "title": "Is there a non-penetrative method for checking cake doneness?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 46242,
+    "title": "Why is supermarket bread soft?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 32741,
+    "title": "What is \"pizza crust yeast\"?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 11600,
+    "title": "Why does leftover pizza dough make terrible bread?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 7345,
+    "title": "Can I make Crème Brûlée using a flambé?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 96216,
+    "title": "What makes cake a Sponge Cake? And what doesn't?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 23329,
+    "title": "Why is it called coffee cake?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 1890,
+    "title": "How to get sprinkles to stick to the side of a cake?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 86358,
+    "title": "What's the benefit of chilling my cookie dough before baking?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 76624,
+    "title": "I accidentally added butter into flour/cocoa powder/baking soda without beating first",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 17262,
+    "title": "Why do so many dessert/biscuit recipes have salt in them?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 880,
+    "title": "What determines the shape-holding ability of cookies?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 130583,
+    "title": "Traditional German recipe involving boiled and fried bread, with seasoned Tuna and Lemon Juice?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 112988,
+    "title": "How much does a tuppenny loaf weigh?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 99522,
+    "title": "Can I give my friend the sour dough \"throw away\" as a starter to their sourdough starter?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 95557,
+    "title": "What is the purpose and effect of using knuckles when kneading bread dough?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 63071,
+    "title": "Can I refrigerate bread dough after the first rise and bake it later?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 45024,
+    "title": "I want to duplicate my bread mistake!",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 33098,
+    "title": "Why and what kind of breads should be scored?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 29627,
+    "title": "How to keep a high hydration bread loaf from becoming flat",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 24931,
+    "title": "Sticky and unmanagable sourdough",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 18941,
+    "title": "In my new mixer, my bread dough gets wrapped around the kneading hook. What should I do?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 13257,
+    "title": "Why does soda bread call for buttermilk?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 1897,
+    "title": "How does commercial whole grain bread stay fresh for so long?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 929,
+    "title": "Storing bread dough before baking",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 102594,
+    "title": "Coffee Grounds and Gritty Butter Cream Icing",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 10693,
+    "title": "Why does whip cream dispenser sometimes produce \"ragged\" cream?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 135501,
+    "title": "Will a cup of boiling water wipe out the baking powder in a cake recipe?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 132687,
+    "title": "Can a cake get brownie-like \"edges\"?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 129754,
+    "title": "I made a Betty Crocker cake mix with oil instead of butter - how to fix it?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 55584,
+    "title": "How does the order of mixing ingredients affect the resulting cake?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 15833,
+    "title": "How do I change cake recipes for cupcakes?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 14025,
+    "title": "Are there any vegetarian-friendly egg substitutes that can be used in cakes?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 118090,
+    "title": "How can I make a really gingery cookie?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 113404,
+    "title": "Chocolate won’t harden up on my cookies",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 30254,
+    "title": "Difference in cookie texture if we use melted vs softened butter",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 20750,
+    "title": "What are macaron \"feet\"?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 10277,
+    "title": "Spritz cookies not sticking to pan when pressed from cookie press",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 115524,
+    "title": "Converting bread recipes for an overnight rise?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 104125,
+    "title": "Can I use baking powder in place of baking soda for dipping pretzels?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 102388,
+    "title": "Is it more effective to add yeast before or after kneading?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 42055,
+    "title": "Create my own high-gluten flour by mixing vital wheat gluten and bread/AP flour?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 41291,
+    "title": "What temperature of water will kill yeast?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 36961,
+    "title": "Why is milk powder used in bread machine recipes?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 32634,
+    "title": "Which ingredient in Italian bread gives it that great taste?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 23515,
+    "title": "Why is butter incorporated into the dough last when making Brioche?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 22237,
+    "title": "does bread have alcohol in it?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 21683,
+    "title": "How can I make whole grains stick to the top of bread?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 21658,
+    "title": "Why does my bread keep 'blowing out'?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 21557,
+    "title": "What happens during a cold fermentation that makes bread taste so good?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 21188,
+    "title": "Why do you need to refrigerate bread dough overnight?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 16451,
+    "title": "Sourdough in Bread Maker?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 15160,
+    "title": "How warm is \"warm water?\"",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 12611,
+    "title": "Devising a first-scratch bread recipe",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 12337,
+    "title": "Does active dry yeast really need proofing?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 11005,
+    "title": "How to make hot dog buns or sandwich rolls with a soft crust?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 10294,
+    "title": "Storing hard crusted bread",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 9025,
+    "title": "How to tell if it is real sourdough?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 3797,
+    "title": "Whipped cream without a mixer?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 125195,
+    "title": "Why would a 4 layer cake fall over?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 103673,
+    "title": "Does milk make cakes lighter or tougher?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 88153,
+    "title": "Hitting specific color of orange in a sponge cake",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 68647,
+    "title": "What can I do to fix/improve a dry cake?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 14066,
+    "title": "Can I fix a box cake recipe where I added oil instead of water?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 7257,
+    "title": "What is the difference between Devil's Food and Chocolate cake?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 715,
+    "title": "Cooking cakes with Pop Rocks / Space Dust",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 96793,
+    "title": "How can I portion out frozen cookie dough?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 18732,
+    "title": "How does the number of eggs affect a cookie recipe?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 3212,
+    "title": "Are there a better ways to crush biscuits/cookies than a rolling pin?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 105063,
+    "title": "What forms the pocket in Arabic/Pita bread?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 14254,
+    "title": "Do bakeries generally knead dough for bread by hand or use a machine?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 10787,
+    "title": "Cookbook says to store dough in fridge overnight, why can't I just bake it already?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 2225,
+    "title": "Thick, moist, fluffy, flavorful pitas",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 136944,
+    "title": "For dinner rolls, is there any purpose to mixing egg into the dry ingredients before adding the wet ingredients?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 127916,
+    "title": "Revisiting bread without added salt",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 120561,
+    "title": "How does the folding make the dough stronger?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 113254,
+    "title": "What type of salt for sourdough bread baking?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 80832,
+    "title": "Can you slow down the time it takes for dough to rise?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 64298,
+    "title": "What is the name of this Ukrainian bread?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 51592,
+    "title": "Low Hassle, Knead-Free Doughs",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 43537,
+    "title": "Preheat the Dutch oven (and the oven itself) for No-Knead Bread?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 40039,
+    "title": "How long can I keep bread dough in the refrigerator?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 20830,
+    "title": "Egg replacer for bread dough?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 19157,
+    "title": "Bread for the very beginner",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 11317,
+    "title": "What is 'Bread Improver'?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 10581,
+    "title": "What are the factors that affect the chewiness, softness, moisture of bread based desserts like cinnamon rolls?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 9109,
+    "title": "why is my bread too tough?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 8982,
+    "title": "Uses for Old bread dough",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 7386,
+    "title": "How to store bagels?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 6544,
+    "title": "When adding vital wheat gluten to a bread recipe, should one reduce the amount of flour equal to it?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 1661,
+    "title": "What are good techniques for getting gluten free bread to rise?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 128655,
+    "title": "What is a curate in English scone culture?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 86615,
+    "title": "How can I pipe multicolored flowers?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 113904,
+    "title": "My whipped cream can has run out of nitrous. I want what's inside anyway. What's the least destructive method of doing so?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 110004,
+    "title": "Ways/techniques to make things \"fluffy/foamy\" like whipped cream?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 116033,
+    "title": "Leaving cake's dry ingredients together for later quicker preparation?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 21444,
+    "title": "How to make a cake less dense",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 14818,
+    "title": "How to bake a veiny cake?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 8764,
+    "title": "Why should I wrap a cake tin in newspaper?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 4626,
+    "title": "Cakes that can be cooked whilst camping?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 108917,
+    "title": "How to replace large eggs for medium in a recipe?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 86595,
+    "title": "What size disher makes \"1 inch balls of dough?\"",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 79082,
+    "title": "Freeze cookies before or after baking them?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 75610,
+    "title": "If cookies are made with enough sugar, will they just be chewy caramel?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 46883,
+    "title": "How can I make my Oreos crispy again?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 29270,
+    "title": "What does an overnight chill do to cookie dough, that a 4 hour chill doesn't?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 3168,
+    "title": "Is it possible to make cookies without creaming the butter?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 125633,
+    "title": "Why do my breadmaker loaves rise unevenly top to bottom",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 122806,
+    "title": "What does salt do in bread dough?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 104368,
+    "title": "Why doesn't milk create gluten when combined with flour?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 80808,
+    "title": "Can sufficiently finely-ground matzo meal substitute for flour in leavened bread?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 75849,
+    "title": "How to make hamburger buns as fluffy as in McDonald's?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 63089,
+    "title": "Why do we dimple a focaccia?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 47768,
+    "title": "How to make part bake baguettes and rolls?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 41501,
+    "title": "Bread with no salt",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 39876,
+    "title": "How does hydration of a sourdough affect baking features?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 39410,
+    "title": "What happens with bread at >= 94˚C/201˚F? Or: Is temperature a reliable indicator of doneness?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 33078,
+    "title": "Should any liquid, or liquid-like ingredient, be included in the water proportion calculations for bread?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 32405,
+    "title": "Why does commercial brown (whole wheat) bread taste bitter?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 23220,
+    "title": "What takes over the functions of gluten in gluten-free bread mixes?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 21699,
+    "title": "Why does bread with filling separate and how do I prevent it?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 16066,
+    "title": "Where can I buy American style bread flour in Europe",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 13332,
+    "title": "Why does bread taste raw if you stop baking it and continue after it has cooled?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 11606,
+    "title": "Why does bread soften after heating it up?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 11196,
+    "title": "Crusty french bread",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 9934,
+    "title": "How to achieve great baguette crusts",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 8147,
+    "title": "What is a poolish starter?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 7749,
+    "title": "Why doesn't my bread rise in the oven? (Not first rise)",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 7224,
+    "title": "Why does dough break when kneading, and how to prevent/ameliorate it?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 22111,
+    "title": "Troubleshooting a soggy baklava with torn sheets",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 132915,
+    "title": "How do I attach non-edible flowers to cake?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 114027,
+    "title": "Letting batter with baking soda wait before adding into the oven",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 77491,
+    "title": "Fudge as a cake layer?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 46331,
+    "title": "When adding eggs to scratch cake batter, why are you supposed to add them one at a time?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 36249,
+    "title": "Is there a food that is halfway between a cheesecake and regular cake?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 12407,
+    "title": "How do I colour ready-to-roll icing",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 5117,
+    "title": "Baking in Glass Loaf Pan",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 112595,
+    "title": "What other cookies/biscuits were traditionally baked in shell shaped forms like this one?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 66334,
+    "title": "Is the mixing order important when substituting white sugar + molasses for brown sugar?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 53400,
+    "title": "What does a Thai Scented Candle impart?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 40286,
+    "title": "Calculating Nutrition Information for Commercial Food Labeling",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 26141,
+    "title": "What is it about milk that makes it go well with cookies?",
+    "reason": "missing_license"
+  },
+  {
+    "question_id": 10743,
+    "title": "How can I fix my dry crumbly cookie dough?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 126579,
+    "title": "What is the most accurate cheap way of repeatably measuring out small quantities of compressible powder?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 108343,
+    "title": "Picking up wet dough",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 91191,
+    "title": "Why does this recipe call for so much yeast?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 89134,
+    "title": "Bagels - Use of Barley Malt Syrup or Non-Diastatic Malt Powder",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 78763,
+    "title": "Why is water added to the egg wash of challah bread?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 77008,
+    "title": "I'm pretty sure these aren't scones, but what are they?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 66296,
+    "title": "Is the second rise step neccesary for no-knead bread?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 55441,
+    "title": "Does 100% rye sourdough bread always have a sticky crumb? How do I make it stick to the knife less?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 47161,
+    "title": "Is sourdough more resistant to mold than other breads?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 40845,
+    "title": "How does halving a bread recipe impact rising time?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 34120,
+    "title": "What are the authentic traditional ingredients for Naan bread?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 32676,
+    "title": "How do Crispbread manufacturers use so few ingredients?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 32419,
+    "title": "How can I rescue overproofed bread?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 23825,
+    "title": "What is the secret to baking bread with a very fine crumb?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 21761,
+    "title": "What's the difference in baking bread in a loaf pan vs. in a Dutch oven?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 21750,
+    "title": "How do I keep the paddle of a bread machine from damaging the bread upon removal?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 21649,
+    "title": "How can I prevent dough from wrapping around a dough hook?",
+    "reason": "missing_license"
+  },
+  {
+    "question_id": 11445,
+    "title": "My hand mixer came with dough hooks, can I knead dough with it?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 10054,
+    "title": "Techniques for mixing bread dough with stand mixer",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 9579,
+    "title": "How can I get a takeaway style pizza base?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 9355,
+    "title": "How to convert a recipe calling for active dry yeast into rapid rise yeast?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 7808,
+    "title": "Kneading before or after rising?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 7277,
+    "title": "How to stuff bread puffs (Gougeres)",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 5406,
+    "title": "Do I need a bread maker?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 936,
+    "title": "In reference to baking bread, what is a \"mother culture\"?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 101,
+    "title": "What are convenient and reliable ways to make the starter for rye bread?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 40089,
+    "title": "What is the effect of adding eggs to a pastry dough?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 37143,
+    "title": "Is it possible to make transparent / translucent pastry?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 28431,
+    "title": "How to get my croissant flakier and bigger? Is it possible to get a hollow inside?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 6104,
+    "title": "What is the difference between a Sfogliatelle and a Lobster Tail (Pastry)",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 34341,
+    "title": "Could I add butter to single cream to make whipped/double cream?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 15210,
+    "title": "Why does chilled equipment help when whipping cream?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 84465,
+    "title": "How can I move from subscription boxes to recipes successfully?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 80748,
+    "title": "What is the impact of opening the oven door?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 14235,
+    "title": "How can I bolster up a boxed cake mix?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 4159,
+    "title": "What can I use in place of allspice?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 1837,
+    "title": "How to halve a cake recipe?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 40316,
+    "title": "How long can I refrigerate cookie dough?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 37950,
+    "title": "Why would a baking recipe call for both cake and bread flour?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 33041,
+    "title": "What side effects should I expect by replacing cake flour with chickpea flour in all cookie recipes?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 31926,
+    "title": "What kind of cookies can be shaped?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 20701,
+    "title": "Adding lemon to cookie recipe",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 872,
+    "title": "Do I really need pastry flour in my molasses cookie recipe?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 126409,
+    "title": "Botulism risk in garlic naan bread?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 108267,
+    "title": "How can I improve my bread-scoring technique?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 107158,
+    "title": "Why is my homemade bread molding after 2 days?",
+    "reason": "missing_license"
+  },
+  {
+    "question_id": 105785,
+    "title": "Is sugar a necessary ingredient to feed yeast?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 95518,
+    "title": "Freeze dried blueberries vs frozen blueberries?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 64401,
+    "title": "What is the difference between making French baguettes and US style baguettes?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 53698,
+    "title": "Using low oven temperature to accelerate proofing",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 53442,
+    "title": "Will my results differ when using a sourdough starter vs poolish for pizza dough?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 43599,
+    "title": "How do I deal with a really wet, messy dough?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 43477,
+    "title": "Can I add butter to yeast dough which has already risen?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 28818,
+    "title": "What characteristics should a bread peel have?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 24442,
+    "title": "Do breadcrumbs really act as a binder in meat preparations?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 23313,
+    "title": "Can I let my bread dough rise in the mixer bowl?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 22287,
+    "title": "What is the difference between a poolish and a biga?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 22225,
+    "title": "How should I clean, or care for, a banneton (brotform, proofing basket)?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 21769,
+    "title": "How much \"alternative\" flour can I substitute for white wheat flour?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 21684,
+    "title": "Why add malt to bread?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 21659,
+    "title": "Why do some recipes recommend a short rest after mixing but before kneading the bread?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 21652,
+    "title": "Why baste bread with cornstarch?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 21559,
+    "title": "What the advantage of a 'bakers couche' for proofing bread and is it safe?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 13948,
+    "title": "how to break up a bread recipe?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 10786,
+    "title": "What can I do with extra sourdough starter?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 9601,
+    "title": "My bread is tasteless",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 7840,
+    "title": "What qualities should I be looking for when making the best French Toast?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 7524,
+    "title": "What are other techniques to make garlic bread?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 112821,
+    "title": "What would result from not adding fat to pastry dough?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 109043,
+    "title": "Blind baking: Does the choice of weights matter?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 79143,
+    "title": "How much should I beat choux pastry for optimal rising?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 15854,
+    "title": "Which kind of cream do I use for creme brulee?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 11632,
+    "title": "What is the glaze on a bakery-style fruit tart?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 81045,
+    "title": "Multi-nozzle piping rig?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 24934,
+    "title": "What kinds of frostings have a lighter texture?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 121779,
+    "title": "Can I add thick cream to whipping cream to increase fat content and make the whipped cream more stable?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 107298,
+    "title": "Do milk and butter not work in place of cream for whipping, and why?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 43972,
+    "title": "What are the grey-black specks that appear when whipping cream in stainless steel bowl?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 28222,
+    "title": "Can you make whipped cream with half and half?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 15007,
+    "title": "Can ruined whipped cream be rescued?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 10885,
+    "title": "Overpressurizing a cream whipper?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 9419,
+    "title": "What is the maximum temperature at which cream will still whip successfully?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 3417,
+    "title": "How is long-lasting whipped cream made?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 95842,
+    "title": "salamande(?): name of bread",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 79581,
+    "title": "How can I make a last-minute birthday cake without using artificial flavor or color?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 42605,
+    "title": "Making a carvable cake",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 37041,
+    "title": "Holes in baked cake",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 35492,
+    "title": "What kind of Creme or Mousse is the most robust? How can I strengthen a mousse?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 34562,
+    "title": "Historical recipe for cake before refined sugar",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 30804,
+    "title": "How will less flour affect molten lava cakes?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 30262,
+    "title": "What is the difference between cheesecake and NY cheesecake?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 28047,
+    "title": "Lemon cake has no flavor",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 25117,
+    "title": "How to trim a cake so it's level?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 24902,
+    "title": "How do beets bake up in flour?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 24723,
+    "title": "What is the best technique to put icing on plastic?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 23352,
+    "title": "What purpose does coffee serve in a chocolate cake recipe?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 23165,
+    "title": "Can you overmix a gluten-free cake?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 22260,
+    "title": "How does the baking time change if I scale up a cake recipe?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 22179,
+    "title": "How much difference does the placement of the shelf in the oven make to the final outcome of a cake?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 14697,
+    "title": "Cake with an impenetrable crust?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 13909,
+    "title": "Tripling a baking recipe",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 9225,
+    "title": "How to veganize and improve this cake recipe?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 6356,
+    "title": "How do I incorporate chiles into a chocolate cake recipe?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 5163,
+    "title": "Correct way to join two halves of sponge cake?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 4865,
+    "title": "Can I add unsweetened cocoa to a store-bought white cake mix to make chocolate cake mix?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 97553,
+    "title": "Are these almond cookies likely to be a success if I make them vegan by substituting coconut oil for butter?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 68779,
+    "title": "Bakers percentage for cookies",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 61532,
+    "title": "Does using powdered sugar instead of granulated sugar make cookie dough drier?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 51809,
+    "title": "How can I make these cookies less sweet without ruining the texture?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 22572,
+    "title": "How to create fruity or grassy shortbread cookies?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 14987,
+    "title": "tiny quantity of egg in a cookie",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 14591,
+    "title": "What is the purpose of baking soda in chocolate-chip cookies?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 14584,
+    "title": "What impact does the order of assembly have when making cookies?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 3243,
+    "title": "Is there a way to keep chilled cookie dough from flattening while cutting it?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 1104,
+    "title": "Proper Technique for Rolling Sugar Cookies",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 577,
+    "title": "How do I make semisweet chocolate more liquid?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 97120,
+    "title": "Can you make croissants with compound butter?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 94508,
+    "title": "Can I make a sweet hot water crust pastry?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 41646,
+    "title": "Is Dextrose the same as Atomized Glucose Powder?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 118124,
+    "title": "How to make whipped cream just like in a canister?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 29288,
+    "title": "Pros and Cons of cream whippers?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 125429,
+    "title": "Is there a possible substitute for sugar in creamed butter?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 112170,
+    "title": "How to do icing swirl effect (a bit like marbling)?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 99887,
+    "title": "Why is syrup added to a cake before frosting?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 96849,
+    "title": "Why is gluten-free baking possible?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 59881,
+    "title": "Making a literal thousand-layer cake?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 59866,
+    "title": "Why did my Chiffon Cake collapse?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 35362,
+    "title": "Making simple light cake with yeast",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 35175,
+    "title": "What could cause a sudden loss of sour flavor?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 32007,
+    "title": "What does meringue powder do in butter cream icing?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 28141,
+    "title": "Converting stand mixing time to hand mixing",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 28050,
+    "title": "How to make cakes/scones that won't go off, for display purposes",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 27286,
+    "title": "Can I substitute 70% chocolate for unsweetened chocolate in a cake recipe?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 27218,
+    "title": "Why does my walnut cake fall?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 24450,
+    "title": "How do packet cake mixes get their lightness without creaming butter and sugar?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 22338,
+    "title": "What will happen to my cake if I don't cream the butter enough?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 20043,
+    "title": "Why does Angel Food Cake use a tube pan?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 19529,
+    "title": "Is it possible to prevent a japanese cheesecake from deflating or sinking?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 18005,
+    "title": "Non-alcoholic substitute for brandy?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 15626,
+    "title": "Which part of yellow cake batter gives it the yellow cake flavor?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 11735,
+    "title": "Can I use guar and gelatine together?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 7066,
+    "title": "Can I repair a cake tin which has started to leak?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 6730,
+    "title": "How do I add butter to a sponge cake?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 130201,
+    "title": "How do I stop red or darker color royal icing from bleeding into lighter color icing when decorating?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 122720,
+    "title": "My grandmother's recipe for cookies from the 50s or 60s calls for a 5 cent cake of yeast. How many ounces is a 5 cent yeast cake?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 103355,
+    "title": "What is the history of the white chocolate macadamia nut cookie?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 86386,
+    "title": "How can I make curved gingerbread sheets for a gingerbread house?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 66935,
+    "title": "Eating cookie dough",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 64525,
+    "title": "How should I incorporate separated eggs in a cookie recipe without instructions?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 39971,
+    "title": "How to dry royal icing fast?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 25879,
+    "title": "How to get cracks in my ginger molasses cookies",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 22657,
+    "title": "What is meant by \"place 4 inches apart on cookie tray\"?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 18358,
+    "title": "How to make cookies less crumbly?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 17871,
+    "title": "Why does my first batch of cookies come out nice while later batches get thin?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 15401,
+    "title": "Cookies called monte cows?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 15318,
+    "title": "Is a little oven less hot than a bigger oven?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 10229,
+    "title": "Can you make pie crust from cookie dough?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 7412,
+    "title": "How do I get my chocolate chip cookies to turn out thick and soft?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 5325,
+    "title": "Will steel cut oats work for oatmeal cookies?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 109877,
+    "title": "Is there any substitute for butter (or oil) on puff pastry?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 97441,
+    "title": "Choux pastry, general questions with gluten free flour",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 83519,
+    "title": "How to line a tart ring for a perfect tart crust",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 32601,
+    "title": "How to get puff pastry to cook right through",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 20635,
+    "title": "Is it possible to make kataifi dough (by yourself or starting from filo dough)?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 22438,
+    "title": "Why do uncooked frostings that contain milk not need to be refrigerated?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 100934,
+    "title": "Why do some creams/fats whip better than others?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 43138,
+    "title": "How to decorate a cake so that the icing is smooth?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 30104,
+    "title": "Non-beet alternatives to standard red food dye",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 29021,
+    "title": "what happens when you whisk sugar with oil?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 22596,
+    "title": "How to keep the fruit on an upside-down cake?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 22384,
+    "title": "How should I organize making a cake days ahead?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 14016,
+    "title": "How to properly freeze cake",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 125101,
+    "title": "After putting something in my oven, the temperature drops and is super slow to increase back up despite keeping the door shut",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 116308,
+    "title": "How do egg whites help to keep fats inside a cake?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 103260,
+    "title": "Quickbreads vs Cakes: Understanding Mixing Ingredients -",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 102713,
+    "title": "Why is my cake rising sideways while baking?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 99709,
+    "title": "Why would the exterior of a cake cook and not the interior?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 98951,
+    "title": "How to achieve a super leavened cake as the Pierre Herme ones?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 92725,
+    "title": "Chiffon cake constantly has an unfilled bottom",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 72944,
+    "title": "Does it make sense for a cake icing recipe to call for vinegar but not baking soda?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 72907,
+    "title": "Protein networks in vegan cakes",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 68244,
+    "title": "Is it better to use soft or hard ladyfingers when making tiramisu?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 64597,
+    "title": "How to change a vanilla cake recipe to make a chocolate cake?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 62987,
+    "title": "\"Cloth\" that's edible (or even better, yummy)?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 62174,
+    "title": "How does substituting yogurt into a cake change the texture and why can it be used?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 62070,
+    "title": "Pre-frosting cake with jelly",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 54773,
+    "title": "I want to make a mug cake, can I use hot chocolate mix instead of cocoa?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 42162,
+    "title": "Baking a cake in a larger/smaller pan",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 40929,
+    "title": "Removing that eggy smell from cakes",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 29202,
+    "title": "Traditional panettone size & volume?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 24256,
+    "title": "Too much water in box cake mix batter. Can it be fixed?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 22420,
+    "title": "How should I alter a chocolate cake recipe to make plain/flavoured cake?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 22183,
+    "title": "How can I intensify the orange flavour in orange cake?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 17662,
+    "title": "Baking cakes in the Microwave ovens as compared to Electric ovens",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 15369,
+    "title": "How can I stop chocolate chips sinking to the bottom when I make cakes?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 11516,
+    "title": "Commercial Sponge Cake Improver?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 9737,
+    "title": "Why use metal cake pan instead of silicone one?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 7703,
+    "title": "What is substitute for rum in baking?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 136649,
+    "title": "Is it optimal to bake cookies on parchment paper or silicone baking mats?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 112958,
+    "title": "Can I bake cookies without baking paper?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 94827,
+    "title": "How to make wafer paper?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 93869,
+    "title": "What can i use instead of molasses?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 86497,
+    "title": "Why would a cookie recipe start producing puffier, slightly oily cookies over the past few years?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 53872,
+    "title": "Why do choc chip cookies change with different temperature butter?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 39632,
+    "title": "How to ship holiday cookies?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 23675,
+    "title": "\"Banging\" cookies half way through baking",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 13704,
+    "title": "What's the origin of the name of the \"Chinese Cookie\" found in Jewish deli's in the US?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 68947,
+    "title": "What is \"pastry butter\"?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 55435,
+    "title": "How do I fix my dough after I did not activate the yeast properly?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 45197,
+    "title": "What techniques or tricks make soft, flaky pastries instead of leathery ones?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 44785,
+    "title": "Is yogurt plus milk considered buttermilk?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 23253,
+    "title": "How do I make a flaky vegan croissant?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 23049,
+    "title": "How can you achieve the glazed top in a mille-feuille?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 20718,
+    "title": "How can I fix rips in a puff pastry sheet?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 20577,
+    "title": "What is the maximal thickness for choux pastry?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 15125,
+    "title": "What ingredient adds the sweetness on Croissants in Europe?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 12711,
+    "title": "How do I make macarons de Paris in a neat shape and make them rise with the lip?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 10510,
+    "title": "What is the point of heating milk/cream for making Creme Brulée?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 77206,
+    "title": "Piping whipped cream icing vs buttercream",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 37142,
+    "title": "Can you make a French Buttercream in a food processor? (Experiment Results)",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 132868,
+    "title": "Optimal temperature for mixing a gooseberry fool",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 116394,
+    "title": "Can I whip cream that is past its use by date?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 34657,
+    "title": "how to disarm a potentially pressurized whipping siphon?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 14318,
+    "title": "Does a liquid need to cool under pressure in a whipped cream charger prior to serving or just be cold?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 11208,
+    "title": "What ingredients will allow me to make a foam with a whipped cream charger?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 137068,
+    "title": "Why I can't I produce home made whipped cream by adding milk and butter",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 135387,
+    "title": "Would I be able to cut this cake recipe in half, and still have it taste just as good?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 113163,
+    "title": "Can I bake a christmas cake in a cardboard box?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 112834,
+    "title": "Weird air pockets/bubbles on bottom of cake",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 107407,
+    "title": "Melted vs softened butter in cake recipes",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 104551,
+    "title": "Gluten formation in cake dough",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 100754,
+    "title": "Can I coat a very soft cake with royal icing before I cover with fondant?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 100070,
+    "title": "What are the Purposes of the Types of Meringue that are used for Pastry?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 100011,
+    "title": "How to thicken a sour cream-based pastry cream?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 96787,
+    "title": "Preparing as much as possible of a cake in advance",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 81231,
+    "title": "Does (how does) cake batter consistency affect outcomes?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 78976,
+    "title": "Alcohol evaporation of beer in a cake",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 77507,
+    "title": "Is a boxed-mix cake sturdy enough to construct a sphere?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 74657,
+    "title": "Meringue Imitation to practice decoration",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 68178,
+    "title": "Do sifting and whisking do the exact same thing?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 67421,
+    "title": "How do I reconnect cake pieces that stuck to pan?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 67244,
+    "title": "why might the pineapple on the bottom of the pineapple-upside-down-cake float into the batter?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 65011,
+    "title": "What is the difference between acetate sheets and baking paper when making chocolate deco?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 64537,
+    "title": "Cake Projector Alternatives",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 61610,
+    "title": "Will chocolate cake be edible if I added one cup of water instead of two?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 54250,
+    "title": "How can I get my chocolate cake to taste less like a brownie?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 46630,
+    "title": "Edible lollipop sticks for a complicated birthday cake",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 44727,
+    "title": "What is the proper technique for making an angel food cake?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 43727,
+    "title": "Dehydrating cake?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 41114,
+    "title": "How can I get the maximum flavor from orange peels?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 40574,
+    "title": "How to add pistachios in a white chocolate mudcake",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 39746,
+    "title": "What's the best way to stack a three-tiered wedding cake that is not covered in fondant/marzipan?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 35706,
+    "title": "Cooking oranges to put in a cake",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 35524,
+    "title": "Stacking cakes without bases",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 35046,
+    "title": "How do you convert a cake recipe to make brownies?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 34530,
+    "title": "How can I make my carrot cake taste more carroty",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 32304,
+    "title": "Can I replace treacle with molasses in my fruit cake?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 32038,
+    "title": "Can I use brown sugar instead of white sugar in making fruitcake?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 29419,
+    "title": "Preventing heavy top layer of cake from crushing cream layer",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 22180,
+    "title": "Is there any other difference between the cakes and the cup cakes besides the size?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 19351,
+    "title": "Making cake without oven",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 14900,
+    "title": "How to spice up a carrot cake",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 14615,
+    "title": "How to get rid of the taste of flour in homemade bakery?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 14301,
+    "title": "How to enhance sweetness of a baked chocolate brownie?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 10792,
+    "title": "How many cups of batter does a cake mix make?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 10017,
+    "title": "Cooking an eggless cake",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 9872,
+    "title": "Cake sinks in the middle when baking. Only happens when I make a Coca-Cola Cake",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 8223,
+    "title": "Good techniques for stirring dough",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 5820,
+    "title": "How to keep thin sponge bases moist?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 64774,
+    "title": "Can I salvage cookie dough made with whole eggs instead of yolks?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 64496,
+    "title": "Cookie Dough Made From Pie Crust",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 51651,
+    "title": "What should I look for in a cookie jar?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 50283,
+    "title": "Can vegetable oil be used in place of butter?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 33090,
+    "title": "How to adjust the ingredients when recipe asks for salted peanuts and unsalted butter while I have the opposite?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 32511,
+    "title": "Replacing egg whites with whole eggs when baking cookies",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 30213,
+    "title": "Why must I return the chilled chocolate cookie dough to room temperature before baking?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 29262,
+    "title": "Suggestions for a substitute for almond paste in a cookie recipe?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 29209,
+    "title": "What ingredient changes will make this cookie dough more workable?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 19419,
+    "title": "Can I freeze all cookie dough? How far in advance can I make it?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 14122,
+    "title": "How can I tell when my fat is sufficiently creamed?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 134319,
+    "title": "How can I make these cookies browned and cooked throughout?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 129386,
+    "title": "What is a Nero’s ear cookie?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 113222,
+    "title": "How to substitute unsweetened coconut for sweetened coconut?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 108976,
+    "title": "How can I substitute dutch chocolate cocoa for flour and maintain proper recipe PH in this cookie recipe?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 96083,
+    "title": "How to make Tortas de Algarrobo?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 77049,
+    "title": "Dicing Hot Tamales (candy)",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 34540,
+    "title": "Why do Pocky and other \"stick\" biscuits have this distinct burn pattern?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 24210,
+    "title": "Forgot to add sugar to cookies",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 22728,
+    "title": "Can I substitute brown or confectioner's sugar for granulated sugar in sugar cookies?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 22244,
+    "title": "How do I speed up the preparation time for chocolate chip cookies?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 19250,
+    "title": "How to Rescue Too-Soft Cookie Dough Made with Butter Substitute?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 13445,
+    "title": "Cookie Biscuits: What happened?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 128048,
+    "title": "Making shortcrust pastry ahead of time",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 121994,
+    "title": "What is the best way to set hot water pastry?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 117157,
+    "title": "How are you supposed to eat mille feuille?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 116153,
+    "title": "Hot Water Crust Pastry: effects of different ratio of ingredients?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 109546,
+    "title": "How Does a Hot Water Whipped Pie Crust Work?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 85885,
+    "title": "Why not blind bake with two pie plates?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 66490,
+    "title": "Pastry not \"sticking\" to beef Wellington",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 61932,
+    "title": "How can I keep samosa pastry crispy longer?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 52284,
+    "title": "Why do my pastries come out flat when I use butter instead of margarine?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 36267,
+    "title": "How does fat affect gluten development in strudel/phyllo dough?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 5246,
+    "title": "Savoury equivalent of choco-cornflake cakes",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 87116,
+    "title": "What kind of frosting has similar texture to the major grocery brands?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 46269,
+    "title": "How to make frosting very white, fluffy, and shiny?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 33932,
+    "title": "How can I attach printed rice paper decorations to cakes / cookies?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 126339,
+    "title": "What are some ways to make whipping cream if I don't have any cream",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 121755,
+    "title": "When whipping cream, what is “custard-like consistency”?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 118020,
+    "title": "Why won't my whipped cream (with extras) stiffen up?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 109882,
+    "title": "Can I make a buttercream using cacao butter?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 109626,
+    "title": "Baking personal sized chiffon cake",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 109459,
+    "title": "How to keep cake soft when served frozen (Ice Cream Cake)",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 62651,
+    "title": "Shelf Life of Homemade Panettone",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 62055,
+    "title": "How to adjust oil in recipe when adding peanut butter",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 54525,
+    "title": "How to properly clean a bundt mold without ruining the surface",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 49433,
+    "title": "How does pudding make cake moister?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 46450,
+    "title": "How much can I change the height of a cake?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 44915,
+    "title": "Making batter one day, baking the next",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 43111,
+    "title": "Substitute for Calvados, reduced cider?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 41959,
+    "title": "Storing cake batter",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 41099,
+    "title": "blackened carrot cake",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 33103,
+    "title": "Dying a white iced cake black",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 29636,
+    "title": "Where should I store my cakes?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 28060,
+    "title": "Baking a cake in a microwave",
+    "reason": "missing_license"
+  },
+  {
+    "question_id": 26059,
+    "title": "How can I avoid cakes to turn into jelly?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 21298,
+    "title": "Will fresh strawberries make a cake soggy?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 20818,
+    "title": "Should you freeze pastry lukewarm? If so, why?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 20675,
+    "title": "How long does butter cream icing keep?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 11647,
+    "title": "My cake batter always comes out sticky. Is this normal?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 11362,
+    "title": "Doubling ingredients on panettone cake",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 126441,
+    "title": "What is the difference between powdered sugar and regular sugar when it comes to baking cookies?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 107269,
+    "title": "How can I best bake cookies from cold dough?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 100916,
+    "title": "Removing sugar from baking recipes",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 100225,
+    "title": "What part of oatmeal cookies are making them soft / chewy?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 99203,
+    "title": "Anise Cookies: Why 12-hour rest before baking?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 97196,
+    "title": "Replacing quick-cooking oatmeal in a two-ingredient cookie recipe with cooked steel-cut oats - why doesn't it work?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 93874,
+    "title": "Butter in cookies",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 93699,
+    "title": "Can i use vegetable oil instead of butter in cookies?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 88537,
+    "title": "Can I substitute chocolate chips for cacao nibs in a cookie recipe?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 87130,
+    "title": "Chemical leavening and dough chilling",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 86651,
+    "title": "What results can I expect from egg and sugar variations in spritz cookies?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 86288,
+    "title": "my cookie dough was in the fridge overnight and now its rock hard can I microwave it?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 83400,
+    "title": "Can you use both melted and creamed butter for cookies?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 81450,
+    "title": "Is there some sort of gun (or a way) to decorate cookies with chocolate chips or nuts?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 79247,
+    "title": "Shortbread with a snap",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 77740,
+    "title": "What differences will happen if you use a rectangular baker to bake cookies instead of a tray?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 76501,
+    "title": "Using dried cranberries instead of chocolate chips in cookies",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 75241,
+    "title": "Why aren't my chocolate chip cookies coming out the way I'd like them?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 67444,
+    "title": "How to figure out where is the best place to store homemade cookies: in the fridge or on the counter, in an airtight container or elsewhere",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 65823,
+    "title": "How to avoid using artificial food coloring in cookie and cake decorating",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 62951,
+    "title": "What can I do if I forgot to cream the butter and sugar in my cookie recipe?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 62418,
+    "title": "Are my cookies cooked?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 62235,
+    "title": "Is eating cookie dough without egg safe?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 51828,
+    "title": "I am using agave instead of sugar, do I add more flour to keep things right in cookie dough?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 50272,
+    "title": "Making stroopwafels with a pizelle iron",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 47585,
+    "title": "What do I need to consider when upgrading to a 40 quart mixer?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 45123,
+    "title": "What makes the difference between domed and flat cookies?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 43716,
+    "title": "Can I leave butter cookies in the fridge?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 43577,
+    "title": "What is instant pudding mix used for in baking cookies?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 35448,
+    "title": "How do I make \"thick cooked rhubarb\"",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 29065,
+    "title": "How to make cookies without using greaseproof paper or a baking tin?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 28918,
+    "title": "Why is my first batch of cookies out of the oven too flat?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 28083,
+    "title": "Substitute for Kirsch in Leckerli (Basel Lackerli) cookies?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 27675,
+    "title": "How to bake without an oven?",
+    "reason": "missing_license"
+  },
+  {
+    "question_id": 22999,
+    "title": "How to make crumbly cookies?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 17568,
+    "title": "Can I leave out raw already-formed cookies for close to an hour while I wait for the oven to be available?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 15091,
+    "title": "How does replacing some butter with shortening affect rising / leavening in cookies (biscuits)?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 14052,
+    "title": "Amount of Chocolate-chips in a Chocolate-chip cookie?",
+    "reason": "missing_license"
+  },
+  {
+    "question_id": 12129,
+    "title": "What's the best way to stick sprinkles to cookies without icing?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 10201,
+    "title": "How to get cheap cookie cutters?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 3397,
+    "title": "What is the difference between a macaron and an amaretti biscuit?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 33405,
+    "title": "Adjusting whipped cream to hold its shape longer?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 133204,
+    "title": "Scalding the flour for savoiardi (ladyfingers) to improve shape?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 126047,
+    "title": "What do the numbers mean on a pack of ciabatta buns?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 121727,
+    "title": "Can you successfully use a wet filling with hot water pastry?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 100539,
+    "title": "Why does pâte à choux puff up?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 99082,
+    "title": "creme patissiere too solid",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 95803,
+    "title": "Can I make Jachnun in a Dutch oven?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 91970,
+    "title": "How do I pick up and move shortcrust pastry dough without breaking it?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 89881,
+    "title": "How do I cook frozen pastry",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 51911,
+    "title": "What is the best sugar for sweet short crust pastry?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 51763,
+    "title": "How can I prevent pastry becoming soggy when it has a filling and is stored overnight?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 40237,
+    "title": "Will these mince pies still be good and/or safe to consume?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 30421,
+    "title": "Why does my lemon tart filling sometimes curdle?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 29426,
+    "title": "What is the name of this Venetian pastry?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 22956,
+    "title": "How do I get the filling inside pâte à choux?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 20687,
+    "title": "How to bake lokum rolls well?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 20028,
+    "title": "Should syrup or pastry be cooled when pouring on to Baklava?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 19930,
+    "title": "Glazing pastry - Egg white or Milk?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 19370,
+    "title": "Why is my pastry blistering in the microwave?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 16105,
+    "title": "How to make soft Gulab Jamuns?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 15439,
+    "title": "How do I stop my pastry shrinking?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 10838,
+    "title": "How do I infuse fruit flavor in ganache?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 4170,
+    "title": "Uses for thick \"country-style\" phyllo?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 126141,
+    "title": "How can I thicken this icing/glaze?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 82594,
+    "title": "Did I turn my frosting into mayonnaise?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 53431,
+    "title": "Making cake balls with a not-so-sweet frosting",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 44715,
+    "title": "Filling vs Frosting",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 107188,
+    "title": "Dalgona / whipped coffee without sugar?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 89989,
+    "title": "Can I use a pint/ 500ml whipped cream canister for small volumes?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 82498,
+    "title": "Why does whipped cream use nitrous oxide instead of nitrogen gas?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 82016,
+    "title": "Whipping cream that has been frozen won't whip",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 56209,
+    "title": "Caulk gun-like dispenser for whipped cream",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 53663,
+    "title": "What is the difference between whipped cream and whipping cream?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 51666,
+    "title": "What flavors complement pistachio (pudding specifically)?",
+    "reason": "missing_license"
+  },
+  {
+    "question_id": 25938,
+    "title": "How long will double cream stay whipped?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 15456,
+    "title": "How fast can one whip cream?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 119434,
+    "title": "Are there any ways to make rum cookies other than baking them?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 113099,
+    "title": "Can I use tartaric acid in making Snickerdoodles?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 108552,
+    "title": "How much baking powder or soda can I add to cookies without the taste being affected?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 105745,
+    "title": "My soft chocolate cookies are soft but still too crumbly. How should I fix it?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 104564,
+    "title": "How to reduce sugar in chocolate chip cookies without losing the texture",
+    "reason": "missing_license"
+  },
+  {
+    "question_id": 97034,
+    "title": "Why are amaretti mixed as they are?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 95098,
+    "title": "Making Tuiles in a frying pan?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 92777,
+    "title": "What kind of cookie breaks easily into multiple pieces when dropped?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 90492,
+    "title": "Fully baked cookies in a 90 F car",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 88425,
+    "title": "Buttery Chocolate chip cookies",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 86915,
+    "title": "Is it possible to make your own DIY cookie mix?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 86394,
+    "title": "Can I cream butter, sugar and eggs ahead of time",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 81050,
+    "title": "How could I use liquid flavorings to make a version of a jelly-topped cookie?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 80872,
+    "title": "Making molasses cookies less soft",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 71422,
+    "title": "Can I make Chocolate Chip Cookies last for months by adding preservatives?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 65744,
+    "title": "Reducing sweetness of packaged cookie mix",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 64220,
+    "title": "Cookie dough consistency problems",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 63709,
+    "title": "Incorporate oreo bits in cookie recipe",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 62419,
+    "title": "Re-baking cookies?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 54739,
+    "title": "How can i achieve the same texture as Soft baked Pepperidge Farm cookies?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 53398,
+    "title": "Getting correct baking consistency when using stevia as sugar substitute",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 50402,
+    "title": "Can I use parchment paper for all cookies",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 50000,
+    "title": "Why pre-mix baking soda into 2 tsp of milk?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 46505,
+    "title": "Chocolate chip cookies with whole wheat flour",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 38115,
+    "title": "How to stick oreo biscuits together to make a tower?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 37558,
+    "title": "How do I make oatmeal chocolate chip cookies that are thick?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 37070,
+    "title": "How to substitute butter with combination of butter and shortening in cookie/biscuit making?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 34857,
+    "title": "Pecan Sandies-Baking powder in the recipe vs. recipe without a leavening agent?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 32544,
+    "title": "Why is salt sometimes ingredient of otherwise sweet cookies?",
+    "reason": "missing_license"
+  },
+  {
+    "question_id": 29372,
+    "title": "What are some low fat butter substitutes for cookies?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 22394,
+    "title": "Why do my cookies deflate when coming out of the oven?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 19235,
+    "title": "Recipes for cookie cutters vs drop cookies",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 129368,
+    "title": "What's wrong with my lamination?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 124221,
+    "title": "Does \"pastry\" mean something different in cooking than in baking?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 120834,
+    "title": "What is the difference between Pate Sucree and Pate Sablee?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 119733,
+    "title": "Chocolate choux pastry",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 115251,
+    "title": "What kind of dish/pastry consists of white bread with ice-cream or some sort of mousse inside?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 112448,
+    "title": "Blending pastry cream right after cooking: does it change final consistency?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 87414,
+    "title": "Creating some flakiness inside a Belgian Liege waffle",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 85864,
+    "title": "Is there ever a reason not to use baking beads when blind baking?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 85338,
+    "title": "How does altering the fat-to-flour ratio affect the pastry?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 65640,
+    "title": "Non-flaky non-crumble pie crust",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 63514,
+    "title": "Glazing bread pre-baking",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 62947,
+    "title": "Red Bean Cream puffs timing and filling",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 47698,
+    "title": "Potato and onion used in cheese & onion pasties",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 42340,
+    "title": "Impastata Ricotta for Cannoli",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 36001,
+    "title": "choux pastry, keep mixing while waiting for the roux to cool?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 20901,
+    "title": "How can I make a stable olive oil and vanilla ganache?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 20558,
+    "title": "Sausage roll pastry - how do I achieve a smooth shiny effect?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 17045,
+    "title": "How can I prevent pear juice from soaking into pastry dough?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 130023,
+    "title": "Frosting Cake stored in fridge overnight",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 124333,
+    "title": "What technique or tools should I use to make frosting in this particular shape?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 113381,
+    "title": "What's the kind of cake that have liquid frosting that drips when you open the package?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 100927,
+    "title": "What is a stable frosting for a cake that will be in warm temperatures at an outside party?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 93632,
+    "title": "What’s the minimum sugar to egg white ratio in Swiss buttercream?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 64331,
+    "title": "Coffee whipped cream filling",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 62433,
+    "title": "How can you change flavors in store-bought frosting?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 35777,
+    "title": "what is the correct consistency for cream cheese frosting",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 120166,
+    "title": "How to avoid airy, thin whipped cream",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 113259,
+    "title": "Pumpkin Nitro Mousse?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 112223,
+    "title": "Whipped Cream Separates While Piping",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 78031,
+    "title": "How to make softer frozen whipped cream?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 68149,
+    "title": "How to make a passion fruit mousse without gelatin?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 66573,
+    "title": "Whipped Cream out of Egg Whites",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 59125,
+    "title": "how to whip UHT cream?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 58387,
+    "title": "Can one get quality whipped cream by putting only 250 ml (1 cup) whipping cream into a half litre (1 pint) NO2 whipper?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 51802,
+    "title": "Whipped cream running permanently from siphon",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 35201,
+    "title": "How do I make meringue using a whipped cream charger?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 34978,
+    "title": "how to tell if a whipping cream dispenser is overpressurized or underpressurized?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 34606,
+    "title": "Funnel-like device for putting non-liquids into a whipped cream dispenser?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 28653,
+    "title": "Off flavor whipped cream from an ISI charger",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 19736,
+    "title": "Why am I getting runny whipped cream from my iSi canister?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 135500,
+    "title": "Adjust baking to compensate for too-fast convection fan?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 125519,
+    "title": "Veganizing a Kringle recipe",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 120268,
+    "title": "What is the proper way to make a fruit purée?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 115500,
+    "title": "What effect would replacing the egg in a pie crust with egg whites have?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 113374,
+    "title": "Why not use cornstarch instead of flour for pastries?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 107503,
+    "title": "can I make tarte tatin without an oven?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 104133,
+    "title": "What is the difference between using hot water and cold water when making regular pastry?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 103108,
+    "title": "Can you add rice flour to pastries to make them flakier?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 97061,
+    "title": "Why are croissants brushed twice with egg glaze?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 96056,
+    "title": "How can I bake Cannelés more evenely with a big silicon pan?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 93713,
+    "title": "Puff Pastry wet / gummy on the inside",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 91562,
+    "title": "How to proof croissants in the hot weather?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 87820,
+    "title": "Can I \"fill\" a chicken pot pie 24 hours before cooking it?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 87436,
+    "title": "Dough blender vs dough cutter?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 83373,
+    "title": "Can I freeze (unbaked) pate a choux?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 81328,
+    "title": "Name of this Italian pastry?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 76580,
+    "title": "Attempt to make praline paste failed -- what should I do differently?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 75269,
+    "title": "Costa Rican empanada-like food?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 71169,
+    "title": "What is the effect that cooked sieved egg yolks added to pastry dough will have on the final product?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 65569,
+    "title": "Butter Alternatives for Baking Pastry",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 43165,
+    "title": "Giant meringue French pastry - what are these called?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 42672,
+    "title": "cooking pastry for bottom of pie using cold filling",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 40487,
+    "title": "What is the name of this Italian pastry?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 20815,
+    "title": "Can I bake a quiche with a flaky crust?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 15146,
+    "title": "Only recipe I can find for Anacini says \"as much as plain flour as the mixture will need\"",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 12857,
+    "title": "How do I make the filling in pain aux raisins / danish pastry",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 7738,
+    "title": "Halva smells like play-dough? a common ingredient?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 124512,
+    "title": "How can i improve the strength/pigmentation of colours in my Swiss Meringue Buttercream Icing",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 121514,
+    "title": "Baking muffins filled with cream cheese frosting instead of cream cheese filling",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 114503,
+    "title": "Cocoa butter crystals in chocolate frosting",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 104162,
+    "title": "Is there a frosting that's sweet like American Buttercream but textured like Italian Meringue Buttercream?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 100421,
+    "title": "When Swiss Meringue Buttercream is made with dried egg whites, must the meringue be heated before adding the butter?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 76695,
+    "title": "Can you cover an angel food cake with fondant?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 59120,
+    "title": "how long does swiss meringue last?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 56514,
+    "title": "Freezing Buttercream Flowers for later use?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 49637,
+    "title": "Rescuing peanut butter frosting",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 49002,
+    "title": "How to convert a chocolate fudge frosting recipe to white chocolate?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 35142,
+    "title": "Can I substitute chocolate chips for cocoa powder in my frosting?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 27644,
+    "title": "How long can frosting with butter, powdered sugar, salt, vanilla, and milk, that is covered with fondant be left out of the refrigerator?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 129829,
+    "title": "How to open a overfilled whipped cream dispenser that is stuck and can’t open lid",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 104489,
+    "title": "Can you make whipped cream with a SodaStream?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 104269,
+    "title": "How to make white whip cream?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 94826,
+    "title": "Using Clotted Cream as Whipping Cream",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 90032,
+    "title": "How long should I keep something in the freezer to chill it?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 87659,
+    "title": "Can sour cream be whipped?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 84720,
+    "title": "Why is my whipped cream dispenser stuck?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 83657,
+    "title": "Why does whipped Cream sometimes sink in warm beverages?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 79396,
+    "title": "whipped cream icing beforehand vs right before serving",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 78512,
+    "title": "N2O canister getting stuck in whipping siphon?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 73890,
+    "title": "When whipping cream, does its state continually cycle through various states? Is there a dead end at whipped butter? Or does something else happen?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 56646,
+    "title": "Butter cream icing substitutions for covering the cake with fondant",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 32822,
+    "title": "What is the best recipe for Chocolate Mousse: with butter or cream?",
+    "reason": "missing_license"
+  },
+  {
+    "question_id": 28380,
+    "title": "Tiramisu mixture not firm",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 19122,
+    "title": "Is it possible my cream was too cold prior to whipping?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 18561,
+    "title": "Differences between heavy and light whipping cream?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 126123,
+    "title": "What does \"CELLO\" mean in \"350G/750G CELLO\"",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 125730,
+    "title": "What is a reasonable culinary substitute for cucurbita maxima or other pumpkins used in pie and bread?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 123314,
+    "title": "Do you need to boil the liquid used to make the perfect hot water pastry?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 121981,
+    "title": "How do you secure a nozzle on your pastry bag?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 121936,
+    "title": "My eclair filling is very runny. How do I make it thick enough?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 113781,
+    "title": "Can a pre made jam be thickened into pate de fruit?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 113416,
+    "title": "Matcha tea chocolate ganache",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 110962,
+    "title": "How to make a good pie dough like the industrial one?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 108449,
+    "title": "Why is my dough sweaty?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 101142,
+    "title": "What is the most effective method to prevent a soggy shortcrust quiche base?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 100323,
+    "title": "Any strategies or tips on how to make juice into creams for filling cakes?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 97610,
+    "title": "French (?) pastry on the cover of a book",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 89507,
+    "title": "Can I use icing sugar instead of caster sugar? Are they the same thing?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 87735,
+    "title": "Simple Puff Pastry Dough",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 80900,
+    "title": "How to keep profiteroles fresh",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 70567,
+    "title": "Is \"krapfens\" commonly used to designate donuts?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 49599,
+    "title": "Where can I find food-grade beeswax to make Canelé?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 45174,
+    "title": "Substitute apricot with some other fruit in this Sunny-Side-Up Apricot Pastries recipe",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 37888,
+    "title": "Can I make choux pastry with an electric hob?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 23937,
+    "title": "What is the name for a round flaky pastry that has a chocolate cream filling in the middle",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 136818,
+    "title": "I would like to find icing decorating tips that screw onto 16 oz squeeze bottles for creams on waffle bar. Can you help?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 122135,
+    "title": "Can you ever make your frosting (or icing) without sugar crunch?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 121958,
+    "title": "Frosting that tastes less like cream cheese",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 120545,
+    "title": "Why is my cream cheese frosting so soft?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 101205,
+    "title": "Help on understanding frosting",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 71668,
+    "title": "Is there a frosting similar to whipped cream but without cream?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 56577,
+    "title": "Shortening to Swiss Buttercream",
+    "reason": "missing_license"
+  },
+  {
+    "question_id": 44635,
+    "title": "Can sunflower or coconut oil be substituted for vegetable shortening in cake icing?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 127891,
+    "title": "Whip cream dispenser is not dispensing a thick cream",
+    "reason": "missing_license"
+  },
+  {
+    "question_id": 114076,
+    "title": "Color bleeding when piping",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 105273,
+    "title": "Ultra thick and fluffy pudding",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 97249,
+    "title": "What are differences between traditional whisked whipped cream and whipping syphon?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 90612,
+    "title": "How can I recreate canned whipped cream from scratch?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 87791,
+    "title": "At what pressure is whipped cream stored in a can?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 82569,
+    "title": "Substitute for eggs in Macarons (No Legumes)",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 77900,
+    "title": "Why does coconut milk separate when it is placed in the fridge?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 63064,
+    "title": "When I pull the trigger on my cream whipper, it won't stop, even when released",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 59899,
+    "title": "How long can I store whipped cream for?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 44884,
+    "title": "Whipping double cream with amaretto",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 22509,
+    "title": "Nitrous oxide gas leak when charging ISI whipping cream dispenser",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 132630,
+    "title": "How much salt to use in pastry?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 128855,
+    "title": "\"Vanilla cream\" from Fibaek's Raw Cakes",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 124038,
+    "title": "What can you use in cookie dough as a binding agent other than eggs or sugar?",
+    "reason": "missing_license"
+  },
+  {
+    "question_id": 123278,
+    "title": "Cooking in oil VS brushing on oil before cooking for",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 122696,
+    "title": "How do I achieve an even color on my pastry – without fats?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 115835,
+    "title": "Effect of adding whole egg or yolk to filo pastry?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 114520,
+    "title": "Achieving viscosity when making cocoa spread, without butter or coconut oil, with colza oil, without nuts",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 114309,
+    "title": "How to lower the melting point of a specific chocolate?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 113473,
+    "title": "What are multi-stage pastry molds called?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 113210,
+    "title": "How to make a very fluffy croissant?",
+    "reason": "missing_license"
+  },
+  {
+    "question_id": 108089,
+    "title": "What can I do with whole wheat pastry dough?",
+    "reason": "missing_license"
+  },
+  {
+    "question_id": 108051,
+    "title": "What are the consequences of failing to strain my pastry cream?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 105193,
+    "title": "Freezed Expired Bread",
+    "reason": "missing_license"
+  },
+  {
+    "question_id": 97027,
+    "title": "Is boiling or pouring better for emulsifying chocolate ganache",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 94242,
+    "title": "Is a flan a pastry?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 94073,
+    "title": "Which sugar is used in pastry more often, white or brown?",
+    "reason": "missing_license"
+  },
+  {
+    "question_id": 90290,
+    "title": "Oil substitution for butter in pastry recipe",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 82132,
+    "title": "Is this the way to make good pies?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 65834,
+    "title": "Rolling shop-bought pastry without flour",
+    "reason": "missing_license"
+  },
+  {
+    "question_id": 55311,
+    "title": "Why Does a Lot of Pastry Have an Orange Flavor?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 44775,
+    "title": "Substitute for pastry flour",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 129918,
+    "title": "How to make frosting with yogurt powder?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 120861,
+    "title": "At Home Cake Decorator",
+    "reason": "missing_license"
+  },
+  {
+    "question_id": 89317,
+    "title": "Reducing butter levels in Swiss or Italian Buttercream",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 73678,
+    "title": "How to thicken buttercream without adding more sugar",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 57361,
+    "title": "How to change this frosting recipe to get a thicker result?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 56657,
+    "title": "how long does a cake with avocado frosting last in the fridge?",
+    "reason": "missing_license"
+  },
+  {
+    "question_id": 29599,
+    "title": "How should I modify my vanilla frosting to convert it into a chocolate frosting?",
+    "reason": "missing_license"
+  },
+  {
+    "question_id": 129482,
+    "title": "Can a foaming hand dispenser whip cream?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 123904,
+    "title": "Can you make sugar free whipped cocunut cream?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 115855,
+    "title": "Making a cremeaux lighter with whipped cream. Is there a name for this?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 113911,
+    "title": "Minimum quantity of heavy whipping cream to get whipped cream from dispenser",
+    "reason": "missing_license"
+  },
+  {
+    "question_id": 107819,
+    "title": "Whipped cream from milk powder",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 35208,
+    "title": "How can I make whipped cream if I can't always get cream?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 33081,
+    "title": "How can I make fat-free whipped \"cream\" with a whipped cream dispenser?",
+    "reason": "not_a_problem_question"
+  },
+  {
+    "question_id": 37345,
+    "title": "How to make my croissants to grow?",
+    "reason": "conceptual_title"
+  },
+  {
+    "question_id": 114183,
+    "title": "Thickening cream in a blender to increase fat content?",
+    "reason": "no_failure_signal"
+  },
+  {
+    "question_id": 41332,
+    "title": "Crispy Lembas Bread Recipe",
+    "reason": "category_cap"
+  },
+  {
+    "question_id": 22556,
+    "title": "How to cream when there is more sugar than butter in the recipe?",
+    "reason": "category_cap"
+  },
+  {
+    "question_id": 97013,
+    "title": "Dry Cookie Dough",
+    "reason": "category_cap"
+  },
+  {
+    "question_id": 76869,
+    "title": "Lace cookies TOO thin?",
+    "reason": "category_cap"
+  },
+  {
+    "question_id": 49933,
+    "title": "How do I bake chocolate chip cookies like Subway?",
+    "reason": "category_cap"
+  },
+  {
+    "question_id": 43698,
+    "title": "Why are my cookies falling apart?",
+    "reason": "category_cap"
+  },
+  {
+    "question_id": 43132,
+    "title": "What should a good cookie dough look like?",
+    "reason": "category_cap"
+  },
+  {
+    "question_id": 32677,
+    "title": "How can I save crumbly cookie dough?",
+    "reason": "category_cap"
+  },
+  {
+    "question_id": 27625,
+    "title": "Why do my cookies fall flat and not cook on the bottom?",
+    "reason": "category_cap"
+  },
+  {
+    "question_id": 121003,
+    "title": "Cookies are coming out like dry pancakes. What can I do?",
+    "reason": "category_cap"
+  },
+  {
+    "question_id": 108483,
+    "title": "Why are my croissants heavy?",
+    "reason": "category_cap"
+  },
+  {
+    "question_id": 128075,
+    "title": "Swiss buttercream being runny and unusable for cake decoration",
+    "reason": "category_cap"
+  }
+]
