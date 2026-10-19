@@ -46,7 +46,9 @@ Components must not call Gemini directly or access server secrets.
 ### lib/ai/
 
 Owns model configuration, prompt construction, input/output schemas and
-diagnosis orchestration.
+diagnosis orchestration. `diagnose.ts` names the primary model and a
+fallback model, tried once when the primary is overloaded (503), within one
+shared 20s timeout.
 
 This folder must not import React components.
 

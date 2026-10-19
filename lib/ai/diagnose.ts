@@ -17,7 +17,10 @@ import {
 import { getEnv } from "@/lib/env";
 
 const MODEL_NAME = "gemini-3.6-flash";
-// Keep below lib/diagnose-client.ts's timeout so this error wins the race.
+// Tried once when MODEL_NAME is overloaded (503); on separate capacity.
+const FALLBACK_MODEL_NAME = "gemini-3.5-flash-lite";
+// Shared by both models. Keep below lib/diagnose-client.ts's timeout so this
+// error wins the race.
 const REQUEST_TIMEOUT_MS = 20_000;
 
 export type DiagnoseErrorCode =
@@ -34,9 +37,17 @@ export class DiagnoseError extends Error {
   }
 }
 
-function isRateLimited(error: unknown): boolean {
+function hasStatus(error: unknown, statusCode: number): boolean {
   const cause = RetryError.isInstance(error) ? error.lastError : error;
-  return APICallError.isInstance(cause) && cause.statusCode === 429;
+  return APICallError.isInstance(cause) && cause.statusCode === statusCode;
+}
+
+function isRateLimited(error: unknown): boolean {
+  return hasStatus(error, 429);
+}
+
+function isOverloaded(error: unknown): boolean {
+  return hasStatus(error, 503);
 }
 
 export async function diagnoseBake(input: DiagnosisInput): Promise<Diagnosis> {
@@ -52,17 +63,30 @@ export async function diagnoseBake(input: DiagnosisInput): Promise<Diagnosis> {
   }
 
   const google = createGoogleGenerativeAI({ apiKey: env.GEMINI_API_KEY });
-
-  try {
-    const { output } = await generateText({
-      model: google(MODEL_NAME),
+  const abortSignal = AbortSignal.timeout(REQUEST_TIMEOUT_MS);
+  const generate = (modelName: string) =>
+    generateText({
+      model: google(modelName),
       output: Output.object({ schema: diagnosisSchema }),
       instructions: SYSTEM_PROMPT,
       prompt: buildUserMessage(input),
-      timeout: REQUEST_TIMEOUT_MS,
+      maxRetries: 0,
+      abortSignal,
     });
 
-    return diagnosisSchema.parse(output);
+  try {
+    let result: Awaited<ReturnType<typeof generate>>;
+    try {
+      result = await generate(MODEL_NAME);
+    } catch (error) {
+      if (!isOverloaded(error)) throw error;
+      console.error(
+        `diagnoseBake: ${MODEL_NAME} overloaded, trying ${FALLBACK_MODEL_NAME}`,
+      );
+      result = await generate(FALLBACK_MODEL_NAME);
+    }
+
+    return diagnosisSchema.parse(result.output);
   } catch (error) {
     if (
       error instanceof z.ZodError ||

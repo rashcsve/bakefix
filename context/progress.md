@@ -9,6 +9,30 @@ https://bakefix.vercel.app/ (deployed manually by the user).
 Next: none — Step 08 is complete. Post-MVP: Python dataset evals and
 their automated workflow added (see below).
 
+## Post-MVP: Fallback model on Gemini overload
+
+The 2026-10-12 scheduled eval run against production failed (22% valid
+diagnoses: 6 `AI_UNAVAILABLE`, 8 `RATE_LIMITED`, no quality failures).
+Vercel logs showed the `AI_UNAVAILABLE` cases were Gemini 503s ("This model
+is currently experiencing high demand") on `gemini-3.6-flash`, after the
+SDK's retries had taken about 17s. A production probe on 2026-10-19 failed
+the same way.
+
+`lib/ai/diagnose.ts` now:
+
+- calls `MODEL_NAME` with `maxRetries: 0`, and on a 503 (bare or wrapped in
+  `RetryError`) tries `FALLBACK_MODEL_NAME` (`gemini-3.5-flash-lite`) once;
+- shares one `AbortSignal.timeout(20_000)` across both calls, so the server
+  still finishes before the client's 25s timeout;
+- does not fall back on 429, invalid output, timeouts or other errors (the
+  user's choice: free-tier usage stays predictable).
+
+Characterization tests for the existing error mapping were added and
+passed before the change; fallback tests failed before it.
+`tests/ai/diagnose.test.ts` now resets the `generateText` mock before each
+test, because `restoreAllMocks` left queued `*Once` values that leaked
+between tests. Not yet verified live or deployed.
+
 ## Post-MVP: Automated AI evals
 
 Added `.github/workflows/ai-evals.yml`, which runs the Python live evals
