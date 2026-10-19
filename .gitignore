@@ -50,3 +50,6 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 evals/python/reports/
+
+# claude code personal settings
+.claude/settings.local.json

@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(pnpm test)",
+      "Bash(pnpm test *)",
+      "Bash(pnpm test:e2e *)",
+      "Bash(pnpm typecheck)",
+      "Bash(pnpm lint)",
+      "Bash(pnpm lint:fix)",
+      "Bash(pnpm format)",
+      "Bash(pnpm build)",
+      "Bash(pnpm biome *)",
+      "Bash(uv run pytest *)",
+      "Bash(uv run ruff *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
+    ],
+    "ask": [
+      "Bash(pnpm add *)",
+      "Bash(pnpm install *)",
+      "Bash(pnpm remove *)",
+      "Bash(pnpm update *)",
+      "Bash(uv add *)",
+      "Bash(git push *)",
+      "Bash(rm *)",
+      "Bash(git rm *)",
+      "Bash(pnpm eval:ai *)",
+      "Edit(/lib/env.ts)",
+      "Edit(/.github/workflows/**)",
+      "Edit(/evals/python/data/**)",
+      "Edit(/package.json)",
+      "Edit(/pnpm-lock.yaml)",
+      "Edit(/evals/python/pyproject.toml)"
+    ],
+    "deny": [
+      "Read(/.env)",
+      "Read(/.env.*)",
+      "Read(**/*.pem)",
+      "Bash(cat .env*)",
+      "Bash(git push --force *)",
+      "Bash(git push -f *)",
+      "Bash(rm -rf *)",
+      "Bash(rm -fr *)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=$(jq -r '.tool_input.file_path // empty'); case \"$f\" in *.ts|*.tsx|*.mts|*.js|*.mjs|*.json|*.css) cd \"$CLAUDE_PROJECT_DIR\" && pnpm exec biome check --write --no-errors-on-unmatched \"$f\" >/dev/null 2>&1 || true ;; esac"
+          }
+        ]
+      }
+    ]
+  }
+}

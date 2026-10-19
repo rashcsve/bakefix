@@ -1,41 +1,54 @@
-# BakeFix agent instructions
+# Project: BakeFix
+Diagnoses failed bakes with Gemini. Full-stack Next.js app: React UI, an API route (`app/api/diagnose`) that calls Gemini on the server, and a Python eval package (`evals/python`).
+Next.js 16 App Router, React 19 + React Compiler, TypeScript strict, Zod, Tailwind 4, pnpm.
 
-## Context routing
+## Commands
+- Dev: `pnpm dev`
+- Test all: `pnpm test` · one file: `pnpm test tests/env.test.ts` · e2e: `pnpm test:e2e`
+- Typecheck: `pnpm typecheck`
+- Lint / format: `pnpm lint` · `pnpm lint:fix` (Biome, no ESLint/Prettier)
+- Python evals (offline): `cd evals/python && uv run pytest && uv run ruff check .`
+- Live AI evals spend Gemini quota: `pnpm eval:ai` only when asked.
 
-Before every implementation task, read:
+## Context
+Background docs live in `context/` (product, architecture, code-standards, ai-contract, ui-tokens, ui-registry).
+Read the relevant ones before implementing. New features are specified in `docs/specs/<feature>.md` (`/spec`, then `/next-task`).
+`context/build-plan.md` covers the finished MVP steps; `/build-step` is only for those.
 
-- context/product.md
-- context/architecture.md
-- context/code-standards.md
-- context/progress.md
-- the current step in context/build-plan.md
+## Conventions
+- API responses are `{ ok: true, … }` or `{ ok: false, code, message }`. Status: 400 invalid input, 429 rate limited, 502 AI failure. Never send raw errors to the client.
 
-For UI work, also read:
+## Follow these examples
+- Form: `components/form/BakeForm.tsx`
+- Page state + data flow: `components/DiagnosisWorkspace.tsx`
+- Client fetch: `lib/diagnose-client.ts`
+- API route (thin): `app/api/diagnose/route.ts`
+- Server logic and error mapping: `lib/ai/diagnose.ts`
+- AI schema: `lib/ai/schema.ts`; prompt only in `lib/ai/prompt.ts`; model only in `lib/ai/diagnose.ts`
 
-- context/ui-tokens.md
-- context/ui-registry.md
+## Gotchas
+- The component calling `useForm()` needs `"use no memo"`, or the React Compiler stops form re-renders.
+- `lib/ai/diagnose.ts` imports `server-only`, so it can't load under plain Vitest; evals go over HTTP.
+- Client timeout (25s) must stay above the server timeout (20s).
+- Python models in `evals/python` mirror `lib/ai/schema.ts` and `lib/constants.ts`; their tests fail on drift.
+- Gemini free tier is rate-limited; expect `RATE_LIMITED` during heavy manual testing.
 
-For AI work, also read:
-
-- context/ai-contract.md
+## Zones
+- 🟢 Green (work freely, tests required): `components/**`, `lib/ai/schema.ts`, `lib/ai/prompt.ts`, `lib/ai/fixtures.ts`, `tests/**`, `e2e/**`
+- 🟡 Yellow (write characterization tests BEFORE changing): `app/api/diagnose/route.ts`, `lib/diagnose-client.ts`, error/timeout handling in `lib/ai/diagnose.ts`
+- 🔴 Red (ask before every change): `lib/env.ts`, model choice in `lib/ai/diagnose.ts`, `.github/workflows/**`, `evals/python/data/**`, dependencies
 
 ## Workflow
-
-- Work on one build-plan step at a time.
-- Use the build-step skill for implementation.
-- While implementing, pause for a self-check after roughly every 40 new or changed lines of code. Treat 40 lines as a guideline for when to stop and look, not a requirement to split code unnaturally. At each checkpoint, compare the change so far against the current step in context/build-plan.md, check type correctness, check that the change fits the existing architecture, and look for obvious errors. Fix anything found before continuing.
-- Use the review skill before committing.
-- Use the recover skill if a problem remains after one normal fix attempt.
-- Do not expand the MVP scope.
-- Update context/progress.md after completing a step.
-- Do not commit or push unless explicitly requested.
+- Explore read-only first; for bigger changes, propose a plan and wait.
+- Small steps. One task at a time. Do not expand scope.
+- Tests first for new behaviour. Never delete, skip or weaken a test to make it pass — ask.
+- After changes run typecheck + relevant tests + lint; fix root causes (no `any`, no `@ts-ignore`, no disabled lint rules).
+- Show evidence: the command you ran and its output.
+- If a problem remains after one normal fix attempt, use `/recover`. Review with `/review` before committing.
+- Don't add new dependencies without asking; check they exist and are maintained.
+- Never read or print `.env*` or secrets. `GEMINI_API_KEY` stays server-only, never `NEXT_PUBLIC_`.
+- If what you find contradicts the plan, stop and say so.
+- Don't commit or push unless asked. Update `context/progress.md` when a feature ships.
 
 ## Definition of done
-
-A step is complete only when:
-
-- its acceptance criteria pass
-- lint and type checking pass
-- relevant tests pass
-- UI changes are inspected at mobile and desktop widths
-- context/progress.md is updated
+Acceptance criteria pass; lint, typecheck and relevant tests pass; UI changes checked at mobile and desktop widths.

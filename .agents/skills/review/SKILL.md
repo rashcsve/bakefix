@@ -28,8 +28,8 @@ For AI changes, also read:
 ## Workflow
 
 1. Inspect git status and the current diff.
-2. Determine which build step was implemented.
-3. Compare the implementation with that step's requirements.
+2. Determine which spec task (`docs/specs/`) or build step was implemented.
+3. Compare the implementation with its requirements.
 4. Run relevant non-destructive checks.
 5. Review:
    - behaviour
@@ -43,6 +43,20 @@ For AI changes, also read:
    - tests
    - unnecessary complexity
    - scope violations
+
+Always check specifically for:
+
+- missing requirements
+- untested edge cases
+- bugs
+- security issues: XSS, rendered model HTML, leaked secrets, validation only on the client
+- accessibility problems
+- API contract or error-shape changes not reflected in the client and tests; missing server-side validation; raw errors leaked; server-only code imported into client code
+- scope creep
+- weakened, skipped or deleted tests
+- red-zone or yellow-zone changes without approval or characterization tests (see AGENTS.md)
+
+No style nitpicks.
 
 ## Output
 
