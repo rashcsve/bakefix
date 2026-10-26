@@ -5,10 +5,23 @@ import {
   diagnoseBake,
 } from "@/lib/ai/diagnose";
 import { diagnosisInputSchema } from "@/lib/ai/schema";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 type ApiErrorCode = "INVALID_INPUT" | DiagnoseErrorCode;
 
 export async function POST(request: Request) {
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  const { allowed } = await checkRateLimit(ip);
+
+  if (!allowed) {
+    return errorResponse(
+      "RATE_LIMITED",
+      "Too many diagnoses in a short time. Please wait a minute and try again.",
+      429,
+    );
+  }
+
   let body: unknown;
   try {
     body = await request.json();

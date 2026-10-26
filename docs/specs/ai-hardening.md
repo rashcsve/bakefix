@@ -106,7 +106,7 @@ The API contract doesn't change. A rate-limited request returns the existing
 - Live check: one case of `pnpm eval:ai` still passes.
 - `context/architecture.md` (the line about the shared 20s timeout) is updated.
 
-### 5. Per-IP rate limiting with Upstash
+### 5. Per-IP rate limiting with Upstash ✅ done
 
 **Blocked by:** none, but do it last: it is the biggest task.
 

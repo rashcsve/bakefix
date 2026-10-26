@@ -22,7 +22,7 @@ numbers that can become outdated.
 
 1. The browser renders the BakeFix form.
 2. The user submits validated input to POST /api/diagnose.
-3. The route validates the request.
+3. The route checks the per-IP rate limit, then validates the request.
 4. The route calls the server-only diagnoseBake function.
 5. Gemini produces a structured diagnosis.
 6. The result is validated against the output schema.
@@ -56,6 +56,17 @@ This folder must not import React components.
 ### lib/
 
 Owns environment validation and shared utilities.
+
+`rate-limit.ts` (server-only) limits `/api/diagnose` to 5 requests per IP per
+60s (sliding window, Upstash Redis, key prefix `bakefix:diagnose`). The IP is
+the first `x-forwarded-for` entry, or `"unknown"`. This trusts Vercel, which
+overwrites `x-forwarded-for` with the real client IP; on another host a client
+could spoof it. Locally every request shares one bucket, so with the Upstash
+vars set the 6th quick submit in a minute is blocked. It fails open: without
+`UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` it warns once and allows;
+if only one is set or the URL is invalid it logs once and allows; on a Redis
+error or a 1.5s timeout it logs and allows. A blocked request gets
+`RATE_LIMITED` with status 429.
 
 ### tests/
 
@@ -95,7 +106,7 @@ Each run is gated on the valid-diagnosis and calibration rates.
 ## Invariants
 
 - Gemini is called only from server-side code.
-- GEMINI_API_KEY never uses the NEXT_PUBLIC_ prefix.
+- GEMINI_API_KEY and the Upstash vars never use the NEXT_PUBLIC_ prefix.
 - Every external input is validated with Zod.
 - Every AI response is schema validated.
 - The UI never renders arbitrary AI-generated HTML.

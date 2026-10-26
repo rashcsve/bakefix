@@ -9,6 +9,39 @@ https://bakefix.vercel.app/ (deployed manually by the user).
 Next: none — Step 08 is complete. Post-MVP: Python dataset evals and
 their automated workflow added (see below).
 
+## Post-MVP: Per-IP rate limiting
+
+Task 5 of `docs/specs/ai-hardening.md`. `/api/diagnose` is public, so one
+client could burn the shared Gemini free-tier quota.
+
+- `lib/rate-limit.ts` (server-only): `checkRateLimit(ip)` with
+  `@upstash/ratelimit` 2.2.0 and `@upstash/redis` 1.39.0 (pinned exactly;
+  1.40.0 was under two weeks old). Sliding window of 5 per 60s, prefix
+  `bakefix:diagnose`, 1.5s Redis timeout. It fails open: missing vars warn
+  once, a Redis error or timeout logs, and the request is allowed.
+- `lib/env.ts`: new `getRateLimitEnv()` returns both Upstash vars, `null`
+  when neither is set, and throws when only one is. `getEnv()` is unchanged.
+- `app/api/diagnose/route.ts` checks the limit before parsing the body,
+  keyed by the first `x-forwarded-for` entry (`"unknown"` without one), and
+  returns `RATE_LIMITED`, 429, "Too many diagnoses in a short time. Please
+  wait a minute and try again." The API contract and the client are
+  unchanged.
+- `.env.example` documents both vars as optional and server-only.
+
+Characterization tests for the route (`tests/api/diagnose-route.test.ts`)
+were added and passed before the route changed; the env, limiter and new
+route tests failed before the implementation.
+
+Verified: `pnpm typecheck`, `pnpm test` (76 passed), `pnpm lint` and
+`pnpm build` pass. Live check done by the owner: with the Upstash vars set,
+the 6th quick submit showed "Too many diagnoses" and kept the form input;
+without them the app worked and logged the warning.
+
+Production needs an Upstash database and both vars set in Vercel (a manual
+step for the owner). Without them the app works and logs a warning. 5 per
+minute just fits the weekly production eval (one request every 13s), and
+the eval runner retries 429s anyway.
+
 ## Post-MVP: Fallback model on Gemini overload
 
 The 2026-10-12 scheduled eval run against production failed (22% valid
