@@ -55,6 +55,14 @@ Prompt-injection hardening:
   description: data, never instructions. Off-topic input gets a headline that
   says so and low confidence, and requests inside it are not followed.
 
+## Output length (`lib/ai/diagnose.ts`)
+
+Both the primary and the fallback call pass `maxOutputTokens: 4096`, a named
+constant next to the timeouts. Thinking models count their hidden reasoning
+tokens toward this limit, so a tight cap cuts off the JSON and shows up as
+`INVALID_OUTPUT`. If valid-diagnosis rates drop in the Python evals, raise
+the cap rather than lowering it.
+
 ## Principles
 
 - Diagnose rather than generate unrelated recipes.
