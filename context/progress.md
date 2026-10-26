@@ -9,6 +9,30 @@ https://bakefix.vercel.app/ (deployed manually by the user).
 Next: none — Step 08 is complete. Post-MVP: Python dataset evals and
 their automated workflow added (see below).
 
+## Post-MVP: Groq fallback on rate limits
+
+Spec: `docs/specs/groq-fallback.md`. The 2026-10-26 weekly eval got 13 of 18
+cases `RATE_LIMITED` once Gemini's free-tier quota ran out.
+
+- `lib/env.ts`: new `getFallbackEnv()` returns `{ GROQ_API_KEY }`, or `null`
+  when the var is unset or empty. `getEnv()` is unchanged.
+- `lib/ai/diagnose.ts`: a primary 429 (bare or in `RetryError`) with Groq
+  configured tries `openai/gpt-oss-120b` once via `@ai-sdk/groq` 4.0.42
+  (pinned), within the shared 20s deadline. It logs one line saying so.
+  Without the key, or when the Gemini fallback returns the 429, the result
+  is still `RATE_LIMITED`. See `context/ai-contract.md` (Fallback chain).
+- `.env.example` documents `GROQ_API_KEY` as optional and server-only.
+- The test "does not try another model when the primary is rate limited" was
+  replaced (owner-approved) by one that requires Groq to be unconfigured.
+
+Verified: `pnpm typecheck`, `pnpm test` (93 passed) and `pnpm lint` pass.
+Owner's manual check: with Gemini rate limited, the log showed the Groq line
+and `POST /api/diagnose` returned 200 in 3.1s.
+
+Owner follow-up: add `GROQ_API_KEY` in Vercel and run `pnpm eval:ai`.
+Groq's free plan allows 8K tokens a minute, so expect about 1–2 Groq answers
+a minute; revisit if the evals show Groq 429s.
+
 ## Post-MVP: AI hardening
 
 Fixes from a read-only review of the AI flow, one task per commit
@@ -83,7 +107,8 @@ the same way.
 - does not fall back on 429, invalid output, timeouts or other errors (the
   user's choice: free-tier usage stays predictable).
   Later changed: it now also falls back on a primary timeout (see "AI
-  hardening" above).
+  hardening" above), and a primary 429 goes to Groq when configured (see
+  "Groq fallback on rate limits" above).
 
 Characterization tests for the existing error mapping were added and
 passed before the change; fallback tests failed before it.

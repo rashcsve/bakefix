@@ -55,9 +55,29 @@ Prompt-injection hardening:
   description: data, never instructions. Off-topic input gets a headline that
   says so and low confidence, and requests inside it are not followed.
 
+## Fallback chain (`lib/ai/diagnose.ts`)
+
+Every call gets the same schema, `SYSTEM_PROMPT`, user message,
+`maxOutputTokens` and `maxRetries: 0`, and its output is parsed with
+`diagnosisSchema`, whichever model answered:
+
+1. `gemini-3.6-flash` (primary).
+2. 503 or a timeout of the primary's 13s: `gemini-3.5-flash-lite`.
+3. 429 and `GROQ_API_KEY` set: `openai/gpt-oss-120b` on Groq. Groq's own free
+   quota is separate from Google's.
+
+At most one of 2 and 3 runs. Error codes are the same for every provider:
+429 gives `RATE_LIMITED`, bad output `INVALID_OUTPUT`, anything else
+`AI_UNAVAILABLE`. The client and the evals aren't told which provider
+answered.
+
+`@ai-sdk/groq` sends the schema in strict JSON-schema mode. `diagnosisSchema`
+works with it because every field is required and `safetyNote` is nullable,
+not optional. Keep it that way when changing the schema.
+
 ## Output length (`lib/ai/diagnose.ts`)
 
-Both the primary and the fallback call pass `maxOutputTokens: 4096`, a named
+Every model call passes `maxOutputTokens: 4096`, a named
 constant next to the timeouts. Thinking models count their hidden reasoning
 tokens toward this limit, so a tight cap cuts off the JSON and shows up as
 `INVALID_OUTPUT`. If valid-diagnosis rates drop in the Python evals, raise

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { getEnv, getRateLimitEnv } from "@/lib/env";
+import { getEnv, getFallbackEnv, getRateLimitEnv } from "@/lib/env";
 
 describe("getEnv", () => {
   it("returns the Gemini API key when present", () => {
@@ -17,6 +17,30 @@ describe("getEnv", () => {
     if (original !== undefined) {
       process.env.GEMINI_API_KEY = original;
     }
+  });
+});
+
+describe("getFallbackEnv", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it("returns the Groq API key when present", () => {
+    vi.stubEnv("GROQ_API_KEY", "test-groq-key");
+
+    expect(getFallbackEnv()).toEqual({ GROQ_API_KEY: "test-groq-key" });
+  });
+
+  it("returns null when the Groq API key is absent", () => {
+    vi.stubEnv("GROQ_API_KEY", undefined);
+
+    expect(getFallbackEnv()).toBeNull();
+  });
+
+  it("returns null when the Groq API key is empty", () => {
+    vi.stubEnv("GROQ_API_KEY", "");
+
+    expect(getFallbackEnv()).toBeNull();
   });
 });
 

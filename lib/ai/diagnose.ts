@@ -1,8 +1,10 @@
 import "server-only";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { createGroq } from "@ai-sdk/groq";
 import {
   APICallError,
   generateText,
+  type LanguageModel,
   NoOutputGeneratedError,
   Output,
   RetryError,
@@ -14,19 +16,18 @@ import {
   type DiagnosisInput,
   diagnosisSchema,
 } from "@/lib/ai/schema";
-import { getEnv } from "@/lib/env";
+import { getEnv, getFallbackEnv } from "@/lib/env";
 
 const MODEL_NAME = "gemini-3.6-flash";
-// Tried once when MODEL_NAME is overloaded (503) or runs out of its own time;
-// on separate capacity.
+// Used once if the primary returns 503 or times out.
 const FALLBACK_MODEL_NAME = "gemini-3.5-flash-lite";
-// Overall deadline for both models. Keep below lib/diagnose-client.ts's
-// timeout so this error wins the race.
+// Used once if the primary returns 429 and GROQ_API_KEY is set.
+const GROQ_MODEL_NAME = "openai/gpt-oss-120b";
+// Deadline for all calls. Must stay below the client timeout (25s).
 const REQUEST_TIMEOUT_MS = 20_000;
-// The primary's share of REQUEST_TIMEOUT_MS; the fallback gets what is left.
+// Primary's share of the deadline; the fallback gets the rest.
 const PRIMARY_TIMEOUT_MS = 13_000;
-// Thinking models count hidden reasoning tokens toward this cap, so a tight
-// limit truncates the JSON and shows up as INVALID_OUTPUT.
+// Includes reasoning tokens; too low truncates the JSON (INVALID_OUTPUT).
 const MAX_OUTPUT_TOKENS = 4096;
 
 export type DiagnoseErrorCode =
@@ -75,9 +76,9 @@ export async function diagnoseBake(input: DiagnosisInput): Promise<Diagnosis> {
   const google = createGoogleGenerativeAI({ apiKey: env.GEMINI_API_KEY });
   const deadline = AbortSignal.timeout(REQUEST_TIMEOUT_MS);
   const primaryTimeout = AbortSignal.timeout(PRIMARY_TIMEOUT_MS);
-  const generate = (modelName: string, abortSignal: AbortSignal) =>
+  const generate = (model: LanguageModel, abortSignal: AbortSignal) =>
     generateText({
-      model: google(modelName),
+      model,
       output: Output.object({ schema: diagnosisSchema }),
       instructions: SYSTEM_PROMPT,
       prompt: buildUserMessage(input),
@@ -91,19 +92,32 @@ export async function diagnoseBake(input: DiagnosisInput): Promise<Diagnosis> {
     let result: Awaited<ReturnType<typeof generate>>;
     try {
       result = await generate(
-        MODEL_NAME,
+        google(MODEL_NAME),
         AbortSignal.any([primaryTimeout, deadline]),
       );
     } catch (error) {
-      // Check the signals, not the error: the SDK may wrap the abort.
-      const timedOut = primaryTimeout.aborted && !deadline.aborted;
-      if (!isOverloaded(error) && !timedOut) throw error;
+      if (isRateLimited(error)) {
+        const fallbackEnv = getFallbackEnv();
+        if (!fallbackEnv) throw error;
 
-      console.error(
-        `diagnoseBake: ${MODEL_NAME} ${timedOut ? "timed out" : "overloaded"}, trying ${FALLBACK_MODEL_NAME}`,
-      );
-      modelName = FALLBACK_MODEL_NAME;
-      result = await generate(FALLBACK_MODEL_NAME, deadline);
+        console.error(
+          `diagnoseBake: ${MODEL_NAME} rate limited, trying ${GROQ_MODEL_NAME}`,
+        );
+
+        const groq = createGroq({ apiKey: fallbackEnv.GROQ_API_KEY });
+        modelName = GROQ_MODEL_NAME;
+        result = await generate(groq(GROQ_MODEL_NAME), deadline);
+      } else {
+        // Check the signals, not the error: the SDK may wrap the abort.
+        const timedOut = primaryTimeout.aborted && !deadline.aborted;
+        if (!isOverloaded(error) && !timedOut) throw error;
+
+        console.error(
+          `diagnoseBake: ${MODEL_NAME} ${timedOut ? "timed out" : "overloaded"}, trying ${FALLBACK_MODEL_NAME}`,
+        );
+        modelName = FALLBACK_MODEL_NAME;
+        result = await generate(google(FALLBACK_MODEL_NAME), deadline);
+      }
     }
 
     return diagnosisSchema.parse(result.output);

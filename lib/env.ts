@@ -10,6 +10,16 @@ export function getEnv() {
   });
 }
 
+// The Groq fallback is optional: null when GROQ_API_KEY is unset or empty.
+export function getFallbackEnv() {
+  const key = process.env.GROQ_API_KEY;
+  if (!key) {
+    return null;
+  }
+
+  return { GROQ_API_KEY: key };
+}
+
 const rateLimitEnvSchema = z.object({
   UPSTASH_REDIS_REST_URL: z.url("UPSTASH_REDIS_REST_URL must be a URL"),
   UPSTASH_REDIS_REST_TOKEN: z

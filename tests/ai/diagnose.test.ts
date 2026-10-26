@@ -60,6 +60,7 @@ describe("diagnoseBake error classification", () => {
     // restoreAllMocks leaves queued *Once values on the module mock.
     vi.mocked(generateText).mockReset();
     vi.stubEnv("GEMINI_API_KEY", "test-key");
+    vi.stubEnv("GROQ_API_KEY", "");
     vi.spyOn(console, "error").mockImplementation(() => {});
   });
 
@@ -109,6 +110,7 @@ describe("diagnoseBake model calls", () => {
     // restoreAllMocks leaves queued *Once values on the module mock.
     vi.mocked(generateText).mockReset();
     vi.stubEnv("GEMINI_API_KEY", "test-key");
+    vi.stubEnv("GROQ_API_KEY", "");
     vi.spyOn(console, "error").mockImplementation(() => {});
   });
 
@@ -124,12 +126,15 @@ describe("diagnoseBake model calls", () => {
     expect(calledModels()).toEqual(["gemini-3.6-flash"]);
   });
 
-  it("does not try another model when the primary is rate limited", async () => {
+  // Was "does not try another model when the primary is rate limited": a
+  // configured Groq key now gets a second call (docs/specs/groq-fallback.md).
+  it("does not try another model when the primary is rate limited and Groq is not configured", async () => {
     vi.mocked(generateText).mockRejectedValueOnce(
       retryError(apiCallError(429)),
     );
 
-    await diagnoseBake(input).catch(() => {});
+    const thrown = await diagnoseBake(input).catch((e: unknown) => e);
+    expect((thrown as DiagnoseError).code).toBe("RATE_LIMITED");
     expect(calledModels()).toEqual(["gemini-3.6-flash"]);
   });
 });
@@ -139,6 +144,7 @@ describe("diagnoseBake fallback model", () => {
     // restoreAllMocks leaves queued *Once values on the module mock.
     vi.mocked(generateText).mockReset();
     vi.stubEnv("GEMINI_API_KEY", "test-key");
+    vi.stubEnv("GROQ_API_KEY", "");
     vi.spyOn(console, "error").mockImplementation(() => {});
   });
 
@@ -259,6 +265,7 @@ describe("diagnoseBake timeouts", () => {
     // restoreAllMocks leaves queued *Once values on the module mock.
     vi.mocked(generateText).mockReset();
     vi.stubEnv("GEMINI_API_KEY", "test-key");
+    vi.stubEnv("GROQ_API_KEY", "");
     vi.spyOn(console, "error").mockImplementation(() => {});
     controlTimeouts();
   });
@@ -312,6 +319,7 @@ describe("diagnoseBake retired models", () => {
     // restoreAllMocks leaves queued *Once values on the module mock.
     vi.mocked(generateText).mockReset();
     vi.stubEnv("GEMINI_API_KEY", "test-key");
+    vi.stubEnv("GROQ_API_KEY", "");
     vi.spyOn(console, "error").mockImplementation(() => {});
   });
 
@@ -339,5 +347,140 @@ describe("diagnoseBake retired models", () => {
     const thrown = await diagnoseBake(input).catch((e: unknown) => e);
     expect(loggedErrors()).toMatch(/gemini-3\.5-flash-lite.*not found/);
     expect((thrown as DiagnoseError).code).toBe("AI_UNAVAILABLE");
+  });
+});
+
+describe("diagnoseBake Groq fallback", () => {
+  beforeEach(() => {
+    // restoreAllMocks leaves queued *Once values on the module mock.
+    vi.mocked(generateText).mockReset();
+    vi.stubEnv("GEMINI_API_KEY", "test-key");
+    vi.stubEnv("GROQ_API_KEY", "test-groq-key");
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    controlTimeouts();
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    vi.restoreAllMocks();
+  });
+
+  it.each([
+    ["a plain 429", apiCallError(429)],
+    ["a 429 wrapped in the SDK's retry error", retryError(apiCallError(429))],
+  ])("answers from Groq when the primary returns %s", async (_, error) => {
+    vi.mocked(generateText)
+      .mockRejectedValueOnce(error)
+      .mockResolvedValueOnce(generated(exampleDiagnosis));
+
+    await expect(diagnoseBake(input)).resolves.toEqual(exampleDiagnosis);
+    expect(calledModels()).toEqual(["gemini-3.6-flash", "openai/gpt-oss-120b"]);
+  });
+
+  it("sends Groq the same request as the primary", async () => {
+    vi.mocked(generateText)
+      .mockRejectedValueOnce(apiCallError(429))
+      .mockResolvedValueOnce(generated(exampleDiagnosis));
+
+    await diagnoseBake(input);
+    const [[primary], [groq]] = vi.mocked(generateText).mock.calls;
+    expect(groq.instructions).toBe(primary.instructions);
+    expect(groq.prompt).toBe(primary.prompt);
+    expect(groq.maxOutputTokens).toBe(4096);
+    expect(groq.maxRetries).toBe(0);
+    expect(await groq.output?.responseFormat).toEqual(
+      await primary.output?.responseFormat,
+    );
+  });
+
+  it("bounds the Groq call by the overall 20s deadline", async () => {
+    vi.mocked(generateText)
+      .mockRejectedValueOnce(apiCallError(429))
+      .mockResolvedValueOnce(generated(exampleDiagnosis));
+
+    await diagnoseBake(input);
+    const [, [groq]] = vi.mocked(generateText).mock.calls;
+
+    fireTimeout(13_000);
+    expect(groq.abortSignal?.aborted).toBe(false);
+
+    fireTimeout(20_000);
+    expect(groq.abortSignal?.aborted).toBe(true);
+  });
+
+  it("logs one line saying the primary was rate limited and Groq is tried", async () => {
+    vi.mocked(generateText)
+      .mockRejectedValueOnce(apiCallError(429))
+      .mockResolvedValueOnce(generated(exampleDiagnosis));
+
+    await diagnoseBake(input);
+    const lines = vi
+      .mocked(console.error)
+      .mock.calls.map((args) => args.map(String).join(" "))
+      .filter((line) =>
+        /gemini-3\.6-flash rate limited.*openai\/gpt-oss-120b/.test(line),
+      );
+    expect(lines).toHaveLength(1);
+  });
+
+  it.each([
+    ["a 429", "RATE_LIMITED", apiCallError(429)],
+    ["a wrapped 429", "RATE_LIMITED", retryError(apiCallError(429))],
+    ["a server error", "AI_UNAVAILABLE", apiCallError(500)],
+    ["an unknown failure", "AI_UNAVAILABLE", new Error("boom")],
+    ["a missing output", "INVALID_OUTPUT", new NoOutputGeneratedError()],
+  ])("maps %s from Groq to %s", async (_, code, error) => {
+    vi.mocked(generateText)
+      .mockRejectedValueOnce(apiCallError(429))
+      .mockRejectedValueOnce(error);
+
+    const thrown = await diagnoseBake(input).catch((e: unknown) => e);
+    expect((thrown as DiagnoseError).code).toBe(code);
+    expect(calledModels()).toEqual(["gemini-3.6-flash", "openai/gpt-oss-120b"]);
+  });
+
+  it("maps Groq output that fails the schema to INVALID_OUTPUT", async () => {
+    vi.mocked(generateText)
+      .mockRejectedValueOnce(apiCallError(429))
+      .mockResolvedValueOnce(generated({ headline: "only a headline" }));
+
+    const thrown = await diagnoseBake(input).catch((e: unknown) => e);
+    expect((thrown as DiagnoseError).code).toBe("INVALID_OUTPUT");
+  });
+
+  it("logs the Groq model as not found on a 404", async () => {
+    vi.mocked(generateText)
+      .mockRejectedValueOnce(apiCallError(429))
+      .mockRejectedValueOnce(apiCallError(404));
+
+    const thrown = await diagnoseBake(input).catch((e: unknown) => e);
+    expect(loggedErrors()).toMatch(/openai\/gpt-oss-120b.*not found/);
+    expect((thrown as DiagnoseError).code).toBe("AI_UNAVAILABLE");
+  });
+
+  it("does not call Groq when the Gemini fallback is rate limited after an overload", async () => {
+    vi.mocked(generateText)
+      .mockRejectedValueOnce(apiCallError(503))
+      .mockRejectedValueOnce(apiCallError(429));
+
+    const thrown = await diagnoseBake(input).catch((e: unknown) => e);
+    expect((thrown as DiagnoseError).code).toBe("RATE_LIMITED");
+    expect(calledModels()).toEqual([
+      "gemini-3.6-flash",
+      "gemini-3.5-flash-lite",
+    ]);
+  });
+
+  it("does not call Groq when the Gemini fallback is rate limited after a timeout", async () => {
+    vi.mocked(generateText)
+      .mockImplementationOnce(timeOutAfter(13_000))
+      .mockRejectedValueOnce(apiCallError(429));
+
+    const thrown = await diagnoseBake(input).catch((e: unknown) => e);
+    expect((thrown as DiagnoseError).code).toBe("RATE_LIMITED");
+    expect(calledModels()).toEqual([
+      "gemini-3.6-flash",
+      "gemini-3.5-flash-lite",
+    ]);
   });
 });

@@ -46,10 +46,18 @@ Components must not call Gemini directly or access server secrets.
 ### lib/ai/
 
 Owns model configuration, prompt construction, input/output schemas and
-diagnosis orchestration. `diagnose.ts` names the primary model and a
-fallback model, tried once when the primary is overloaded (503) or runs out
-of its own 13s. Both calls share one 20s overall deadline, so the fallback
-gets whatever is left. A 404 logs the model as not found (likely retired).
+diagnosis orchestration. `diagnose.ts` names the models and makes at most two
+calls:
+
+- Primary `gemini-3.6-flash`, with its own 13s.
+- On a primary 503 or timeout: Gemini fallback `gemini-3.5-flash-lite`, once.
+- On a primary 429, when `GROQ_API_KEY` is set (`getFallbackEnv()`): Groq
+  `openai/gpt-oss-120b`, once. Without the key the 429 stays `RATE_LIMITED`.
+
+There is never a third call: a 429 from the Gemini fallback gives
+`RATE_LIMITED` without trying Groq. All calls share one 20s overall
+deadline, so the second call gets whatever is left. A 404 logs the model
+that was called as not found (likely retired).
 
 This folder must not import React components.
 
