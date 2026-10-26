@@ -31,11 +31,12 @@ Read the relevant ones before implementing. New features are specified in `docs/
 - `lib/ai/diagnose.ts` imports `server-only`, so it can't load under plain Vitest; evals go over HTTP.
 - Client timeout (25s) must stay above the server timeout (20s).
 - Python models in `evals/python` mirror `lib/ai/schema.ts` and `lib/constants.ts`; their tests fail on drift.
-- Gemini free tier is rate-limited; expect `RATE_LIMITED` during heavy manual testing.
+- Gemini free tier is rate-limited. With `GROQ_API_KEY` set, a Gemini 429 falls back to Groq once; without it, expect `RATE_LIMITED` during heavy manual testing.
+- With the Upstash vars set locally, every request shares one rate-limit bucket: the 6th quick submit in a minute gets 429 from `lib/rate-limit.ts`, not from Gemini.
 
 ## Zones
 - 🟢 Green (work freely, tests required): `components/**`, `lib/ai/schema.ts`, `lib/ai/prompt.ts`, `lib/ai/fixtures.ts`, `tests/**`, `e2e/**`
-- 🟡 Yellow (write characterization tests BEFORE changing): `app/api/diagnose/route.ts`, `lib/diagnose-client.ts`, error/timeout handling in `lib/ai/diagnose.ts`
+- 🟡 Yellow (write characterization tests BEFORE changing): `app/api/diagnose/route.ts`, `lib/diagnose-client.ts`, `lib/rate-limit.ts`, error/timeout handling in `lib/ai/diagnose.ts`
 - 🔴 Red (ask before every change): `lib/env.ts`, model choice in `lib/ai/diagnose.ts`, `.github/workflows/**`, `evals/python/data/**`, dependencies
 
 ## Workflow

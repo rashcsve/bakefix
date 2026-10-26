@@ -42,9 +42,9 @@ once and get an answer.
 ```text
 BakeForm (client component)
   -> POST /api/diagnose
-  -> app/api/diagnose/route.ts   validates the request body
-  -> lib/ai/diagnose.ts          server-only, calls Gemini
-  -> Gemini (Vercel AI SDK)      produces structured output
+  -> app/api/diagnose/route.ts   checks the per-IP rate limit, validates the request body
+  -> lib/ai/diagnose.ts          server-only, calls the model with one fallback
+  -> Gemini or Groq (Vercel AI SDK)  produces structured output
   -> lib/ai/schema.ts            validates the response shape
   -> DiagnosisCard                renders the typed result
 ```
@@ -64,15 +64,28 @@ BakeForm (client component)
   (`fixtures.ts`), and the server-only orchestration (`diagnose.ts`). This
   folder has no dependency on React, so the prompt and schemas can be
   tested in isolation.
-- **`lib/`** owns environment validation (`env.ts`) and small shared
-  utilities.
+- **`lib/`** owns environment validation (`env.ts`), per-IP rate limiting
+  (`rate-limit.ts`), and small shared utilities.
 - Google Gemini is called through the Vercel AI SDK (`@ai-sdk/google`),
-  with the model name kept in one constant in `lib/ai/diagnose.ts`. The
+  with every model name kept as a constant in `lib/ai/diagnose.ts`. The
   provider was switched from the originally planned OpenAI to Gemini
   during Step 05: the OpenAI account behind this project had no credits,
   and Gemini's free tier removes that blocker for a portfolio project with
   no revenue. The Vercel AI SDK's provider abstraction made this a small,
   isolated change.
+- **Fallback chain.** The primary model is `gemini-3.6-flash`, with a 13s
+  timeout. If it is overloaded (503) or times out, the request retries once on
+  `gemini-3.5-flash-lite`. If it is rate limited (429) and `GROQ_API_KEY`
+  is set, the request retries once on `openai/gpt-oss-120b` via Groq
+  (`@ai-sdk/groq`). There is never a third call, and both calls share a
+  single 20s deadline. See
+  [`context/ai-contract.md`](context/ai-contract.md) (Fallback chain).
+- **Rate limiting.** `/api/diagnose` is public, so `lib/rate-limit.ts`
+  allows 5 requests per IP per 60s (sliding window, Upstash Redis) to keep
+  one client from using up the shared free-tier quota. A blocked request
+  gets `RATE_LIMITED` (429). The limiter fails open: if Upstash is not
+  configured or Redis errors or times out, it logs and lets the request
+  through.
 
 ## Structured output and validation
 
@@ -93,6 +106,12 @@ Zod, not just typed at compile time:
   re-validated against the same schema before it ever reaches a
   component — a model that returns malformed JSON produces a typed
   `INVALID_OUTPUT` error, not a broken UI.
+- **Bounded output.** Every model call passes `maxOutputTokens: 4096`, so
+  a runaway response can't hold the request open or inflate cost.
+- **Prompt-injection defence.** Free-text fields are wrapped in tags
+  (`<problem>`, `<recipe>`, `<technical_details>`) with `<` and `>`
+  escaped, so user text can't close a tag early. The system prompt treats
+  tagged text as data, never as instructions.
 - **Fixture data** (`lib/ai/fixtures.ts`) is parsed through the same output
   schema at module load, so it fails fast if it ever drifts from the
   contract.
@@ -155,7 +174,9 @@ Two different kinds of correctness are tested differently:
   heading — entirely by keyboard, plus a check for no horizontal overflow
   at a 390px viewport.
 - All of the above run in CI (`.github/workflows/ci.yml`) and require no
-  `GEMINI_API_KEY`.
+  `GEMINI_API_KEY`. Workflows pin actions by commit SHA and run with a
+  read-only `GITHUB_TOKEN`. Dependabot proposes action updates weekly as
+  a single grouped PR, after a 7-day cooldown.
 
 **Variable AI behavior** (manual, real model, not CI-gated):
 
@@ -195,12 +216,20 @@ Open [http://localhost:3000](http://localhost:3000).
 
 | Variable         | Required | Notes                                                   |
 | ---------------- | -------- | -------------------------------------------------------- |
-| `GEMINI_API_KEY` | Yes, to call Gemini | Server-only. Never prefix with `NEXT_PUBLIC_`. Get a key at [Google AI Studio](https://aistudio.google.com/). |
+| `GEMINI_API_KEY` | Yes, to call Gemini | Get a key at [Google AI Studio](https://aistudio.google.com/). |
+| `GROQ_API_KEY` | No | Enables the Groq fallback when Gemini is rate limited. Without it, a Gemini 429 returns `RATE_LIMITED`. |
+| `UPSTASH_REDIS_REST_URL` | No | Enables per-IP rate limiting together with the token below. If either is missing, the limiter logs a warning and allows every request. |
+| `UPSTASH_REDIS_REST_TOKEN` | No | See above. |
+
+All four are server-only: never prefix them with `NEXT_PUBLIC_`.
 
 Without a key, the app still builds, lints, type-checks, and runs its full
 automated test suite — `GEMINI_API_KEY` is only read when a request
 actually reaches `/api/diagnose`. Missing or invalid credentials there
 surface as a normal `AI_UNAVAILABLE` error, not a crash.
+
+Locally, every request shares one rate-limit bucket. With the Upstash
+variables set, the 6th quick submit within a minute gets `RATE_LIMITED`.
 
 ### Scripts
 
@@ -216,8 +245,14 @@ pnpm eval:ai     # manual pastry-domain evaluations (needs a running dev server 
 ## Deployment
 
 Deployed on [Vercel](https://vercel.com/): the GitHub repository is
-imported directly, with `GEMINI_API_KEY` set in the project's environment
-variables. Live at [bakefix.vercel.app](https://bakefix.vercel.app/).
+imported directly, with `GEMINI_API_KEY`, `GROQ_API_KEY`, and both
+Upstash variables set in the project's environment variables (backed by an
+Upstash Redis database). Live at
+[bakefix.vercel.app](https://bakefix.vercel.app/).
+
+The rate limiter takes the client IP from the first `x-forwarded-for`
+entry. That is safe on Vercel, which overwrites the header; on another host
+a client could spoof it, so the IP source would need revisiting.
 
 ## Tradeoffs and future improvements
 
@@ -252,11 +287,13 @@ in `evals/cases.ts` as new failure modes come up.
 app/            routes, layouts, page composition, the /api/diagnose handler
 components/     presentation and interaction (Server Components by default)
 lib/ai/         model config, prompts, input/output schemas, orchestration
-lib/            environment validation and shared utilities
+lib/            environment validation, rate limiting, shared utilities
 tests/          unit and component tests
 e2e/            Playwright user-flow tests
-evals/          manual pastry-domain AI evaluation set
+evals/          manual pastry-domain AI evaluation set (pnpm eval:ai)
+evals/python/   dataset evals: 68 cases, scored in their own workflow
 context/        product, architecture, design, and workflow documentation
+docs/           feature specs and planning notes
 ```
 
 See [`context/architecture.md`](context/architecture.md) for the full set

@@ -6,12 +6,23 @@ Phase: 08 CI, documentation, and deployment
 Last completed: CI workflow, README, and deployment; see "08 CI,
 documentation, and deployment" below. The app is live at
 https://bakefix.vercel.app/ (deployed manually by the user).
-Next: none — Step 08 is complete. Post-MVP: Python dataset evals and
-their automated workflow added (see below).
+Next: none — Step 08 is complete. Post-MVP (newest first, see below): CI
+hardening, Groq fallback on rate limits, AI hardening (including per-IP
+rate limiting), Gemini fallback model on overload, automated AI evals, and
+Python dataset evals.
+
+## Post-MVP: CI hardening
+
+- `5420837`: pinned actions bumped to their Node 24 releases (by commit
+  SHA): `actions/checkout` v7.0.1, `actions/setup-node` v7.1.0,
+  `astral-sh/setup-uv` v10.3.2, `actions/upload-artifact` v7.0.2.
+- `6e3cbf7`: `.github/dependabot.yml` proposes GitHub Actions updates
+  weekly as one grouped PR (`ci` prefix) with a 7-day cooldown.
+  `ci.yml` now sets `permissions: contents: read`, matching `ai-evals.yml`.
 
 ## Post-MVP: Groq fallback on rate limits
 
-Spec: `docs/specs/groq-fallback.md`. The 2026-10-26 weekly eval got 13 of 18
+Spec: `docs/specs/groq-fallback.md` (not committed). The 2026-10-26 weekly eval got 13 of 18
 cases `RATE_LIMITED` once Gemini's free-tier quota ran out.
 
 - `lib/env.ts`: new `getFallbackEnv()` returns `{ GROQ_API_KEY }`, or `null`
@@ -29,8 +40,8 @@ Verified: `pnpm typecheck`, `pnpm test` (93 passed) and `pnpm lint` pass.
 Owner's manual check: with Gemini rate limited, the log showed the Groq line
 and `POST /api/diagnose` returned 200 in 3.1s.
 
-Owner follow-up: add `GROQ_API_KEY` in Vercel and run `pnpm eval:ai`.
-Groq's free plan allows 8K tokens a minute, so expect about 1–2 Groq answers
+Done 2026-10-26: `GROQ_API_KEY` is set in Vercel and the owner confirmed
+production works. Groq's free plan allows 8K tokens a minute, so expect about 1–2 Groq answers
 a minute; revisit if the evals show Groq 429s.
 
 ## Post-MVP: AI hardening
@@ -84,8 +95,9 @@ Verified: `pnpm typecheck`, `pnpm test` (76 passed), `pnpm lint` and
 the 6th quick submit showed "Too many diagnoses" and kept the form input;
 without them the app worked and logged the warning.
 
-Production needs an Upstash database and both vars set in Vercel (a manual
-step for the owner). Without them the app works and logs a warning. 5 per
+Production uses an Upstash database with both vars set in Vercel (done by
+the owner, confirmed working 2026-10-26). Without them the app works and
+logs a warning. 5 per
 minute just fits the weekly production eval (one request every 13s), and
 the eval runner retries 429s anyway.
 
