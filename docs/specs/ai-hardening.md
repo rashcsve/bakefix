@@ -40,7 +40,7 @@ Anything else in a red zone still needs asking first.
 
 | File | Zone | Change |
 |---|---|---|
-| `components/diagnosis/DiagnosisCard.tsx` | 🟢 | `withUniqueKeys()` helper (done) |
+| `components/diagnosis/DiagnosisCard.tsx` | 🟢 | Drop repeated items, key by text (done) |
 | `lib/ai/prompt.ts` | 🟢 | Tag-wrapped, escaped user fields; new system-prompt rule |
 | `lib/ai/diagnose.ts` | 🟡 timeout/errors, 🔴 model settings | `maxOutputTokens`; split timeout budget; 404 detection |
 | `app/api/diagnose/route.ts` | 🟡 | Rate-limit check before parsing the body |
@@ -58,11 +58,11 @@ The API contract doesn't change. A rate-limited request returns the existing
 **Blocked by:** none.
 
 **Acceptance criteria:**
-- `tests/components/DiagnosisCard.test.tsx` renders repeated items in every list without a duplicate-key `console.error`.
+- `tests/components/DiagnosisCard.test.tsx` renders repeated items once per list, without a duplicate-key `console.error`.
 
 **Notes:**
 - Biome's `noArrayIndexKey` rule forbids index-based keys.
-- The fix is `withUniqueKeys()`, which suffixes repeated strings (`text`, `text#2`). The index is still used for display (the "1, 2, 3" numbering and the "Most likely" pill).
+- The fix renders `[...new Set(items)]` with the text as the key: a line the model repeats adds nothing for the baker, so it is shown once. The index is still used for display (the "1, 2, 3" numbering and the "Most likely" pill).
 
 ### 2. Prompt-injection hardening
 

@@ -49,7 +49,7 @@ export function DiagnosisCard({ diagnosis, headingRef }: DiagnosisCardProps) {
             Likely causes
           </h3>
           <ol className="flex flex-col gap-3">
-            {diagnosis.causes.map((cause, index) => (
+            {[...new Set(diagnosis.causes)].map((cause, index) => (
               <li key={cause} className="flex items-start gap-3">
                 <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-action text-xs font-semibold text-white">
                   {index + 1}
@@ -73,7 +73,7 @@ export function DiagnosisCard({ diagnosis, headingRef }: DiagnosisCardProps) {
             Rescue plan
           </h3>
           <ul className="flex list-disc flex-col gap-1.5 pl-5 text-sm text-text-muted">
-            {diagnosis.rescueSteps.map((step) => (
+            {[...new Set(diagnosis.rescueSteps)].map((step) => (
               <li key={step}>{step}</li>
             ))}
           </ul>
@@ -84,7 +84,7 @@ export function DiagnosisCard({ diagnosis, headingRef }: DiagnosisCardProps) {
         <div className="flex flex-col gap-2">
           <h3 className="text-sm font-semibold text-text-primary">Next time</h3>
           <ul className="flex flex-col gap-1.5">
-            {diagnosis.nextTime.map((item) => (
+            {[...new Set(diagnosis.nextTime)].map((item) => (
               <li key={item} className="flex items-start gap-2 text-sm">
                 <CircleCheckBig
                   className="mt-0.5 size-4 shrink-0 text-support-green"
@@ -127,7 +127,7 @@ function DiagnosisSection({
     <div className="flex flex-col gap-2">
       <h3 className="text-sm font-semibold text-text-primary">{title}</h3>
       <ul className="flex list-disc flex-col gap-1.5 pl-5 text-sm text-text-muted">
-        {items.map((item) => (
+        {[...new Set(items)].map((item) => (
           <li key={item}>{item}</li>
         ))}
       </ul>
