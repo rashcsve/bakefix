@@ -210,4 +210,15 @@ describe("diagnoseBake fallback model", () => {
     expect(primary.abortSignal).toBeInstanceOf(AbortSignal);
     expect(fallback.abortSignal).toBe(primary.abortSignal);
   });
+
+  it("caps output at 4096 tokens on both calls", async () => {
+    vi.mocked(generateText)
+      .mockRejectedValueOnce(apiCallError(503))
+      .mockResolvedValueOnce(generated(exampleDiagnosis));
+
+    await diagnoseBake(input);
+    const [[primary], [fallback]] = vi.mocked(generateText).mock.calls;
+    expect(primary.maxOutputTokens).toBe(4096);
+    expect(fallback.maxOutputTokens).toBe(4096);
+  });
 });

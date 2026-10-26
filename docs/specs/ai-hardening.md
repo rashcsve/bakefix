@@ -88,7 +88,7 @@ The API contract doesn't change. A rate-limited request returns the existing
 - **Before changing code**, run a baseline: Python `run_evals` with the default 12 cases, about 3 minutes. Record the valid-diagnosis rate.
 - `lib/ai/diagnose.ts` passes `maxOutputTokens: 4096` to `generateText`, for both the primary and the fallback model.
   - Put it in a named constant next to `REQUEST_TIMEOUT_MS`.
-  - Add a one-line comment saying temperature is intentionally left at the provider default.
+  - ~~Add a one-line comment saying temperature is intentionally left at the provider default.~~ Dropped by the owner: no code comment; the reason lives in this spec (Out of scope).
   - Why 4096: thinking models count their hidden reasoning tokens toward this limit, so a tight cap cuts off the JSON and shows up as `INVALID_OUTPUT`.
 - A test in `tests/ai/diagnose.test.ts` asserts the parameter is sent on both calls.
 - Rerun the Python `run_evals`. The valid-diagnosis rate must not drop below the baseline. If it does, raise the cap.

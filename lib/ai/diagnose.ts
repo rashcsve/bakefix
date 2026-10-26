@@ -22,6 +22,9 @@ const FALLBACK_MODEL_NAME = "gemini-3.5-flash-lite";
 // Shared by both models. Keep below lib/diagnose-client.ts's timeout so this
 // error wins the race.
 const REQUEST_TIMEOUT_MS = 20_000;
+// Thinking models count hidden reasoning tokens toward this cap, so a tight
+// limit truncates the JSON and shows up as INVALID_OUTPUT.
+const MAX_OUTPUT_TOKENS = 4096;
 
 export type DiagnoseErrorCode =
   | "AI_UNAVAILABLE"
@@ -70,6 +73,7 @@ export async function diagnoseBake(input: DiagnosisInput): Promise<Diagnosis> {
       output: Output.object({ schema: diagnosisSchema }),
       instructions: SYSTEM_PROMPT,
       prompt: buildUserMessage(input),
+      maxOutputTokens: MAX_OUTPUT_TOKENS,
       maxRetries: 0,
       abortSignal,
     });
