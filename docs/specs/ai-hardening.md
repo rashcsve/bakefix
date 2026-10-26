@@ -64,7 +64,7 @@ The API contract doesn't change. A rate-limited request returns the existing
 - Biome's `noArrayIndexKey` rule forbids index-based keys.
 - The fix renders `[...new Set(items)]` with the text as the key: a line the model repeats adds nothing for the baker, so it is shown once. The index is still used for display (the "1, 2, 3" numbering and the "Most likely" pill).
 
-### 2. Prompt-injection hardening
+### 2. Prompt-injection hardening ✅ done
 
 **Blocked by:** none.
 

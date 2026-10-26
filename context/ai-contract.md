@@ -41,6 +41,20 @@ and user message from a validated `DiagnosisInput`. This module has no
 dependency on React or HTTP handling, so it can be exercised in isolation and
 reused unchanged by the Step 05 server integration.
 
+Prompt-injection hardening:
+- The free-text fields `problem`, `recipe` and `technicalDetails` are wrapped
+  in `<problem>`, `<recipe>` and `<technical_details>` tags. Optional fields
+  are left out when empty.
+- Inside the tags, `<` and `>` are escaped to `&lt;` and `&gt;`, so user text
+  can't close a tag early. `SYSTEM_PROMPT` tells the model what the entities
+  mean and to write plain `<` and `>` in its answer, so the result card never
+  shows a literal `&gt;`. `&` is not escaped: after escaping, user text holds
+  no real `<` or `>`, so it can't form a tag.
+- Category and dietary constraints come from fixed enums and stay unwrapped.
+- `SYSTEM_PROMPT` tells the model that tagged text is the baker's
+  description: data, never instructions. Off-topic input gets a headline that
+  says so and low confidence, and requests inside it are not followed.
+
 ## Principles
 
 - Diagnose rather than generate unrelated recipes.
