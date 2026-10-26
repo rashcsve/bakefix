@@ -187,7 +187,10 @@ describe("diagnoseBake fallback model", () => {
 
   it.each([
     ["invalid output", new NoOutputGeneratedError()],
-    ["a timeout", new DOMException("timed out", "TimeoutError")],
+    [
+      "a timeout neither deadline caused",
+      new DOMException("timed out", "TimeoutError"),
+    ],
     ["a server error", apiCallError(500)],
   ])("does not fall back after %s", async (_, error) => {
     vi.mocked(generateText).mockRejectedValueOnce(error);
@@ -196,9 +199,9 @@ describe("diagnoseBake fallback model", () => {
     expect(calledModels()).toEqual(["gemini-3.6-flash"]);
   });
 
-  // Both calls must fit the one 20s server budget, which stays below the
-  // client's 25s timeout; SDK retries would spend that budget on one model.
-  it("shares one abort signal and disables SDK retries on both calls", async () => {
+  // Both calls must fit the 20s server budget, which stays below the client's
+  // 25s timeout; SDK retries would spend that budget on one model.
+  it("disables SDK retries on both calls", async () => {
     vi.mocked(generateText)
       .mockRejectedValueOnce(apiCallError(503))
       .mockResolvedValueOnce(generated(exampleDiagnosis));
@@ -207,8 +210,6 @@ describe("diagnoseBake fallback model", () => {
     const [[primary], [fallback]] = vi.mocked(generateText).mock.calls;
     expect(primary.maxRetries).toBe(0);
     expect(fallback.maxRetries).toBe(0);
-    expect(primary.abortSignal).toBeInstanceOf(AbortSignal);
-    expect(fallback.abortSignal).toBe(primary.abortSignal);
   });
 
   it("caps output at 4096 tokens on both calls", async () => {
@@ -220,5 +221,123 @@ describe("diagnoseBake fallback model", () => {
     const [[primary], [fallback]] = vi.mocked(generateText).mock.calls;
     expect(primary.maxOutputTokens).toBe(4096);
     expect(fallback.maxOutputTokens).toBe(4096);
+  });
+});
+
+// AbortSignal.timeout runs on Node's internal timers, which fake timers don't
+// reach, so the tests hand out signals they fire by hand, keyed by duration.
+const timeouts = new Map<number, AbortController>();
+
+function controlTimeouts() {
+  timeouts.clear();
+  vi.spyOn(AbortSignal, "timeout").mockImplementation((ms) => {
+    const controller = new AbortController();
+    timeouts.set(ms, controller);
+    return controller.signal;
+  });
+}
+
+function fireTimeout(ms: number) {
+  const controller = timeouts.get(ms);
+  if (!controller) throw new Error(`no ${ms}ms timeout was created`);
+  controller.abort(new DOMException("timed out", "TimeoutError"));
+}
+
+function timeOutAfter(ms: number) {
+  return async (): Promise<never> => {
+    fireTimeout(ms);
+    throw new DOMException("timed out", "TimeoutError");
+  };
+}
+
+function loggedErrors() {
+  return vi.mocked(console.error).mock.calls.flat().map(String).join("\n");
+}
+
+describe("diagnoseBake timeouts", () => {
+  beforeEach(() => {
+    // restoreAllMocks leaves queued *Once values on the module mock.
+    vi.mocked(generateText).mockReset();
+    vi.stubEnv("GEMINI_API_KEY", "test-key");
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    controlTimeouts();
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    vi.restoreAllMocks();
+  });
+
+  it("gives the primary 13s inside a 20s overall deadline", async () => {
+    vi.mocked(generateText)
+      .mockRejectedValueOnce(apiCallError(503))
+      .mockResolvedValueOnce(generated(exampleDiagnosis));
+
+    await diagnoseBake(input);
+    const [[primary], [fallback]] = vi.mocked(generateText).mock.calls;
+
+    fireTimeout(13_000);
+    expect(primary.abortSignal?.aborted).toBe(true);
+    expect(fallback.abortSignal?.aborted).toBe(false);
+
+    fireTimeout(20_000);
+    expect(fallback.abortSignal?.aborted).toBe(true);
+  });
+
+  // Was the characterization test "maps a primary timeout to AI_UNAVAILABLE
+  // without trying the fallback": the primary now has its own 13s.
+  it("answers from the fallback model when the primary's 13s runs out", async () => {
+    vi.mocked(generateText)
+      .mockImplementationOnce(timeOutAfter(13_000))
+      .mockResolvedValueOnce(generated(exampleDiagnosis));
+
+    await expect(diagnoseBake(input)).resolves.toEqual(exampleDiagnosis);
+    expect(calledModels()).toEqual([
+      "gemini-3.6-flash",
+      "gemini-3.5-flash-lite",
+    ]);
+  });
+
+  it("does not fall back once the overall 20s deadline has passed", async () => {
+    vi.mocked(generateText).mockImplementationOnce(timeOutAfter(20_000));
+
+    const thrown = await diagnoseBake(input).catch((e: unknown) => e);
+    expect((thrown as DiagnoseError).code).toBe("AI_UNAVAILABLE");
+    expect(calledModels()).toEqual(["gemini-3.6-flash"]);
+  });
+});
+
+describe("diagnoseBake retired models", () => {
+  beforeEach(() => {
+    // restoreAllMocks leaves queued *Once values on the module mock.
+    vi.mocked(generateText).mockReset();
+    vi.stubEnv("GEMINI_API_KEY", "test-key");
+    vi.spyOn(console, "error").mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    vi.restoreAllMocks();
+  });
+
+  it("logs the primary model as not found on a 404", async () => {
+    vi.mocked(generateText).mockRejectedValueOnce(apiCallError(404));
+
+    const thrown = await diagnoseBake(input).catch((e: unknown) => e);
+    expect(loggedErrors()).toMatch(/gemini-3\.6-flash.*not found/);
+    expect((thrown as DiagnoseError).code).toBe("AI_UNAVAILABLE");
+    expect((thrown as DiagnoseError).message).toBe(
+      "The diagnosis service is unavailable right now. Please try again.",
+    );
+  });
+
+  it("logs the fallback model as not found on a 404", async () => {
+    vi.mocked(generateText)
+      .mockRejectedValueOnce(apiCallError(503))
+      .mockRejectedValueOnce(retryError(apiCallError(404)));
+
+    const thrown = await diagnoseBake(input).catch((e: unknown) => e);
+    expect(loggedErrors()).toMatch(/gemini-3\.5-flash-lite.*not found/);
+    expect((thrown as DiagnoseError).code).toBe("AI_UNAVAILABLE");
   });
 });

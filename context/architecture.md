@@ -47,8 +47,9 @@ Components must not call Gemini directly or access server secrets.
 
 Owns model configuration, prompt construction, input/output schemas and
 diagnosis orchestration. `diagnose.ts` names the primary model and a
-fallback model, tried once when the primary is overloaded (503), within one
-shared 20s timeout.
+fallback model, tried once when the primary is overloaded (503) or runs out
+of its own 13s. Both calls share one 20s overall deadline, so the fallback
+gets whatever is left. A 404 logs the model as not found (likely retired).
 
 This folder must not import React components.
 

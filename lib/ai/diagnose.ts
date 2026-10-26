@@ -17,11 +17,14 @@ import {
 import { getEnv } from "@/lib/env";
 
 const MODEL_NAME = "gemini-3.6-flash";
-// Tried once when MODEL_NAME is overloaded (503); on separate capacity.
+// Tried once when MODEL_NAME is overloaded (503) or runs out of its own time;
+// on separate capacity.
 const FALLBACK_MODEL_NAME = "gemini-3.5-flash-lite";
-// Shared by both models. Keep below lib/diagnose-client.ts's timeout so this
-// error wins the race.
+// Overall deadline for both models. Keep below lib/diagnose-client.ts's
+// timeout so this error wins the race.
 const REQUEST_TIMEOUT_MS = 20_000;
+// The primary's share of REQUEST_TIMEOUT_MS; the fallback gets what is left.
+const PRIMARY_TIMEOUT_MS = 13_000;
 // Thinking models count hidden reasoning tokens toward this cap, so a tight
 // limit truncates the JSON and shows up as INVALID_OUTPUT.
 const MAX_OUTPUT_TOKENS = 4096;
@@ -53,6 +56,10 @@ function isOverloaded(error: unknown): boolean {
   return hasStatus(error, 503);
 }
 
+function isNotFound(error: unknown): boolean {
+  return hasStatus(error, 404);
+}
+
 export async function diagnoseBake(input: DiagnosisInput): Promise<Diagnosis> {
   let env: ReturnType<typeof getEnv>;
   try {
@@ -66,8 +73,9 @@ export async function diagnoseBake(input: DiagnosisInput): Promise<Diagnosis> {
   }
 
   const google = createGoogleGenerativeAI({ apiKey: env.GEMINI_API_KEY });
-  const abortSignal = AbortSignal.timeout(REQUEST_TIMEOUT_MS);
-  const generate = (modelName: string) =>
+  const deadline = AbortSignal.timeout(REQUEST_TIMEOUT_MS);
+  const primaryTimeout = AbortSignal.timeout(PRIMARY_TIMEOUT_MS);
+  const generate = (modelName: string, abortSignal: AbortSignal) =>
     generateText({
       model: google(modelName),
       output: Output.object({ schema: diagnosisSchema }),
@@ -78,16 +86,24 @@ export async function diagnoseBake(input: DiagnosisInput): Promise<Diagnosis> {
       abortSignal,
     });
 
+  let modelName = MODEL_NAME;
   try {
     let result: Awaited<ReturnType<typeof generate>>;
     try {
-      result = await generate(MODEL_NAME);
-    } catch (error) {
-      if (!isOverloaded(error)) throw error;
-      console.error(
-        `diagnoseBake: ${MODEL_NAME} overloaded, trying ${FALLBACK_MODEL_NAME}`,
+      result = await generate(
+        MODEL_NAME,
+        AbortSignal.any([primaryTimeout, deadline]),
       );
-      result = await generate(FALLBACK_MODEL_NAME);
+    } catch (error) {
+      // Check the signals, not the error: the SDK may wrap the abort.
+      const timedOut = primaryTimeout.aborted && !deadline.aborted;
+      if (!isOverloaded(error) && !timedOut) throw error;
+
+      console.error(
+        `diagnoseBake: ${MODEL_NAME} ${timedOut ? "timed out" : "overloaded"}, trying ${FALLBACK_MODEL_NAME}`,
+      );
+      modelName = FALLBACK_MODEL_NAME;
+      result = await generate(FALLBACK_MODEL_NAME, deadline);
     }
 
     return diagnosisSchema.parse(result.output);
@@ -112,6 +128,10 @@ export async function diagnoseBake(input: DiagnosisInput): Promise<Diagnosis> {
         "RATE_LIMITED",
         "The diagnosis service is busy right now. Please try again shortly.",
       );
+    }
+
+    if (isNotFound(error)) {
+      console.error(`diagnoseBake: ${modelName} not found; it may be retired`);
     }
 
     console.error(
