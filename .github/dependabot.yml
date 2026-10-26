@@ -1,0 +1,15 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    # Let a new release age a week before proposing it (supply-chain safety).
+    cooldown:
+      default-days: 7
+    # One PR for all action bumps instead of one per action.
+    groups:
+      github-actions:
+        patterns: ["*"]
+    commit-message:
+      prefix: ci
