@@ -22,6 +22,8 @@ const input: DiagnosisInput = {
   constraints: [],
 };
 
+const answered = { diagnosis: exampleDiagnosis, model: "gemini-3.6-flash" };
+
 function post(body: string, headers: Record<string, string> = {}) {
   return POST(
     new Request("http://localhost/api/diagnose", {
@@ -67,7 +69,7 @@ describe("POST /api/diagnose", () => {
   });
 
   it("returns the diagnosis on success", async () => {
-    vi.mocked(diagnoseBake).mockResolvedValueOnce(exampleDiagnosis);
+    vi.mocked(diagnoseBake).mockResolvedValueOnce(answered);
 
     const response = await post(JSON.stringify(input));
 
@@ -80,7 +82,7 @@ describe("POST /api/diagnose", () => {
 
   it("maps a RATE_LIMITED DiagnoseError to 429 with its message", async () => {
     vi.mocked(diagnoseBake).mockRejectedValueOnce(
-      new DiagnoseError("RATE_LIMITED", "Slow down."),
+      new DiagnoseError("RATE_LIMITED", "Slow down.", null),
     );
 
     const response = await post(JSON.stringify(input));
@@ -97,7 +99,7 @@ describe("POST /api/diagnose", () => {
     "maps a %s DiagnoseError to 502 with its message",
     async (code) => {
       vi.mocked(diagnoseBake).mockRejectedValueOnce(
-        new DiagnoseError(code, "Something went wrong."),
+        new DiagnoseError(code, "Something went wrong.", null),
       );
 
       const response = await post(JSON.stringify(input));
@@ -160,7 +162,7 @@ describe("POST /api/diagnose rate limiting", () => {
   });
 
   it("keys the limit by the first x-forwarded-for entry", async () => {
-    vi.mocked(diagnoseBake).mockResolvedValueOnce(exampleDiagnosis);
+    vi.mocked(diagnoseBake).mockResolvedValueOnce(answered);
 
     const response = await post(JSON.stringify(input), {
       "x-forwarded-for": "203.0.113.7, 10.0.0.1",
@@ -171,10 +173,107 @@ describe("POST /api/diagnose rate limiting", () => {
   });
 
   it('falls back to "unknown" without x-forwarded-for', async () => {
-    vi.mocked(diagnoseBake).mockResolvedValueOnce(exampleDiagnosis);
+    vi.mocked(diagnoseBake).mockResolvedValueOnce(answered);
 
     await post(JSON.stringify(input));
 
     expect(checkRateLimit).toHaveBeenCalledWith("unknown");
+  });
+});
+
+describe("POST /api/diagnose X-BakeFix-Model header", () => {
+  beforeEach(() => {
+    vi.mocked(diagnoseBake).mockReset();
+    vi.mocked(checkRateLimit).mockReset().mockResolvedValue({ allowed: true });
+    vi.spyOn(console, "error").mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it("names the model that answered on success", async () => {
+    vi.mocked(diagnoseBake).mockResolvedValueOnce({
+      diagnosis: exampleDiagnosis,
+      model: "openai/gpt-oss-120b",
+    });
+
+    const response = await post(JSON.stringify(input));
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get("X-BakeFix-Model")).toBe("openai/gpt-oss-120b");
+  });
+
+  it("keeps the success body byte-identical", async () => {
+    vi.mocked(diagnoseBake).mockResolvedValueOnce(answered);
+
+    const response = await post(JSON.stringify(input));
+
+    expect(await response.text()).toBe(
+      JSON.stringify({ ok: true, diagnosis: exampleDiagnosis }),
+    );
+  });
+
+  it.each([
+    ["RATE_LIMITED", 429],
+    ["AI_UNAVAILABLE", 502],
+    ["INVALID_OUTPUT", 502],
+  ] as const)(
+    "names the last model called on a %s DiagnoseError",
+    async (code, status) => {
+      vi.mocked(diagnoseBake).mockRejectedValueOnce(
+        new DiagnoseError(
+          code,
+          "Something went wrong.",
+          "gemini-3.5-flash-lite",
+        ),
+      );
+
+      const response = await post(JSON.stringify(input));
+
+      expect(response.status).toBe(status);
+      expect(response.headers.get("X-BakeFix-Model")).toBe(
+        "gemini-3.5-flash-lite",
+      );
+      expect(await response.text()).toBe(
+        JSON.stringify({ ok: false, code, message: "Something went wrong." }),
+      );
+    },
+  );
+
+  it("omits the header when no model was called", async () => {
+    vi.mocked(diagnoseBake).mockRejectedValueOnce(
+      new DiagnoseError("AI_UNAVAILABLE", "Not configured.", null),
+    );
+
+    const response = await post(JSON.stringify(input));
+
+    expect(response.status).toBe(502);
+    expect(response.headers.has("X-BakeFix-Model")).toBe(false);
+  });
+
+  it("omits the header on an unexpected error", async () => {
+    vi.mocked(diagnoseBake).mockRejectedValueOnce(new Error("boom"));
+
+    const response = await post(JSON.stringify(input));
+
+    expect(response.status).toBe(502);
+    expect(response.headers.has("X-BakeFix-Model")).toBe(false);
+  });
+
+  it("omits the header on invalid input", async () => {
+    const response = await post("{not json");
+
+    expect(response.status).toBe(400);
+    expect(response.headers.has("X-BakeFix-Model")).toBe(false);
+  });
+
+  it("omits the header when the rate limiter rejects", async () => {
+    vi.mocked(checkRateLimit).mockResolvedValueOnce({ allowed: false });
+
+    const response = await post(JSON.stringify(input));
+
+    expect(response.status).toBe(429);
+    expect(response.headers.has("X-BakeFix-Model")).toBe(false);
   });
 });

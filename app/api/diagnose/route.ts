@@ -9,6 +9,9 @@ import { checkRateLimit } from "@/lib/rate-limit";
 
 type ApiErrorCode = "INVALID_INPUT" | DiagnoseErrorCode;
 
+// Last model called, for the evals; the client ignores it.
+const MODEL_HEADER = "X-BakeFix-Model";
+
 export async function POST(request: Request) {
   const ip =
     request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
@@ -43,12 +46,15 @@ export async function POST(request: Request) {
   }
 
   try {
-    const diagnosis = await diagnoseBake(parsed.data);
-    return NextResponse.json({ ok: true, diagnosis });
+    const { diagnosis, model } = await diagnoseBake(parsed.data);
+    return NextResponse.json(
+      { ok: true, diagnosis },
+      { headers: { [MODEL_HEADER]: model } },
+    );
   } catch (error) {
     if (error instanceof DiagnoseError) {
       const status = error.code === "RATE_LIMITED" ? 429 : 502;
-      return errorResponse(error.code, error.message, status);
+      return errorResponse(error.code, error.message, status, error.model);
     }
 
     console.error("POST /api/diagnose: unexpected failure", error);
@@ -60,6 +66,14 @@ export async function POST(request: Request) {
   }
 }
 
-function errorResponse(code: ApiErrorCode, message: string, status: number) {
-  return NextResponse.json({ ok: false, code, message }, { status });
+function errorResponse(
+  code: ApiErrorCode,
+  message: string,
+  status: number,
+  model: string | null = null,
+) {
+  return NextResponse.json(
+    { ok: false, code, message },
+    { status, headers: model ? { [MODEL_HEADER]: model } : undefined },
+  );
 }

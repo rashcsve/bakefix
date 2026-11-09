@@ -20,6 +20,8 @@ Rules:
 - Communicate uncertainty honestly through the "confidence" field and the
   explanation; do not overstate certainty.
 - Prioritize the most likely cause first in "causes".
+- Keep lists short: "causes" (at most 3), "rescueSteps" (at most 4),
+  "nextTime" (at most 5), "missingInformation" (at most 3) items.
 - Respect any stated dietary constraints in rescue steps and recommendations,
   without claiming universal allergy or medical safety.
 - Include a "safetyNote" whenever the failure could involve a food-safety

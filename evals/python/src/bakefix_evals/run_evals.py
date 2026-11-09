@@ -31,6 +31,8 @@ MAX_RETRIES = 3
 RETRY_BACKOFF_S = 10
 DEFAULT_LIMIT = 12
 DEFAULT_MIN_INTERVAL_S = 13.0
+# Last model the server called; absent when none was.
+MODEL_HEADER = "X-BakeFix-Model"
 # CLI flag -> summary rate it gates.
 THRESHOLD_FLAGS = {
     "min_success": "success_rate",
@@ -41,7 +43,7 @@ THRESHOLD_FLAGS = {
 
 def call_api(
     client: httpx.Client, base_url: str, payload: dict[str, Any]
-) -> tuple[int | None, Any, int, int]:
+) -> tuple[int | None, Any, int, int, str | None]:
     # Retry 429s and network errors. Time only the last attempt, so retry waits
     # don't count as latency.
     for attempt in range(MAX_RETRIES + 1):
@@ -57,12 +59,13 @@ def call_api(
         time.sleep(RETRY_BACKOFF_S * (attempt + 1))
     ms = int((time.perf_counter() - start) * 1000)
     if response is None:
-        return None, None, ms, attempt
+        return None, None, ms, attempt, None
     try:
         body = response.json()
     except ValueError:
         body = None
-    return response.status_code, body, ms, attempt
+    model = response.headers.get(MODEL_HEADER)
+    return response.status_code, body, ms, attempt, model
 
 
 def sample_cases(cases: list[dict[str, Any]], limit: int) -> list[dict[str, Any]]:
@@ -115,7 +118,7 @@ def run(
                 if delay > 0:
                     time.sleep(delay)
             last_start = time.monotonic()
-            status, body, ms, retries = call_api(client, base_url, case["input"])
+            status, body, ms, retries, model = call_api(client, base_url, case["input"])
             result = score(case, status, body)
             print(f"{case['id']:>12}  {result['outcome']:<15} {ms:>6} ms")
             results.append(
@@ -126,6 +129,7 @@ def run(
                     "source_url": case["source"]["url"],
                     "latency_ms": ms,
                     "retries": retries,
+                    "model": model,
                     **result,
                 }
             )

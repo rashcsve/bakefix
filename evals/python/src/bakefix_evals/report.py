@@ -30,6 +30,15 @@ def summarize(results: list[dict[str, Any]]) -> dict[str, Any]:
             "cases": len(group),
             "success_rate": _rate(len(group_ok), len(group)),
         }
+    # Cases with no model header aren't counted: network errors, limiter 429s,
+    # a missing API key, unexpected server errors.
+    models: dict[str, dict[str, int]] = {}
+    for model in sorted({r["model"] for r in results if r.get("model")}):
+        group = [r for r in results if r.get("model") == model]
+        models[model] = {
+            "cases": len(group),
+            "ok": sum(r["outcome"] == "ok" for r in group),
+        }
     return {
         "cases": total,
         "success_rate": _rate(len(ok), total),
@@ -50,6 +59,7 @@ def summarize(results: list[dict[str, Any]]) -> dict[str, Any]:
             "p95": percentile(latencies, 0.95),
         },
         "by_category": by_category,
+        "models": models,
     }
 
 
@@ -110,6 +120,18 @@ def render_markdown(
     ]
     for name, row in summary["by_category"].items():
         lines.append(f"| {name} | {row['cases']} | {_pct(row['success_rate'])} |")
+    if summary["models"]:
+        lines += [
+            "",
+            "Answered by:",
+            "",
+            "| Model | Cases | Valid |",
+            "| --- | --- | --- |",
+        ]
+        for name, row in summary["models"].items():
+            lines.append(f"| {name} | {row['cases']} | {row['ok']} |")
+    else:
+        lines += ["", "Answered by: none (no X-BakeFix-Model header)"]
     if minimums:
         failures = threshold_failures(summary, minimums)
         lines += ["", "## Thresholds", ""]

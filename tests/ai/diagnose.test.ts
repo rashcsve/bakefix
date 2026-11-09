@@ -18,14 +18,26 @@ const input: DiagnosisInput = {
   constraints: [],
 };
 
-function apiCallError(statusCode: number) {
+function apiCallError(statusCode: number, responseBody?: string) {
   return new APICallError({
     message: "provider failure",
     url: "https://example.test",
     requestBodyValues: {},
     statusCode,
+    responseBody,
   });
 }
+
+// Groq's strict JSON-schema rejection; the SDK keeps `code` only in the body.
+const schemaRejectionBody = JSON.stringify({
+  error: {
+    message:
+      "Generated JSON does not match the expected schema. Error: jsonschema: '/causes': maxItems: got 4, want 3",
+    type: "invalid_request_error",
+    code: "json_validate_failed",
+    failed_generation: "{}",
+  },
+});
 
 function retryError(lastError: unknown) {
   return new RetryError({
@@ -122,7 +134,10 @@ describe("diagnoseBake model calls", () => {
   it("returns the diagnosis from a single call to the primary model", async () => {
     vi.mocked(generateText).mockResolvedValueOnce(generated(exampleDiagnosis));
 
-    await expect(diagnoseBake(input)).resolves.toEqual(exampleDiagnosis);
+    await expect(diagnoseBake(input)).resolves.toEqual({
+      diagnosis: exampleDiagnosis,
+      model: "gemini-3.6-flash",
+    });
     expect(calledModels()).toEqual(["gemini-3.6-flash"]);
   });
 
@@ -158,7 +173,10 @@ describe("diagnoseBake fallback model", () => {
       .mockRejectedValueOnce(apiCallError(503))
       .mockResolvedValueOnce(generated(exampleDiagnosis));
 
-    await expect(diagnoseBake(input)).resolves.toEqual(exampleDiagnosis);
+    await expect(diagnoseBake(input)).resolves.toEqual({
+      diagnosis: exampleDiagnosis,
+      model: "gemini-3.5-flash-lite",
+    });
     expect(calledModels()).toEqual([
       "gemini-3.6-flash",
       "gemini-3.5-flash-lite",
@@ -170,7 +188,10 @@ describe("diagnoseBake fallback model", () => {
       .mockRejectedValueOnce(retryError(apiCallError(503)))
       .mockResolvedValueOnce(generated(exampleDiagnosis));
 
-    await expect(diagnoseBake(input)).resolves.toEqual(exampleDiagnosis);
+    await expect(diagnoseBake(input)).resolves.toEqual({
+      diagnosis: exampleDiagnosis,
+      model: "gemini-3.5-flash-lite",
+    });
   });
 
   it("maps an overloaded fallback to AI_UNAVAILABLE", async () => {
@@ -298,7 +319,10 @@ describe("diagnoseBake timeouts", () => {
       .mockImplementationOnce(timeOutAfter(13_000))
       .mockResolvedValueOnce(generated(exampleDiagnosis));
 
-    await expect(diagnoseBake(input)).resolves.toEqual(exampleDiagnosis);
+    await expect(diagnoseBake(input)).resolves.toEqual({
+      diagnosis: exampleDiagnosis,
+      model: "gemini-3.5-flash-lite",
+    });
     expect(calledModels()).toEqual([
       "gemini-3.6-flash",
       "gemini-3.5-flash-lite",
@@ -311,6 +335,16 @@ describe("diagnoseBake timeouts", () => {
     const thrown = await diagnoseBake(input).catch((e: unknown) => e);
     expect((thrown as DiagnoseError).code).toBe("AI_UNAVAILABLE");
     expect(calledModels()).toEqual(["gemini-3.6-flash"]);
+  });
+
+  it("names the Gemini fallback when the overall deadline passes during it", async () => {
+    vi.mocked(generateText)
+      .mockRejectedValueOnce(apiCallError(503))
+      .mockImplementationOnce(timeOutAfter(20_000));
+
+    const thrown = await diagnoseBake(input).catch((e: unknown) => e);
+    expect((thrown as DiagnoseError).code).toBe("AI_UNAVAILABLE");
+    expect((thrown as DiagnoseError).model).toBe("gemini-3.5-flash-lite");
   });
 });
 
@@ -373,7 +407,10 @@ describe("diagnoseBake Groq fallback", () => {
       .mockRejectedValueOnce(error)
       .mockResolvedValueOnce(generated(exampleDiagnosis));
 
-    await expect(diagnoseBake(input)).resolves.toEqual(exampleDiagnosis);
+    await expect(diagnoseBake(input)).resolves.toEqual({
+      diagnosis: exampleDiagnosis,
+      model: "openai/gpt-oss-120b",
+    });
     expect(calledModels()).toEqual(["gemini-3.6-flash", "openai/gpt-oss-120b"]);
   });
 
@@ -448,6 +485,158 @@ describe("diagnoseBake Groq fallback", () => {
     expect((thrown as DiagnoseError).code).toBe("INVALID_OUTPUT");
   });
 
+  // Was the characterization test "maps a Groq 400 json_validate_failed to
+  // AI_UNAVAILABLE": strict JSON mode rejects bad output before we see it
+  // (docs/specs/groq-schema-limits.md).
+  it.each([
+    ["a plain", apiCallError(400, schemaRejectionBody)],
+    [
+      "the SDK's retry error around a",
+      retryError(apiCallError(400, schemaRejectionBody)),
+    ],
+  ])(
+    "maps %s Groq 400 json_validate_failed to INVALID_OUTPUT",
+    async (_, error) => {
+      // Rejected on the first try and the retry.
+      vi.mocked(generateText)
+        .mockRejectedValueOnce(apiCallError(429))
+        .mockRejectedValueOnce(error)
+        .mockRejectedValueOnce(error);
+
+      const thrown = await diagnoseBake(input).catch((e: unknown) => e);
+      expect((thrown as DiagnoseError).code).toBe("INVALID_OUTPUT");
+    },
+  );
+
+  // Was the characterization test "calls Groq only once after a schema
+  // rejection": Groq often goes one item over a list limit, so it gets a
+  // second try.
+  it("retries Groq once after a schema rejection and returns its answer", async () => {
+    vi.mocked(generateText)
+      .mockRejectedValueOnce(apiCallError(429))
+      .mockRejectedValueOnce(apiCallError(400, schemaRejectionBody))
+      .mockResolvedValueOnce(generated(exampleDiagnosis));
+
+    await expect(diagnoseBake(input)).resolves.toEqual({
+      diagnosis: exampleDiagnosis,
+      model: "openai/gpt-oss-120b",
+    });
+    expect(calledModels()).toEqual([
+      "gemini-3.6-flash",
+      "openai/gpt-oss-120b",
+      "openai/gpt-oss-120b",
+    ]);
+  });
+
+  it("gives up with INVALID_OUTPUT when the Groq retry is rejected too", async () => {
+    vi.mocked(generateText)
+      .mockRejectedValueOnce(apiCallError(429))
+      .mockRejectedValueOnce(apiCallError(400, schemaRejectionBody))
+      .mockRejectedValueOnce(apiCallError(400, schemaRejectionBody));
+
+    const thrown = await diagnoseBake(input).catch((e: unknown) => e);
+    expect((thrown as DiagnoseError).code).toBe("INVALID_OUTPUT");
+    expect(calledModels()).toHaveLength(3);
+  });
+
+  it("bounds the Groq retry by the same overall deadline", async () => {
+    vi.mocked(generateText)
+      .mockRejectedValueOnce(apiCallError(429))
+      .mockRejectedValueOnce(apiCallError(400, schemaRejectionBody))
+      .mockResolvedValueOnce(generated(exampleDiagnosis));
+
+    await diagnoseBake(input);
+    const [, [first], [retry]] = vi.mocked(generateText).mock.calls;
+    expect(retry.abortSignal).toBe(first.abortSignal);
+  });
+
+  it("logs one line saying the Groq retry is tried", async () => {
+    vi.mocked(generateText)
+      .mockRejectedValueOnce(apiCallError(429))
+      .mockRejectedValueOnce(apiCallError(400, schemaRejectionBody))
+      .mockResolvedValueOnce(generated(exampleDiagnosis));
+
+    await diagnoseBake(input);
+    expect(loggedErrors()).toMatch(/openai\/gpt-oss-120b .*retrying once/);
+    expect(loggedErrors()).not.toMatch(/failed schema validation/);
+  });
+
+  it("does not retry Groq on other errors", async () => {
+    vi.mocked(generateText)
+      .mockRejectedValueOnce(apiCallError(429))
+      .mockRejectedValueOnce(apiCallError(400));
+
+    await diagnoseBake(input).catch(() => {});
+    expect(calledModels()).toEqual(["gemini-3.6-flash", "openai/gpt-oss-120b"]);
+  });
+
+  it("logs one line naming the Groq model when its output fails schema validation", async () => {
+    vi.mocked(generateText)
+      .mockRejectedValueOnce(apiCallError(429))
+      .mockRejectedValueOnce(apiCallError(400, schemaRejectionBody))
+      .mockRejectedValueOnce(apiCallError(400, schemaRejectionBody));
+
+    await diagnoseBake(input).catch(() => {});
+    const lines = vi
+      .mocked(console.error)
+      .mock.calls.map((args) => args.map(String).join(" "))
+      .filter((line) =>
+        /openai\/gpt-oss-120b output failed schema validation/.test(line),
+      );
+    expect(lines).toHaveLength(1);
+  });
+
+  it("logs the provider's message naming the field, not the failed generation", async () => {
+    const rejection = new APICallError({
+      // The SDK builds the message from the body's `error.message` only.
+      message: "jsonschema: '/causes': maxItems: got 4, want 3",
+      url: "https://example.test",
+      requestBodyValues: {},
+      statusCode: 400,
+      responseBody: JSON.stringify({
+        error: {
+          code: "json_validate_failed",
+          failed_generation: "SECRET_GENERATION",
+        },
+      }),
+    });
+    vi.mocked(generateText)
+      .mockRejectedValueOnce(apiCallError(429))
+      .mockRejectedValueOnce(rejection)
+      .mockRejectedValueOnce(rejection);
+
+    await diagnoseBake(input).catch(() => {});
+    expect(loggedErrors()).toContain("'/causes': maxItems: got 4, want 3");
+    expect(loggedErrors()).not.toContain("SECRET_GENERATION");
+  });
+
+  it("keeps a Groq 400 without json_validate_failed as AI_UNAVAILABLE", async () => {
+    vi.mocked(generateText)
+      .mockRejectedValueOnce(apiCallError(429))
+      .mockRejectedValueOnce(
+        apiCallError(
+          400,
+          JSON.stringify({ error: { message: "bad request", code: "other" } }),
+        ),
+      );
+
+    const thrown = await diagnoseBake(input).catch((e: unknown) => e);
+    expect((thrown as DiagnoseError).code).toBe("AI_UNAVAILABLE");
+  });
+
+  it("maps a Gemini 400 json_validate_failed to INVALID_OUTPUT too", async () => {
+    vi.mocked(generateText).mockRejectedValueOnce(
+      apiCallError(400, schemaRejectionBody),
+    );
+
+    const thrown = await diagnoseBake(input).catch((e: unknown) => e);
+    expect((thrown as DiagnoseError).code).toBe("INVALID_OUTPUT");
+    expect(loggedErrors()).toMatch(
+      /gemini-3\.6-flash output failed schema validation/,
+    );
+    expect(calledModels()).toEqual(["gemini-3.6-flash"]);
+  });
+
   it("logs the Groq model as not found on a 404", async () => {
     vi.mocked(generateText)
       .mockRejectedValueOnce(apiCallError(429))
@@ -482,5 +671,85 @@ describe("diagnoseBake Groq fallback", () => {
       "gemini-3.6-flash",
       "gemini-3.5-flash-lite",
     ]);
+  });
+});
+
+describe("diagnoseBake error model", () => {
+  beforeEach(() => {
+    // restoreAllMocks leaves queued *Once values on the module mock.
+    vi.mocked(generateText).mockReset();
+    vi.stubEnv("GEMINI_API_KEY", "test-key");
+    vi.stubEnv("GROQ_API_KEY", "test-groq-key");
+    vi.spyOn(console, "error").mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    vi.restoreAllMocks();
+  });
+
+  async function modelFor(...errors: unknown[]) {
+    for (const error of errors) {
+      vi.mocked(generateText).mockRejectedValueOnce(error);
+    }
+    const thrown = await diagnoseBake(input).catch((e: unknown) => e);
+    expect(thrown).toBeInstanceOf(DiagnoseError);
+    return (thrown as DiagnoseError).model;
+  }
+
+  it("is null when the API key is missing", async () => {
+    vi.stubEnv("GEMINI_API_KEY", "");
+    expect(await modelFor()).toBeNull();
+  });
+
+  it("names the primary when only the primary was called", async () => {
+    expect(await modelFor(apiCallError(500))).toBe("gemini-3.6-flash");
+  });
+
+  it("names the primary when its output fails the schema", async () => {
+    vi.mocked(generateText).mockResolvedValueOnce(
+      generated({ headline: "only a headline" }),
+    );
+    expect(await modelFor()).toBe("gemini-3.6-flash");
+  });
+
+  it("logs the model whose output fails the schema", async () => {
+    vi.mocked(generateText).mockResolvedValueOnce(
+      generated({ headline: "only a headline" }),
+    );
+    await diagnoseBake(input).catch(() => {});
+    expect(loggedErrors()).toMatch(
+      /gemini-3\.6-flash output failed schema validation/,
+    );
+  });
+
+  it("names Groq when Groq is rate limited too", async () => {
+    vi.mocked(generateText)
+      .mockRejectedValueOnce(apiCallError(429))
+      .mockRejectedValueOnce(apiCallError(429));
+    const thrown = await diagnoseBake(input).catch((e: unknown) => e);
+    expect((thrown as DiagnoseError).code).toBe("RATE_LIMITED");
+    expect((thrown as DiagnoseError).model).toBe("openai/gpt-oss-120b");
+  });
+
+  it("names the Gemini fallback after an overload", async () => {
+    expect(await modelFor(apiCallError(503), apiCallError(500))).toBe(
+      "gemini-3.5-flash-lite",
+    );
+  });
+
+  it("names Groq after a rate-limited primary", async () => {
+    expect(
+      await modelFor(
+        apiCallError(429),
+        apiCallError(400, schemaRejectionBody),
+        apiCallError(400, schemaRejectionBody),
+      ),
+    ).toBe("openai/gpt-oss-120b");
+  });
+
+  it("names the primary when it is rate limited and Groq is not configured", async () => {
+    vi.stubEnv("GROQ_API_KEY", "");
+    expect(await modelFor(apiCallError(429))).toBe("gemini-3.6-flash");
   });
 });

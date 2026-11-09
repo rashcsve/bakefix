@@ -41,6 +41,11 @@ and user message from a validated `DiagnosisInput`. This module has no
 dependency on React or HTTP handling, so it can be exercised in isolation and
 reused unchanged by the Step 05 server integration.
 
+`SYSTEM_PROMPT` states the maximum length of each list (`causes` 3,
+`rescueSteps` 4, `nextTime` 5, `missingInformation` 3). `tests/ai/prompt.test.ts`
+reads the limits from `diagnosisSchema`, so changing one without the other
+fails the test.
+
 Prompt-injection hardening:
 - The free-text fields `problem`, `recipe` and `technicalDetails` are wrapped
   in `<problem>`, `<recipe>` and `<technical_details>` tags. Optional fields
@@ -68,12 +73,24 @@ Every call gets the same schema, `SYSTEM_PROMPT`, user message,
 
 At most one of 2 and 3 runs. Error codes are the same for every provider:
 429 gives `RATE_LIMITED`, bad output `INVALID_OUTPUT`, anything else
-`AI_UNAVAILABLE`. The client and the evals aren't told which provider
-answered.
+`AI_UNAVAILABLE`.
+
+`POST /api/diagnose` names the last model called in an `X-BakeFix-Model`
+response header: on a 200, and on a 429 or 502 from a `DiagnoseError` with
+`model` set. It's left out when no model was called (missing key, invalid
+input, the route's own rate limiter) and on unexpected errors. The JSON body
+is unchanged. The Python evals record it per case and summarize it under
+"Answered by"; the client ignores it.
 
 `@ai-sdk/groq` sends the schema in strict JSON-schema mode. `diagnosisSchema`
 works with it because every field is required and `safetyNote` is nullable,
-not optional. Keep it that way when changing the schema.
+not optional. Keep it that way when changing the schema. In this mode the
+provider checks the output itself and rejects a mismatch (e.g. a list over
+its limit) with a 400 whose body contains `json_validate_failed`. Groq gets
+one retry on that rejection, within the same 20s deadline; in the 2026-10-27
+run all 8 failures were one item over a list limit. A rejection that remains
+maps to `INVALID_OUTPUT`, like output that fails `diagnosisSchema`, not
+`AI_UNAVAILABLE`, from any provider.
 
 ## Output length (`lib/ai/diagnose.ts`)
 

@@ -6,7 +6,12 @@ import pytest
 
 from bakefix_evals import run_evals
 from bakefix_evals.models import DIETARY_CONSTRAINTS, PASTRY_CATEGORIES
-from bakefix_evals.report import percentile, summarize, threshold_failures
+from bakefix_evals.report import (
+    percentile,
+    render_markdown,
+    summarize,
+    threshold_failures,
+)
 
 GOOD = {
     "headline": "Butter too warm",
@@ -120,6 +125,32 @@ def test_run_reports_network_error_after_last_retry(monkeypatch) -> None:
     assert result["retries"] == run_evals.MAX_RETRIES
 
 
+def test_run_records_the_model_header(monkeypatch) -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        if "(a)" in json.loads(request.content)["problem"]:
+            return httpx.Response(
+                200,
+                json={"ok": True, "diagnosis": GOOD},
+                headers={"X-BakeFix-Model": "openai/gpt-oss-120b"},
+            )
+        return httpx.Response(502, json={"ok": False, "code": "AI_UNAVAILABLE"})
+
+    _mock_client(monkeypatch, handler)
+    a, b = run_evals.run([case("a"), case("b")], "http://test", 0)
+    assert a["model"] == "openai/gpt-oss-120b"
+    assert b["model"] is None
+
+
+def test_run_has_no_model_after_a_network_error(monkeypatch) -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        raise httpx.ConnectError("connection refused", request=request)
+
+    monkeypatch.setattr(run_evals.time, "sleep", lambda _: None)
+    _mock_client(monkeypatch, handler)
+    [result] = run_evals.run([case("a")], "http://test", 0)
+    assert result["model"] is None
+
+
 def test_min_interval_spaces_request_starts(monkeypatch) -> None:
     sleeps: list[float] = []
     monkeypatch.setattr(run_evals.time, "sleep", sleeps.append)
@@ -168,6 +199,50 @@ def test_summary_rates() -> None:
     assert s["error_codes"] == {"RATE_LIMITED": 1}
     assert s["safety_note_rate"] == 0.5
     assert percentile([1, 2, 3, 4, 100], 0.95) == 100
+
+
+def test_summary_counts_cases_per_model() -> None:
+    base = {"category": "Cake", "constraints": [], "latency_ms": 100}
+    ok = {
+        **base,
+        "outcome": "ok",
+        "calibrated": True,
+        "constraint_ok": True,
+        "has_safety_note": False,
+        "confidence": "low",
+    }
+    failed = {**base, "outcome": "api_error", "error_code": "INVALID_OUTPUT"}
+    results = [
+        {**ok, "model": "gemini-3.6-flash"},
+        {**ok, "model": "openai/gpt-oss-120b"},
+        {**failed, "model": "openai/gpt-oss-120b"},
+        {**failed, "error_code": "RATE_LIMITED", "model": None},
+    ]
+    s = summarize(results)
+    assert s["models"] == {
+        "gemini-3.6-flash": {"cases": 1, "ok": 1},
+        "openai/gpt-oss-120b": {"cases": 2, "ok": 1},
+    }
+    report = render_markdown(s, "http://test", "now")
+    assert "| Model | Cases | Valid |" in report
+    assert "| openai/gpt-oss-120b | 2 | 1 |" in report
+
+
+def test_report_says_none_without_model_headers() -> None:
+    # e.g. a deployment from before the header existed
+    results = [
+        {
+            "category": "Cake",
+            "constraints": [],
+            "latency_ms": 100,
+            "outcome": "api_error",
+            "error_code": "RATE_LIMITED",
+            "model": None,
+        }
+    ]
+    report = render_markdown(summarize(results), "http://test", "now")
+    assert "Answered by: none (no X-BakeFix-Model header)" in report
+    assert "| Model | Cases | Valid |" not in report
 
 
 def test_threshold_failures() -> None:

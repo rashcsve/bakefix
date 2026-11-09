@@ -35,18 +35,37 @@ export type DiagnoseErrorCode =
   | "INVALID_OUTPUT"
   | "RATE_LIMITED";
 
+export type DiagnoseResult = { diagnosis: Diagnosis; model: string };
+
 export class DiagnoseError extends Error {
   readonly code: DiagnoseErrorCode;
+  // Last model called; null if none was (missing key).
+  readonly model: string | null;
 
-  constructor(code: DiagnoseErrorCode, message: string) {
+  constructor(code: DiagnoseErrorCode, message: string, model: string | null) {
     super(message);
     this.code = code;
+    this.model = model;
   }
 }
 
-function hasStatus(error: unknown, statusCode: number): boolean {
+function apiCallCause(error: unknown): APICallError | null {
   const cause = RetryError.isInstance(error) ? error.lastError : error;
-  return APICallError.isInstance(cause) && cause.statusCode === statusCode;
+  return APICallError.isInstance(cause) ? cause : null;
+}
+
+function hasStatus(error: unknown, statusCode: number): boolean {
+  return apiCallCause(error)?.statusCode === statusCode;
+}
+
+// Strict JSON-schema mode rejects bad output with a 400. The SDK's Groq error
+// schema drops `error.code`, so only the raw body names it.
+function isSchemaRejection(error: unknown): boolean {
+  const cause = apiCallCause(error);
+  return (
+    cause?.statusCode === 400 &&
+    (cause.responseBody?.includes("json_validate_failed") ?? false)
+  );
 }
 
 function isRateLimited(error: unknown): boolean {
@@ -61,7 +80,9 @@ function isNotFound(error: unknown): boolean {
   return hasStatus(error, 404);
 }
 
-export async function diagnoseBake(input: DiagnosisInput): Promise<Diagnosis> {
+export async function diagnoseBake(
+  input: DiagnosisInput,
+): Promise<DiagnoseResult> {
   let env: ReturnType<typeof getEnv>;
   try {
     env = getEnv();
@@ -70,6 +91,7 @@ export async function diagnoseBake(input: DiagnosisInput): Promise<Diagnosis> {
     throw new DiagnoseError(
       "AI_UNAVAILABLE",
       "The diagnosis service is not configured.",
+      null,
     );
   }
 
@@ -106,7 +128,17 @@ export async function diagnoseBake(input: DiagnosisInput): Promise<Diagnosis> {
 
         const groq = createGroq({ apiKey: fallbackEnv.GROQ_API_KEY });
         modelName = GROQ_MODEL_NAME;
-        result = await generate(groq(GROQ_MODEL_NAME), deadline);
+        try {
+          result = await generate(groq(GROQ_MODEL_NAME), deadline);
+        } catch (groqError) {
+          // Groq often goes one item over a list limit; a second try usually fits.
+          if (!isSchemaRejection(groqError)) throw groqError;
+
+          console.error(
+            `diagnoseBake: ${GROQ_MODEL_NAME} output was over the schema limits, retrying once`,
+          );
+          result = await generate(groq(GROQ_MODEL_NAME), deadline);
+        }
       } else {
         // Check the signals, not the error: the SDK may wrap the abort.
         const timedOut = primaryTimeout.aborted && !deadline.aborted;
@@ -120,19 +152,36 @@ export async function diagnoseBake(input: DiagnosisInput): Promise<Diagnosis> {
       }
     }
 
-    return diagnosisSchema.parse(result.output);
+    return {
+      diagnosis: diagnosisSchema.parse(result.output),
+      model: modelName,
+    };
   } catch (error) {
     if (
       error instanceof z.ZodError ||
       NoOutputGeneratedError.isInstance(error)
     ) {
       console.error(
-        "diagnoseBake: model output failed schema validation",
+        `diagnoseBake: ${modelName} output failed schema validation`,
         error,
       );
       throw new DiagnoseError(
         "INVALID_OUTPUT",
         "The diagnosis service returned an unexpected response.",
+        modelName,
+      );
+    }
+
+    if (isSchemaRejection(error)) {
+      console.error(
+        `diagnoseBake: ${modelName} output failed schema validation`,
+        apiCallCause(error)?.message,
+      );
+
+      throw new DiagnoseError(
+        "INVALID_OUTPUT",
+        "The diagnosis service returned an unexpected response.",
+        modelName,
       );
     }
 
@@ -141,6 +190,7 @@ export async function diagnoseBake(input: DiagnosisInput): Promise<Diagnosis> {
       throw new DiagnoseError(
         "RATE_LIMITED",
         "The diagnosis service is busy right now. Please try again shortly.",
+        modelName,
       );
     }
 
@@ -155,6 +205,7 @@ export async function diagnoseBake(input: DiagnosisInput): Promise<Diagnosis> {
     throw new DiagnoseError(
       "AI_UNAVAILABLE",
       "The diagnosis service is unavailable right now. Please try again.",
+      modelName,
     );
   }
 }
