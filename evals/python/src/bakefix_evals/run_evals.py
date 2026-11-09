@@ -2,6 +2,7 @@
 
 uv run python -m bakefix_evals.run_evals            # 12 cases, every category
 uv run python -m bakefix_evals.run_evals --limit 0  # every case
+uv run python -m bakefix_evals.run_evals --judge    # also grade with the LLM judge
 
 Pass --min-* rates (0-1) to exit with status 1 when a run scores below them.
 """
@@ -10,6 +11,9 @@ import argparse
 import json
 import os
 import time
+from collections.abc import Callable
+from contextlib import ExitStack
+from functools import partial
 from itertools import zip_longest
 from pathlib import Path
 from typing import Any
@@ -17,7 +21,14 @@ from typing import Any
 import httpx
 from pydantic import ValidationError
 
-from bakefix_evals.models import Diagnosis
+from bakefix_evals.judge import (
+    JUDGE_SKIP_MESSAGE,
+    JudgeError,
+    JudgeVerdict,
+    judge,
+    judge_config_from_env,
+)
+from bakefix_evals.models import Diagnosis, DiagnosisInput
 from bakefix_evals.report import GATED_RATES, write_reports
 from bakefix_evals.scoring import (
     constraint_violations,
@@ -39,6 +50,8 @@ THRESHOLD_FLAGS = {
     "min_calibration": "calibration_rate",
     "min_constraint": "constraint_compliance",
 }
+
+JudgeCase = Callable[[DiagnosisInput, Diagnosis], JudgeVerdict | JudgeError]
 
 
 def call_api(
@@ -104,8 +117,24 @@ def score(case: dict[str, Any], status: int | None, body: Any) -> dict[str, Any]
     }
 
 
+def judge_fields(
+    case: dict[str, Any], result: dict[str, Any], judge_case: JudgeCase
+) -> dict[str, Any]:
+    """Judge a valid diagnosis; failures are kept so the report can count them."""
+    outcome = judge_case(
+        DiagnosisInput.model_validate(case["input"]),
+        Diagnosis.model_validate(result["diagnosis"]),
+    )
+    if isinstance(outcome, JudgeError):
+        return {"judge_error": {"code": outcome.code, "detail": outcome.detail}}
+    return {"judge": outcome.model_dump()}
+
+
 def run(
-    cases: list[dict[str, Any]], base_url: str, min_interval: float
+    cases: list[dict[str, Any]],
+    base_url: str,
+    min_interval: float,
+    judge_case: JudgeCase | None = None,
 ) -> list[dict[str, Any]]:
     # One request at a time: the free tier's rate limit, not the client, is the
     # bottleneck, so requests start at least `min_interval` seconds apart.
@@ -120,6 +149,8 @@ def run(
             last_start = time.monotonic()
             status, body, ms, retries, model = call_api(client, base_url, case["input"])
             result = score(case, status, body)
+            if judge_case is not None and result["outcome"] == "ok":
+                result |= judge_fields(case, result, judge_case)
             print(f"{case['id']:>12}  {result['outcome']:<15} {ms:>6} ms")
             results.append(
                 {
@@ -162,6 +193,12 @@ def main() -> None:
         help="seconds between request starts (default %(default)s, sized for "
         "Gemini's free tier of about 5 requests a minute); 0 disables",
     )
+    parser.add_argument(
+        "--judge",
+        action="store_true",
+        help="grade every valid diagnosis with the LLM judge (needs JUDGE_API_KEY "
+        "in the shell; skipped with a message without it)",
+    )
     for dest, rate in THRESHOLD_FLAGS.items():
         parser.add_argument(
             f"--{dest.replace('_', '-')}",
@@ -185,8 +222,24 @@ def main() -> None:
             f"No server reachable at {base_url}. Start it with `pnpm dev`."
         ) from None
 
-    results = run(cases, base_url, args.min_interval)
-    failures = write_reports(results, base_url, REPORTS_DIR, minimums)
+    judge_config = judge_config_from_env(os.environ) if args.judge else None
+    if args.judge and judge_config is None:
+        print(JUDGE_SKIP_MESSAGE)
+
+    with ExitStack() as stack:
+        judge_case: JudgeCase | None = None
+        if judge_config is not None:
+            judge_client = stack.enter_context(httpx.Client())
+            judge_case = partial(judge, judge_client, judge_config)
+        results = run(cases, base_url, args.min_interval, judge_case)
+
+    failures = write_reports(
+        results,
+        base_url,
+        REPORTS_DIR,
+        minimums,
+        judge_model=judge_config.model if judge_config else None,
+    )
     if failures:
         raise SystemExit(
             "Thresholds not met:\n" + "\n".join(f"- {f}" for f in failures)

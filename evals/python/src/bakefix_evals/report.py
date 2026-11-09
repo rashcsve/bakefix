@@ -5,6 +5,10 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from bakefix_evals.judge import CRITERIA
+
+LOWEST_JUDGED = 3
+
 
 def percentile(values: list[int], pct: float) -> int:
     if not values:
@@ -15,6 +19,51 @@ def percentile(values: list[int], pct: float) -> int:
 
 def _rate(numerator: int, denominator: int) -> float | None:
     return round(numerator / denominator, 3) if denominator else None
+
+
+def _mean_scores(verdicts: list[dict[str, Any]]) -> dict[str, float | None]:
+    return {
+        name: round(statistics.mean(v[name]["score"] for v in verdicts), 2)
+        if verdicts
+        else None
+        for name in CRITERIA
+    }
+
+
+def _total(verdict: dict[str, Any]) -> int:
+    return sum(verdict[name]["score"] for name in CRITERIA)
+
+
+def summarize_judge(results: list[dict[str, Any]]) -> dict[str, Any] | None:
+    """None when no case went to the judge (no --judge, or no valid diagnoses)."""
+    attempted = [r for r in results if "judge" in r or "judge_error" in r]
+    if not attempted:
+        return None
+    judged = [r for r in attempted if "judge" in r]
+    by_category: dict[str, dict[str, Any]] = {}
+    for category in sorted({r["category"] for r in attempted}):
+        group = [r["judge"] for r in judged if r["category"] == category]
+        by_category[category] = {"judged": len(group), "mean": _mean_scores(group)}
+    # sorted() is stable, so ties keep run order.
+    lowest = sorted(judged, key=lambda r: _total(r["judge"]))[:LOWEST_JUDGED]
+    return {
+        "judged": len(judged),
+        "failed": len(attempted) - len(judged),
+        "error_codes": dict(
+            Counter(r["judge_error"]["code"] for r in attempted if "judge_error" in r)
+        ),
+        "mean": _mean_scores([r["judge"] for r in judged]),
+        "by_category": by_category,
+        "lowest": [
+            {
+                "id": r["id"],
+                "category": r["category"],
+                "total": _total(r["judge"]),
+                "scores": r["judge"],
+            }
+            for r in lowest
+        ],
+    }
 
 
 def summarize(results: list[dict[str, Any]]) -> dict[str, Any]:
@@ -60,6 +109,7 @@ def summarize(results: list[dict[str, Any]]) -> dict[str, Any]:
         },
         "by_category": by_category,
         "models": models,
+        "judge": summarize_judge(results),
     }
 
 
@@ -92,11 +142,53 @@ def threshold_failures(
     return failures
 
 
+def _score(value: float | None) -> str:
+    return "n/a" if value is None else f"{value:.2f}"
+
+
+def render_judge(judge: dict[str, Any], judge_model: str | None) -> list[str]:
+    errors = ", ".join(f"{code}: {n}" for code, n in judge["error_codes"].items())
+    lines = [
+        "",
+        "## Judge",
+        "",
+        f"Judge model: `{judge_model or 'unknown'}` — {judge['judged']} cases judged, "
+        "scores 1–5.  ",
+        f"Judge failures: {judge['failed']}" + (f" ({errors})" if errors else ""),
+        "",
+        "| Criterion | Mean |",
+        "| --- | --- |",
+    ]
+    lines += [f"| {name} | {_score(judge['mean'][name])} |" for name in CRITERIA]
+    lines += [
+        "",
+        "| Category | Judged | " + " | ".join(CRITERIA) + " |",
+        "| --- | --- |" + " --- |" * len(CRITERIA),
+    ]
+    for category, row in judge["by_category"].items():
+        means = " | ".join(_score(row["mean"][name]) for name in CRITERIA)
+        lines.append(f"| {category} | {row['judged']} | {means} |")
+    if judge["lowest"]:
+        lines += ["", "Lowest-scored cases:", ""]
+        for case in judge["lowest"]:
+            lines.append(
+                f"- `{case['id']}` ({case['category']}), "
+                f"total {case['total']}/{5 * len(CRITERIA)}"
+            )
+            lines += [
+                f"  - {name} {case['scores'][name]['score']}: "
+                f"{case['scores'][name]['reason']}"
+                for name in CRITERIA
+            ]
+    return lines
+
+
 def render_markdown(
     summary: dict[str, Any],
     base_url: str,
     stamp: str,
     minimums: dict[str, float] | None = None,
+    judge_model: str | None = None,
 ) -> str:
     lines = [
         "# Python eval report",
@@ -132,6 +224,8 @@ def render_markdown(
             lines.append(f"| {name} | {row['cases']} | {row['ok']} |")
     else:
         lines += ["", "Answered by: none (no X-BakeFix-Model header)"]
+    if summary["judge"] is not None:
+        lines += render_judge(summary["judge"], judge_model)
     if minimums:
         failures = threshold_failures(summary, minimums)
         lines += ["", "## Thresholds", ""]
@@ -144,6 +238,7 @@ def write_reports(
     base_url: str,
     out_dir: Path,
     minimums: dict[str, float] | None = None,
+    judge_model: str | None = None,
 ) -> list[str]:
     """Write latest.json and latest.md; return any threshold failures."""
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -152,13 +247,14 @@ def write_reports(
     payload = {
         "run_at": stamp,
         "base_url": base_url,
+        "judge_model": judge_model,
         "summary": summary,
         "results": results,
     }
     (out_dir / "latest.json").write_text(
         json.dumps(payload, indent=2, ensure_ascii=False) + "\n"
     )
-    markdown = render_markdown(summary, base_url, stamp, minimums)
+    markdown = render_markdown(summary, base_url, stamp, minimums, judge_model)
     (out_dir / "latest.md").write_text(markdown)
     print("\n" + markdown)
     return threshold_failures(summary, minimums or {})
