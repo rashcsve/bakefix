@@ -1,8 +1,27 @@
-"""LLM-as-judge rubric, prompt and verdict schema (no API calls here)."""
+"""LLM-as-judge rubric, prompt, verdict schema and judge API client.
 
-from typing import Annotated
+The judge calls any OpenAI-compatible chat completions API (free tiers such as
+Groq, OpenRouter ":free" models, Mistral or Cerebras). Configure it from the
+shell, never from .env files:
 
-from pydantic import BaseModel, ConfigDict, Field, StringConstraints
+JUDGE_API_KEY   required; without it the judge is skipped
+JUDGE_BASE_URL  default: Groq's OpenAI-compatible endpoint
+JUDGE_MODEL     default: a Llama model, outside the Gemini and gpt-oss families
+"""
+
+import time
+from collections.abc import Mapping
+from dataclasses import dataclass, field
+from typing import Annotated, Any, Literal
+
+import httpx
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    StringConstraints,
+    ValidationError,
+)
 
 from bakefix_evals.models import Diagnosis, DiagnosisInput
 
@@ -100,3 +119,91 @@ def build_judge_message(case_input: DiagnosisInput, diagnosis: Diagnosis) -> str
 def parse_verdict(text: str) -> JudgeVerdict:
     """Raise pydantic.ValidationError on malformed or out-of-range verdicts."""
     return JudgeVerdict.model_validate_json(text)
+
+
+DEFAULT_JUDGE_BASE_URL = "https://api.groq.com/openai/v1"
+DEFAULT_JUDGE_MODEL = "llama-3.3-70b-versatile"
+JUDGE_TIMEOUT_S = 30.0
+JUDGE_MAX_RETRIES = 3
+JUDGE_RETRY_BACKOFF_S = 10
+JUDGE_SKIP_MESSAGE = "Judge skipped: set JUDGE_API_KEY in the shell to enable it."
+
+JudgeErrorCode = Literal[
+    "rate_limited", "timeout", "network_error", "http_error", "invalid_output"
+]
+
+
+@dataclass(frozen=True)
+class JudgeConfig:
+    api_key: str = field(repr=False)
+    base_url: str = DEFAULT_JUDGE_BASE_URL
+    model: str = DEFAULT_JUDGE_MODEL
+
+
+@dataclass(frozen=True)
+class JudgeError:
+    code: JudgeErrorCode
+    detail: str
+
+
+def judge_config_from_env(env: Mapping[str, str]) -> JudgeConfig | None:
+    """Return None when JUDGE_API_KEY is unset; callers print JUDGE_SKIP_MESSAGE."""
+    api_key = env.get("JUDGE_API_KEY", "").strip()
+    if not api_key:
+        return None
+    base_url = env.get("JUDGE_BASE_URL", "").strip() or DEFAULT_JUDGE_BASE_URL
+    model = env.get("JUDGE_MODEL", "").strip() or DEFAULT_JUDGE_MODEL
+    return JudgeConfig(api_key=api_key, base_url=base_url.rstrip("/"), model=model)
+
+
+def _message_content(body: Any) -> str:
+    content = body["choices"][0]["message"]["content"]
+    if not isinstance(content, str):
+        raise TypeError("message content is not a string")
+    return content
+
+
+def judge(
+    client: httpx.Client,
+    config: JudgeConfig,
+    case_input: DiagnosisInput,
+    diagnosis: Diagnosis,
+) -> JudgeVerdict | JudgeError:
+    payload = {
+        "model": config.model,
+        "temperature": 0,
+        "response_format": {"type": "json_object"},
+        "messages": [
+            {"role": "system", "content": JUDGE_SYSTEM_PROMPT},
+            {"role": "user", "content": build_judge_message(case_input, diagnosis)},
+        ],
+    }
+    headers = {"Authorization": f"Bearer {config.api_key}"}
+    # Retry only 429s, with the same growing backoff as call_api in run_evals.
+    for attempt in range(JUDGE_MAX_RETRIES + 1):
+        try:
+            response = client.post(
+                f"{config.base_url}/chat/completions",
+                json=payload,
+                headers=headers,
+                timeout=JUDGE_TIMEOUT_S,
+            )
+        except httpx.TimeoutException:
+            return JudgeError("timeout", f"No answer within {JUDGE_TIMEOUT_S:g}s")
+        except httpx.HTTPError as error:
+            return JudgeError("network_error", type(error).__name__)
+        if response.status_code != 429 or attempt == JUDGE_MAX_RETRIES:
+            break
+        time.sleep(JUDGE_RETRY_BACKOFF_S * (attempt + 1))
+
+    # Details carry only the status or error type: provider bodies can echo keys.
+    if response.status_code == 429:
+        return JudgeError("rate_limited", "HTTP 429")
+    if response.status_code != 200:
+        return JudgeError("http_error", f"HTTP {response.status_code}")
+    try:
+        return parse_verdict(_message_content(response.json()))
+    except ValidationError as error:
+        return JudgeError("invalid_output", f"{error.error_count()} schema errors")
+    except (ValueError, KeyError, IndexError, TypeError) as error:
+        return JudgeError("invalid_output", type(error).__name__)
